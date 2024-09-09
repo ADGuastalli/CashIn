@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div className="flex flex-col justify-center items-center">
       <Image src={Logo} alt="Logo" width={800} height={800} />
-      <button className="button-principal">INGRESAR</button>
+      <button className="button-principal">INGRESO</button>
     </div>
   );
 }
