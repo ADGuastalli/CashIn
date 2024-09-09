@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #c1deff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #c1deff;
+    --foreground: #016285;
   }
 }
 
@@ -23,5 +23,26 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  .focus\:shadow-outline:focus {
+    box-shadow: 0 0 0 3px rgba(135, 206, 235, 0.45);
+  }
+}
+
+@layer components {
+  .button-principal {
+    @apply inline-flex items-center h-10 px-10 text-white font-bold transition-colors duration-150 bg-[#89E186] rounded-full hover:bg-[#77DD77] hover:shadow-lg;
+  }
+}
+
+@layer components {
+  .button-error {
+    @apply inline-flex items-center h-10 px-10 text-white font-bold transition-colors duration-150 bg-[#fb4d4d] rounded-full hover:bg-[#d32d2d] hover:shadow-lg;
+  }
+}
+
+@layer components {
+  .button-inactivo {
+    @apply cursor-not-allowed inline-flex items-center h-10 px-10 text-white font-bold transition-colors duration-150 bg-[#979797] rounded-full hover:bg-[#828282] hover:shadow-lg;
   }
 }
