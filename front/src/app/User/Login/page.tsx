@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import ButtonBack from "../../../components/Button/index";
+import ButtonBack from "../../../components/ui/Button/index";
 import Logo from "../../../public/assets/image-removebg-preview.png";
 import Imagen1 from "../../../public/assets/imagen 1.png";
 import Image from "next/image";
