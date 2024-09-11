@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div className="h-screen flex flex-col justify-center items-center">
       <div className="flex flex-col justify-center items-center text-center mx-5">
-        <Image src={Logo} alt="Logo" width={600} height={600} />
+        <Image src={Logo} alt="Logo" width={601} height={601} />
         <h1 className="text-5xl mt-4 max-w-4xl mx-auto">
           Somos la <span className="font-bold">Herramienta</span> que te{" "}
           <span className="font-bold">Ayudará</span> a manejar tu dinero de
