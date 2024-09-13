@@ -1,27 +1,29 @@
 require("dotenv").config();
-const express = require('express'); 
+const express = require("express");
 const app = express();
-const morgan = require('morgan');
-const { sequelize } = require('./src/models/index'); 
-const routes = require('./src/routes/index');
+const morgan = require("morgan");
+const { sequelize } = require("./src/models/index");
+const routes = require("./src/routes/index");
 
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 app.use(express.json());
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+app.get("/", (req, res) => {
+  res.send("Hello World!");
 });
 
-app.use('/', routes)
+app.use("/", routes);
 
-sequelize.sync({ force: false }).then(() => {
+sequelize
+  .sync({ force: false })
+  .then(() => {
     console.log("Tablas sincronizadas");
-}).catch((error) => {
+  })
+  .catch((error) => {
     console.error("Error al sincronizar tablas:", error);
-});
+  });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
-
