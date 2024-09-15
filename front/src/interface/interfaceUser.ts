@@ -10,23 +10,19 @@ interface IUser {
 }
 
 interface ILogin {
-  username: string;
+  email: string;
   password: string;
 }
 
 interface IRegister {
   name: string;
-  username: string;
   email: string;
   password: string;
   confirmPassword: string;
-  country: string;
-  city: string;
-  birthdate: string;
 }
 
 interface IErrorsLogin {
-  username?: string;
+  email?: string;
   password?: string;
 }
 

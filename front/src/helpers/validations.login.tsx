@@ -6,8 +6,8 @@ const validateLogin = (
 ): IErrorsLogin => {
   const errors: IErrorsLogin = {};
 
-  if (fieldsToValidate.includes("username") && !values.username) {
-    errors.username = "*";
+  if (fieldsToValidate.includes("email") && !values.email) {
+    errors.email = "*";
   }
 
   if (fieldsToValidate.includes("password") && !values.password) {
@@ -93,7 +93,7 @@ const validateRegister = (
     if (!values.confirmPassword) {
       errors.confirmPassword = "*";
     } else if (values.password !== values.confirmPassword) {
-      errors.confirmPassword = "Las contraseñas no coinciden.";
+      errors.confirmPassword = "Las contraseñas no coinciden";
     }
   }
 
