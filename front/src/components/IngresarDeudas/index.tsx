@@ -117,57 +117,10 @@ export default function PagarMisDeudasComponet() {
           </div>
 
           {deudas.length > 0 && (
-            <div className="flex flex-grow justify-between items-center w-full mt-10">
-              <div className="w-full max-w-4xl mx-auto flex justify-between items-center">
-                <div className="flex flex-col items-center">
-                  <div className="flex flex-col justify-center items-center">
-                    <Link href="/Menu">
-                      <Button_actions_rounded>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          className="w-6 h-6 text-[#C38A01]"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15 19l-7-7 7-7"
-                          />
-                        </svg>
-                      </Button_actions_rounded>
-                    </Link>
-                    <p className="font-black text-xl text-[#FAB100]">Atras</p>
-                  </div>
-                </div>
-
-                {/* Lista de deudas en el centro */}
-                <div className="flex-grow mx-40">
-                  <ul>
-                    {deudas.map((item, index) => (
-                      <li
-                        key={index}
-                        className="flex justify-between items-center p-4 rounded-lg mb-3 shadow w-full"
-                      >
-                        <div className="flex flex-col mr-20">
-                          <p className="font-bold text-gray-400">
-                            {item.tipoDeuda}
-                          </p>
-                          <p className="font-bold">Monto: ${item.monto}</p>
-                        </div>
-                        <button
-                          className="bg-red-400 text-black font-black text-sm hover:bg-red-500/80 p-2 rounded-full h-8 w-8 flex justify-center items-center"
-                          onClick={() => handleDelete(index)}
-                        >
-                          X
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="flex flex-col justify-center items-center">
+            <div className="grid grid-cols-3 grid-rows-1 gap-40">
+              {/* Botón "Atrás" pegado a la izquierda */}
+              <div className="flex flex-col items-center">
+                <Link href="/Menu">
                   <Button_actions_rounded>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -180,12 +133,58 @@ export default function PagarMisDeudasComponet() {
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M9 5l7 7-7 7"
+                        d="M15 19l-7-7 7-7"
                       />
                     </svg>
                   </Button_actions_rounded>
-                  <p className="font-black text-xl text-[#FAB100]">Continuar</p>
-                </div>
+                </Link>
+                <p className="font-black text-xl text-[#FAB100]">Atras</p>
+              </div>
+
+              {/* Lista de deudas centrada */}
+              <div className="">
+                <ul>
+                  {deudas.map((item, index) => (
+                    <li
+                      key={index}
+                      className="flex justify-between items-center p-4 rounded-lg mb-3 shadow w-96"
+                    >
+                      <div className="flex flex-col mr-20">
+                        <p className="font-bold text-gray-400">
+                          {item.tipoDeuda}
+                        </p>
+                        <p className="font-bold">Monto: ${item.monto}</p>
+                      </div>
+                      <button
+                        className="bg-red-400 text-black font-black text-sm hover:bg-red-500/80 p-2 rounded-full h-8 w-8 flex justify-center items-center"
+                        onClick={() => handleDelete(index)}
+                      >
+                        X
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Botón "Continuar" pegado a la derecha */}
+              <div className="flex flex-col items-center">
+                <Button_actions_rounded>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="w-6 h-6 text-[#C38A01]"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </Button_actions_rounded>
+                <p className="font-black text-xl text-[#FAB100]">Continuar</p>
               </div>
             </div>
           )}
