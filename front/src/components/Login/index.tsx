@@ -8,24 +8,26 @@ import { validateLogin } from "../../helpers/validations.login";
 import eye from "../../public/assets/svg/eye-svgrepo-com.svg";
 import eyeClouse from "../../public/assets/svg/eye-slash-svgrepo-com.svg";
 import Image from "next/image";
+import { Input } from "../ui/Input";
+import Link from "next/link";
 
 export default function LoginComponent() {
   const { login } = useContext(UserContext);
   const router = useRouter();
   const [userData, setUserData] = useState<ILogin>({
-    username: "",
+    email: "",
     password: "",
   } as ILogin);
 
   const [errors, setErrors] = useState<IErrorsLogin>({
-    username: "*",
+    email: "*",
     password: "*",
   } as IErrorsLogin);
 
   const [showPassword, setShowPassword] = useState(false);
 
   const todosLosCamposRequeridos = () => {
-    return userData.username !== "" && userData.password !== "";
+    return userData.email !== "" && userData.password !== "";
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +37,7 @@ export default function LoginComponent() {
       [name]: value,
     };
     setUserData(newUserData);
-    setErrors(validateLogin(newUserData, ["username", "password"]));
+    setErrors(validateLogin(newUserData, ["email", "password"]));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -52,7 +54,7 @@ export default function LoginComponent() {
         });
 
         setTimeout(() => {
-          router.push("/");
+          router.push("/Menu");
         }, 3000);
       } else {
         Swal.fire({
@@ -82,28 +84,26 @@ export default function LoginComponent() {
   return (
     <form onSubmit={handleSubmit}>
       <div className="relative mb-6 flex flex-col items-center justify-center rounded">
-        <input
+        <Input
           type="text"
-          name="username"
-          className="relative block w-[300px] rounded bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#77DD77] transition duration-150 ease-in-out text-center border border-[#89E186]"
-          id="username"
-          placeholder="Username"
+          name="email"
+          id="email"
+          placeholder="Email"
           onChange={handleInputChange}
         />
         <div className="h-4 w-full">
-          {errors.username && (
+          {errors.email && (
             <p className="text-red-600 text-xs text-left w-full pl-3 mt-1">
-              {errors.username}
+              {errors.email}
             </p>
           )}
         </div>
       </div>
 
       <div className="relative mb-6 flex flex-col items-center rounded">
-        <input
+        <Input
           type={showPassword ? "text" : "password"}
           name="password"
-          className="relative block w-[300px] rounded bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#77DD77] transition duration-150 ease-in-out text-center border border-[#89E186]"
           id="password"
           placeholder="Password"
           onChange={handleInputChange}
@@ -148,6 +148,11 @@ export default function LoginComponent() {
         >
           Ingresar
         </button>
+      </div>
+      <div>
+        <Link href="/User/Register">
+          <p className="text-center mt-4">¿No tienes cuenta? Registrate</p>
+        </Link>
       </div>
     </form>
   );

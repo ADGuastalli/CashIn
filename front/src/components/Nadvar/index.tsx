@@ -119,9 +119,6 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link href="/User/Register" onClick={handleMenuClick}>
-                <Button_actions>Registrarse</Button_actions>
-              </Link>
               <Link href="/User/Login" onClick={handleMenuClick}>
                 <Button_actions>Iniciar sesión</Button_actions>
               </Link>

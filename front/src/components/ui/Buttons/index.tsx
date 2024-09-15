@@ -3,7 +3,7 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
 export function Button_actions_rounded({ children, ...props }: Props) {
   return (
     <button
-      className="flex justify-center  bg-actions  text-white 
+      className="flex justify-center items-center w-32 h-32 bg-actions shadow-lg text-white 
             py-8 px-8 mx-4 my-4 rounded-full "
       {...props}
     >
@@ -52,7 +52,7 @@ export function Button_actions({ children, ...props }: Props) {
 export function Button_forms({ children, ...props }: Props) {
   return (
     <button
-      className="flex justify-center w-full bg-secondary  hover:bg-primary text-white 
+      className="flex justify-center min-w-96 bg-secondary  hover:bg-primary text-white 
          py-2 px-4 mx-2 my-2 rounded-sm"
       {...props}
     >
@@ -81,6 +81,17 @@ export function Button_nadvar({ children, ...props }: Props) {
       {...props}
     >
       {children}
+    </button>
+  );
+}
+
+export function Button_Menu() {
+  return (
+    <button
+      className="font-bold rounded-xl bg-secondary text-white px-6 py-1 m-2 text-xl 
+      transition-transform duration-300 transform hover:scale-105"
+    >
+      MENU
     </button>
   );
 }
