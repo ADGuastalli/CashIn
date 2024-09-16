@@ -5,7 +5,7 @@ import { IUserProfile, IUser } from '@/interface/interfaceUser'
 import { validateForm } from '@/helpers/validations.login'
 import Swal from "sweetalert2";
 import { updateUserProfile } from '@/server/fechUser' 
-import { useRouter } from 'next/router'
+
 import { Input_profile } from '../ui/Input'
 import { Label_profile } from '../ui/Label'
 import { Button_actions } from '../ui/Buttons'
@@ -14,7 +14,7 @@ import { Button_actions } from '../ui/Buttons'
 function FormProfile( {DataUser}: {DataUser:IUser}) {
 
     console.log(DataUser); // extraer user id
-    const router = useRouter();
+   
 
     const [formData, setFormData] = useState<IUserProfile>({
         userId:"",
@@ -58,7 +58,16 @@ function FormProfile( {DataUser}: {DataUser:IUser}) {
         if (Object.keys(errors).length === 0) {
           try {
             const token = localStorage.getItem('token')
-            if(!token) router.push("/Login")
+            if(!token) {
+              return(<>{Swal.fire({
+                title: "Deberias estar logueado",
+                html: `
+                Ir a  <b>Login</b>,
+                <a href="/User/Login" autofocus>Acá</a>,
+              `,
+                confirmButtonAriaLabel: "Aceptar",
+              })}</>)
+            }
             const response = await updateUserProfile(formData,token)
             if (response.ok) {
                 console.log('User data submitted successfully');

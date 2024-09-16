@@ -6,7 +6,6 @@ export function Input(props: Props) {
       className="bg-white focus:outline-none focus:ring focus:ring-secondary border 
              border-gray-300 rounded-lg py-4 pl-8 text-lg px-4 mx-2 my-2 block w-96 appearance-none leading-normal
              invalid:border-pink-500 invalid:text-pink-600
-<<<<<<< HEAD
              focus:invalid:border-pink-500 focus:invalid:ring-pink-500"  
             {...props}
         />
@@ -24,10 +23,3 @@ export function Input_profile(props: Props) {
         />
     )
 }
-=======
-             focus:invalid:border-pink-500 focus:invalid:ring-pink-500 "
-      {...props}
-    />
-  );
-}
->>>>>>> origin/Developer
