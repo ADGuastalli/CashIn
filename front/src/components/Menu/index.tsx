@@ -27,7 +27,7 @@ export default function MenuIcons() {
         </div>
       </Link>
 
-      <Link href="#">
+      <Link href="/Menu/Gastos">
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
             <Image
@@ -53,7 +53,7 @@ export default function MenuIcons() {
         </div>
       </Link>
 
-      <Link href="#">
+      <Link href="/Menu/Ahorrar">
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
             <Image src={ImgAhorro} alt="Ahorrar" width={60} height={60} />
