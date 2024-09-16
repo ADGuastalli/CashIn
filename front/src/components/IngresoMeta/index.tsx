@@ -1,39 +1,39 @@
 "use client";
-import React, { useContext, useState } from "react";
-import { UserContext } from "../../context/userContext";
-import Logo from "../../public/assets/svg/CASHIN-03.svg";
-import {
-  Button_Menu,
-  Button_forms,
-  Button_actions_rounded,
-} from "../ui/Buttons";
+import React from "react";
 import Link from "next/link";
-import Image from "next/image";
+import {
+  Button_actions_rounded,
+  Button_forms,
+  Button_Menu,
+} from "../ui/Buttons";
+import Logo from "../../public/assets/svg/CASHIN-03.svg";
 import { Input } from "../ui/Input";
+import Image from "next/image";
+import { UserContext } from "../../context/userContext";
+import { useState, useContext } from "react";
 
-export default function PagarMisDeudasComponet() {
+export default function IngresoMetaComponet() {
   const { user } = useContext(UserContext);
-  const [deuda, setDeuda] = useState("");
+  const [bien, setBien] = useState("");
   const [monto, setMonto] = useState("");
-  const [deudas, setDeudas] = useState<{ tipoDeuda: string; monto: string }[]>(
+  const [bienes, setBienes] = useState<{ tipoBien: string; monto: string }[]>(
     []
   );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (deuda && monto) {
-      setDeudas([...deudas, { tipoDeuda: deuda, monto }]);
-      setDeuda("");
+    if (bien && monto) {
+      setBienes([...bienes, { tipoBien: bien, monto }]);
+      setBien("");
       setMonto("");
     }
   };
 
   const handleDelete = (index: number) => {
-    setDeudas(deudas.filter((_, i) => i !== index));
+    setBienes(bienes.filter((_, i) => i !== index));
   };
 
-  // Calcular el total de las deudas
-  const totalDeuda = deudas.reduce(
+  const totalBienes = bienes.reduce(
     (acc, item) => acc + parseFloat(item.monto),
     0
   );
@@ -48,48 +48,19 @@ export default function PagarMisDeudasComponet() {
       <div className="flex flex-col justify-center items-center min-h-screen">
         <Image src={Logo} alt="Logo" width={300} height={300} />
         <div className="text-center mt-5">
-          <h1 className="text-2xl mt-6 font-black">Hablemos de tus deudas</h1>
-          <h2 className="text-xl mt-1">
-            Bríndanos por favor los datos sobre ellas y los montos
-          </h2>
+          <h1 className="text-2xl mt-6 font-black">Sabemos que tienes metas</h1>
+          <h2 className="text-xl mt-1">¿Que deseas comprar?</h2>
         </div>
         <div>
           <form onSubmit={handleSubmit}>
             <div className="flex flex-col justify-center items-center mt-5">
               <div className="flex flex-col mt-5">
-                <label className="text-lg font-bold">Tipo de Deuda</label>
-                <select
-                  className="bg-white focus:outline-none focus:ring focus:ring-secondary border 
-             border-gray-300 rounded-lg py-4 px-4 mx-2 my-2 block w-96 appearance-none leading-normal
-             invalid:border-pink-500 invalid:text-pink-600
-             focus:invalid:border-pink-500 focus:invalid:ring-pink-500 "
-                  value={deuda}
-                  onChange={(e) => setDeuda(e.target.value)}
-                >
-                  <option value="">Seleccione una opción</option>
-                  <option value="HIPOTECARIOS">HIPOTECARIOS</option>
-                  <option value="PERSONALES">PERSONALES</option>
-                  <option value="VEHICULOS">VEHICULOS</option>
-                  <option value="TARJETAS DE CREDITO">
-                    TARJETAS DE CREDITO
-                  </option>
-                  <option value="PRESTAMOS INFORMALES">
-                    PRESTAMOS INFORMALES
-                  </option>
-                  <option value="COMPRA DE ARTICULOS A CREDITO">
-                    COMPRA DE ARTICULOS A CREDITO
-                  </option>
-                  <option value="PRESTAMOS ESCOLARES">
-                    PRESTAMOS ESCOLARES
-                  </option>
-                  <option value="PRESTAMOS A TERCEROS">
-                    PRESTAMOS A TERCEROS
-                  </option>
-                  <option value="PRESTAMOS FAMILIARES">
-                    PRESTAMOS FAMILIARES
-                  </option>
-                  <option value="OTRAS DEUDAS">OTRAS DEUDAS</option>
-                </select>
+                <label className="text-lg font-bold">Nombre del bien</label>
+                <Input
+                  type="text"
+                  value={bien}
+                  onChange={(e) => setBien(e.target.value)}
+                />
               </div>
 
               <div className="flex flex-col">
@@ -112,11 +83,11 @@ export default function PagarMisDeudasComponet() {
           </form>
           <div className="mt-10">
             <h3 className="text-lg font-black text-center">
-              Total Deudas: ${totalDeuda.toFixed(2)}
+              Total Bienes: ${totalBienes.toFixed(2)}
             </h3>
           </div>
 
-          {deudas.length > 0 && (
+          {bienes.length > 0 && (
             <div className="grid grid-cols-3 grid-rows-1 gap-40">
               <div className="flex flex-col items-center">
                 <Link href="/Menu">
@@ -141,14 +112,14 @@ export default function PagarMisDeudasComponet() {
               </div>
               <div className="">
                 <ul>
-                  {deudas.map((item, index) => (
+                  {bienes.map((item, index) => (
                     <li
                       key={index}
                       className="flex justify-between items-center p-4 rounded-lg mb-3 shadow w-96"
                     >
                       <div className="flex flex-col mr-20">
                         <p className="font-bold text-gray-400">
-                          {item.tipoDeuda}
+                          {item.tipoBien}
                         </p>
                         <p className="font-bold">Monto: ${item.monto}</p>
                       </div>
@@ -163,7 +134,7 @@ export default function PagarMisDeudasComponet() {
                 </ul>
               </div>
               <div className="flex flex-col items-center">
-                <Link href="/Menu/PagarMisDeudas/Finanzas">
+                <Link href="/Loading">
                   <Button_actions_rounded>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -181,7 +152,7 @@ export default function PagarMisDeudasComponet() {
                     </svg>
                   </Button_actions_rounded>
                 </Link>
-                <p className="font-black text-xl text-[#FAB100]">Continuar</p>
+                <p className="font-black text-xl text-[#FAB100]">Analizar</p>
               </div>
             </div>
           )}
