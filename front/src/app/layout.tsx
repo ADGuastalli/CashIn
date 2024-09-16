@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Roboto } from "next/font/google";
-
-const roboto = Roboto({ subsets: ["latin"], weight: "400" });
+import { Montserrat } from "next/font/google";
+import { UserProvider } from "@/context/userContext";
+import { GastosProvider } from "@/context/gastosContext";
+const montserrat = Montserrat({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={montserrat.className}>
+        <UserProvider>
+          <GastosProvider>{children}</GastosProvider>
+        </UserProvider>
+      </body>
     </html>
   );
 }
