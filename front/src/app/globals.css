@@ -46,3 +46,4 @@ body {
     @apply cursor-not-allowed inline-flex items-center h-10 px-10 text-white font-bold transition-colors duration-150 bg-[#979797] rounded-full hover:bg-[#828282] hover:shadow-lg;
   }
 }
+

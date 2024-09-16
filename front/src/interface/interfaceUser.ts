@@ -1,4 +1,20 @@
+interface IUserProfile {
+  userId: string;
+  name: string;
+  last_name: string;
+  email: string;
+  country: string;
+  city: string;
+  birthdate: string;
+  status: boolean;
+  role: string;
+  employ: "independiente" | "asalariado" | "contratista" | "emprendedor" | "ama de casa" | "estudiante";
+  live_with: boolean;
+  family_group: number;
+}
+
 interface IUser {
+  //deberia agregar userId
   name: string;
   email: string;
   password: string;
@@ -60,4 +76,5 @@ export type {
   IUserContext,
   IErrorsLogin,
   IErrorsRegister,
+  IUserProfile,
 };

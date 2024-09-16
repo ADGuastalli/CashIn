@@ -41,7 +41,7 @@ export function Button_rounded ({children, ...props}:Props) {
   export function Button_actions ({children, ...props}:Props) {
     return(
       <button
-        className="flex justify-center w-full bg-actions  text-white 
+        className="flex justify-center w-full bg-actions  text-aux_actions 
          py-2 px-4 mx-2 my-2 rounded-sm"
          {...props} 
         >
