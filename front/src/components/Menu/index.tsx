@@ -62,7 +62,7 @@ export default function MenuIcons() {
         </div>
       </Link>
 
-      <Link href="#">
+      <Link href="/Menu/Diagnostico">
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md  w-40 h-40 transition-all duration-500">
             <Image src={ImgDiag} alt="Diagnostico" width={60} height={60} />
