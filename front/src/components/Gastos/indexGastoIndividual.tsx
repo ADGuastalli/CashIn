@@ -10,29 +10,53 @@ import {
 import { Input } from "../ui/Input";
 import { useGastos } from "../../context/gastosContext";
 import Logo from "../../public/assets/svg/CASHIN-03.svg";
+import Swal from "sweetalert2";
 
 export default function GastoIndividualComponet() {
   const { state, dispatch } = useGastos();
   const [monto, setMonto] = useState<string>("");
   const [subtipoSeleccionado, setSubtipoSeleccionado] = useState<string>("");
+  const [tipoPago, setTipoPago] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     const tipoGasto = state.selectedTipoGasto || "";
 
-    if (tipoGasto && monto && subtipoSeleccionado) {
+    if (tipoGasto && monto && subtipoSeleccionado && tipoPago) {
       dispatch({
         type: "ADD_GASTO",
-        payload: { tipoGasto, monto, subtipoGasto: subtipoSeleccionado },
+        payload: {
+          tipoGasto,
+          monto,
+          subtipoGasto: subtipoSeleccionado,
+          tipoPago,
+        },
       });
       setMonto("");
       setSubtipoSeleccionado("");
+      setTipoPago("");
     }
   };
-
   const handleDelete = (index: number) => {
-    dispatch({ type: "DELETE_GASTO", payload: index });
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Quieres eliminar este gasto",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminarlo",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch({
+          type: "DELETE_GASTO",
+          payload: index,
+        });
+        Swal.fire("¡Eliminado!", "El gasto ha sido eliminado.", "success");
+      }
+    });
   };
 
   const totalGasto = state.gastos.reduce(
@@ -82,6 +106,29 @@ export default function GastoIndividualComponet() {
                 </select>
               </div>
             )}
+            <div className="flex flex-col mt-5">
+              <label className="text-lg font-bold">Forma de Pago</label>
+              <select
+                className="bg-white focus:outline-none focus:ring focus:ring-secondary border 
+             border-gray-300 rounded-lg py-4 px-4 mx-2 my-2 block w-96 appearance-none leading-normal
+             invalid:border-pink-500 invalid:text-pink-600
+             focus:invalid:border-pink-500 focus:invalid:ring-pink-500 "
+                value={tipoPago}
+                onChange={(e) => setTipoPago(e.target.value)}
+              >
+                <option value="">Seleccione una opción</option>
+                <option value="EFECTIVO">EFECTIVO</option>
+                <option value="TARJETA DE DEBIDO">TARJETA DE DEBIDO</option>
+                <option value="TARJETA DE CREDITO">TARJETA DE CREDITO</option>
+                <option value="CREDITO">CREDITO</option>
+                <option value="CHEQUE">CHEQUE</option>
+                <option value="TRANSFERENCIA ELECTRONICA">
+                  TRANSFERENCIA ELECTRONICA
+                </option>
+                <option value="OTROS">OTROS</option>
+              </select>
+            </div>
+
             <div className="flex flex-col">
               <div className="relative">
                 <span className="absolute inset-y-0 left-0 pl-3 flex items-center font-black">
@@ -143,6 +190,9 @@ export default function GastoIndividualComponet() {
                       </p>
                       <p className="font-bold text-sm text-gray-400">
                         {item.subtipoGasto}
+                      </p>
+                      <p className="font-bold text-xs text-gray-400">
+                        {item.tipoPago}
                       </p>
                       <p className="font-bold mt-1">Monto: ${item.monto}</p>
                     </div>

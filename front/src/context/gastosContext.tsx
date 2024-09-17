@@ -5,6 +5,7 @@ interface Gasto {
   tipoGasto: string;
   subtipoGasto?: string;
   monto: string;
+  tipoPago?: string;
 }
 
 interface GastosState {
