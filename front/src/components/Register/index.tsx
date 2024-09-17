@@ -14,14 +14,12 @@ export default function RegisterComponent() {
   const { register } = useContext(UserContext);
   const router = useRouter();
   const [userData, setUserData] = useState({
-    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
 
   const [errors, setErrors] = useState<IErrorsRegister>({
-    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -32,7 +30,6 @@ export default function RegisterComponent() {
 
   const todosLosCamposCompletos = () => {
     return (
-      userData.name !== "" &&
       userData.email !== "" &&
       userData.password !== "" &&
       userData.confirmPassword !== ""
@@ -49,12 +46,7 @@ export default function RegisterComponent() {
 
     setUserData(newUserData);
     setErrors(
-      validateRegister(newUserData, [
-        "name",
-        "email",
-        "password",
-        "confirmPassword",
-      ])
+      validateRegister(newUserData, ["email", "password", "confirmPassword"])
     );
   };
 
@@ -71,7 +63,6 @@ export default function RegisterComponent() {
       });
     } else {
       const userDataToSubmit = {
-        name: userData.name,
         email: userData.email,
         password: userData.password,
         confirmPassword: userData.confirmPassword,
@@ -89,7 +80,6 @@ export default function RegisterComponent() {
               confirmButton: "button-principal",
             },
           }).then(() => {
-            // CAMBIAR A LA RUTA PARA COMPLETAR LOS DEMAS CAMPOS
             router.push("/User/Login");
           });
         } else {
@@ -117,9 +107,8 @@ export default function RegisterComponent() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
         {[
-          { name: "name", placeholder: "Apellido/s y Nombre/s" },
           { name: "email", placeholder: "Email" },
           {
             name: "password",

@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Input } from "../ui/Input";
+import Swal from "sweetalert2";
 
 export default function IngresoFinanzasMetaComponet() {
   const { user } = useContext(UserContext);
@@ -29,7 +30,21 @@ export default function IngresoFinanzasMetaComponet() {
   };
 
   const handleDelete = (index: number) => {
-    setSueldos(sueldos.filter((_, i) => i !== index));
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Quieres eliminar ese ingreso",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminarlo",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setSueldos(sueldos.filter((_, i) => i !== index));
+        Swal.fire("¡Eliminado!", "El ingreso ha sido eliminado.", "success");
+      }
+    });
   };
 
   // Calcular el total de las deudas

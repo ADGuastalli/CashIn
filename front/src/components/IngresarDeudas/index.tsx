@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { Input } from "../ui/Input";
+import Swal from "sweetalert2";
 
 export default function PagarMisDeudasComponet() {
   const { user } = useContext(UserContext);
@@ -29,7 +30,21 @@ export default function PagarMisDeudasComponet() {
   };
 
   const handleDelete = (index: number) => {
-    setDeudas(deudas.filter((_, i) => i !== index));
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Quieres eliminar la deuda",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminarlo",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setDeudas(deudas.filter((_, i) => i !== index));
+        Swal.fire("¡Eliminado!", "La deuda ha sido eliminado.", "success");
+      }
+    });
   };
 
   // Calcular el total de las deudas
