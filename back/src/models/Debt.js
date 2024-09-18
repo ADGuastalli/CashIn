@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    data_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     debt: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,

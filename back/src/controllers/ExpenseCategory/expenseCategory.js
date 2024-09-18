@@ -1,16 +1,16 @@
-const { ExpenseType } = require('../../models/index');  // Importar el modelo ExpenseType
+const { ExpenseCategory } = require('../../models/index');  // Importar el modelo ExpenseType
 
 // CREATE: Crear un nuevo registro en la tabla ExpenseType
-const createExpenseType = async (req, res) => {
+const createExpenseCategory = async (req, res) => {
   try {
-    const { expense_type } = req.body;
+    const { expense_Category } = req.body;
 
-    if (!expense_type) {
+    if (!expense_Category) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const newExpenseType = await ExpenseType.create({ expense_type });
-    res.status(201).json(newExpenseType);
+    const newExpenseCategory = await ExpenseCategory.create({ expense_Category });
+    res.status(201).json(newExpenseCategory);
   } catch (error) {
     console.error('Error al crear el registro:', error);
     res.status(500).json({ error: 'Error al crear el registro' });
@@ -18,10 +18,10 @@ const createExpenseType = async (req, res) => {
 };
 
 // READ: Obtener todos los registros de la tabla ExpenseType
-const getAllExpenseTypes = async (req, res) => {
+const getAllExpenseCategorys = async (req, res) => {
     try {
-      const expenseTypes = await ExpenseType.findAll();
-      res.status(200).json(expenseTypes);
+      const expenseCategorys = await ExpenseCategory.findAll();
+      res.status(200).json(expenseCategorys);
     } catch (error) {
       console.error('Error al obtener los registros:', error);
       res.status(500).json({ error: 'Error al obtener los registros' });
@@ -29,16 +29,16 @@ const getAllExpenseTypes = async (req, res) => {
   };
   
   // READ: Obtener un registro por ID
-  const getExpenseTypeById = async (req, res) => {
+  const getExpenseCategoryById = async (req, res) => {
     try {
       const { id } = req.params;
-      const expenseType = await ExpenseType.findByPk(id);
+      const expenseCategory = await ExpenseCategory.findByPk(id);
   
-      if (!expenseType) {
+      if (!expenseCategory) {
         return res.status(404).json({ error: 'Registro no encontrado' });
       }
   
-      res.status(200).json(expenseType);
+      res.status(200).json(expenseCategory);
     } catch (error) {
       console.error('Error al obtener el registro:', error);
       res.status(500).json({ error: 'Error al obtener el registro' });
@@ -46,23 +46,23 @@ const getAllExpenseTypes = async (req, res) => {
   };
   
   // UPDATE: Actualizar un registro existente
-  const updateExpenseType = async (req, res) => {
+  const updateExpenseCategory = async (req, res) => {
     try {
       const { id } = req.params;
-      const { expense_type } = req.body;
+      const { expense_Category } = req.body;
   
-      if (!expense_type) {
+      if (!expense_Category) {
         return res.status(400).json({ error: 'Faltan datos requeridos' });
       }
   
-      const existingExpenseType = await ExpenseType.findByPk(id);
+      const existingExpenseCategory = await ExpenseCategory.findByPk(id);
   
-      if (!existingExpenseType) {
+      if (!existingExpenseCategory) {
         return res.status(404).json({ error: 'Registro no encontrado' });
       }
   
-      await existingExpenseType.update({ expense_type });
-      res.status(200).json(existingExpenseType);
+      await existingExpenseCategory.update({ expense_Category });
+      res.status(200).json(existingExpenseCategory);
     } catch (error) {
       console.error('Error al actualizar el registro:', error);
       res.status(500).json({ error: 'Error al actualizar el registro' });
@@ -70,16 +70,16 @@ const getAllExpenseTypes = async (req, res) => {
   };
   
   // DELETE: Eliminar un registro por ID
-  const deleteExpenseType = async (req, res) => {
+  const deleteExpenseCategory = async (req, res) => {
     try {
       const { id } = req.params;
-      const expenseType = await ExpenseType.findByPk(id);
+      const expenseCategory = await ExpenseCategory.findByPk(id);
   
-      if (!expenseType) {
+      if (!expenseCategory) {
         return res.status(404).json({ error: 'Registro no encontrado' });
       }
   
-      await expenseType.destroy();
+      await expenseCategory.destroy();
       res.status(200).json({ message: 'Registro eliminado exitosamente' });
     } catch (error) {
       console.error('Error al eliminar el registro:', error);
@@ -88,10 +88,10 @@ const getAllExpenseTypes = async (req, res) => {
   };
   
   module.exports = {
-    createExpenseType,
-    getAllExpenseTypes,
-    getExpenseTypeById,
-    updateExpenseType,
-    deleteExpenseType,
+    createExpenseCategory,
+    getAllExpenseCategorys,
+    getExpenseCategoryById,
+    updateExpenseCategory,
+    deleteExpenseCategory,
   };
   

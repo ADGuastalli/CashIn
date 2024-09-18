@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    debt_category: {
+    debt: {
       type: DataTypes.STRING,
       allowNull: false,
     },

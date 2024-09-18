@@ -1,7 +1,7 @@
 // controllers/auth/googleAuthController.js
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const User = require('../../models/User'); // Ajustar según la ubicación de tu modelo de usuario
+const { User } = require('../../models/User'); // Ajustar según la ubicación de tu modelo de usuario
 
 // Estrategia de Google
 const googleAuth = (req, res) => {

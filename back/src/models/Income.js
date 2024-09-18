@@ -5,7 +5,11 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      monthly_income_id: {
+      income_category_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      data_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
