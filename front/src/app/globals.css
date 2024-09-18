@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --background: #000000;
-  --foreground: #c1deff;
+  --background: #fff;
+  --foreground: #0095a9;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #c1deff;
-    --foreground: #016285;
+    --background: rgb(255, 255, 255);
+    --foreground: #0095a9;
   }
 }
 
@@ -46,3 +46,4 @@ body {
     @apply cursor-not-allowed inline-flex items-center h-10 px-10 text-white font-bold transition-colors duration-150 bg-[#979797] rounded-full hover:bg-[#828282] hover:shadow-lg;
   }
 }
+

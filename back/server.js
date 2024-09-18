@@ -1,5 +1,5 @@
 require("dotenv").config();
-const express = require('express'); 
+const express = require("express");
 const app = express();
 const morgan = require('morgan');
 const passport = require('passport');
@@ -8,7 +8,8 @@ const { sequelize } = require('./src/models/index');
 const { authenticateToken } = require('./src/middlewares/auth');
 require('./src/config/passport');
 
-app.use(morgan('dev'));
+
+app.use(morgan("dev"));
 app.use(express.json());
 
 // Inicializa Passport (sin sesiones)
@@ -16,18 +17,21 @@ app.use(passport.initialize());
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
+
 });
 
-app.use('/', routes)
+app.use("/", routes);
 
-sequelize.sync({ force: false }).then(() => {
+sequelize
+  .sync({ force: false })
+  .then(() => {
     console.log("Tablas sincronizadas");
-}).catch((error) => {
+  })
+  .catch((error) => {
     console.error("Error al sincronizar tablas:", error);
-});
+  });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
+  console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
-
