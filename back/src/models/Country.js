@@ -1,16 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('Country', {
+  const Country = sequelize.define('Country', {
     country_id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.INTEGER,  // Clave primaria auto incremental
       primaryKey: true,
-    },
-    country: {
-      type: DataTypes.STRING(100),
+      autoIncrement: true,
       allowNull: false,
     },
+    country: {
+      type: DataTypes.STRING(100),  // Columna 'country' tipo VARCHAR(100)
+      allowNull: false,             // No permite valores nulos
+    },
   }, {
-    tableName: 'countries',
-    timestamps: false,
+    tableName: 'Country',  // Nombre de la tabla en la base de datos
+    timestamps: false,     // Deshabilitar timestamps automáticos
   });
+
+  return Country;
 };
