@@ -1,5 +1,5 @@
 interface IUserProfile {
-  userId: string;
+  id: string;
   name: string;
   last_name: string;
   email: string;
@@ -8,13 +8,19 @@ interface IUserProfile {
   birthdate: string;
   status: boolean;
   role: string;
-  employ: "independiente" | "asalariado" | "contratista" | "emprendedor" | "ama de casa" | "estudiante";
+  employ:
+    | "independiente"
+    | "asalariado"
+    | "contratista"
+    | "emprendedor"
+    | "ama de casa"
+    | "estudiante";
   live_with: boolean;
   family_group: number;
 }
 
 interface IUser {
-  //deberia agregar userId
+  id: string;
   name: string;
   email: string;
   password: string;
@@ -23,6 +29,7 @@ interface IUser {
   birthdate: Date;
   status: boolean;
   role: string;
+  user_name: string;
 }
 
 interface ILogin {
@@ -33,7 +40,15 @@ interface ILogin {
 interface IRegister {
   email: string;
   password: string;
-  confirmPassword: string;
+  confirmPassword?: string;
+  country_id?: number;
+  city_id?: number;
+  status_id?: number;
+  last_name?: string;
+  user_name?: string;
+  birthdate?: Date;
+  googleId?: string;
+  facebookId?: string;
 }
 
 interface IErrorsLogin {
@@ -56,12 +71,15 @@ interface IErrorsRegister {
 }
 
 interface IUserContext {
-  user: IUser;
-  setUser: React.Dispatch<React.SetStateAction<IUser>>;
+  user: IUser | null;
+  setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
   login: (credentials: ILogin) => Promise<boolean>;
   register: (credentials: IRegister) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  isProfileComplete: boolean;
+  setIsProfileComplete: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type {
