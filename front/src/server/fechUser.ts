@@ -3,7 +3,7 @@ import { ILogin, IRegister, IUserProfile } from "../interface/interfaceUser";
 
 export const postSignin = async (credentials: ILogin) => {
   try {
-    const response = await fetch(`${API}/auth/signin`, {
+    const response = await fetch(`${API}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,6 +16,8 @@ export const postSignin = async (credentials: ILogin) => {
     }
 
     const data = await response.json();
+    console.log("datos que devuelve el back", data);
+
     return data;
   } catch (error) {
     console.log(error);
@@ -23,25 +25,32 @@ export const postSignin = async (credentials: ILogin) => {
   }
 };
 
-export const postSignup = async (credentials: IRegister) => {
-  const response = await fetch(`${API}/auth/signup`, {
+export const postSignup = async (credentials: {
+  email: string;
+  password: string;
+}) => {
+  const response = await fetch(`${API}/Users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(credentials),
   });
+  console.log(response);
 
   if (!response.ok) {
-    throw new Error("Invalid credentials");
+    throw new Error("Error en el registro");
   }
 
   const data = await response.json();
+  console.log(data);
   return data;
 };
 
-
-export const updateUserProfile = async (formData: IUserProfile,token:string | null) => {
+export const updateUserProfile = async (
+  formData: IUserProfile,
+  token: string | null
+) => {
   try {
     const userId = formData.email; //
 
@@ -51,27 +60,38 @@ export const updateUserProfile = async (formData: IUserProfile,token:string | nu
     }
 
     const response = await fetch(`${API}/users/${userId}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-       body: JSON.stringify({
+      body: JSON.stringify({
         ...formData,
-        birthdate: new Date(formData.birthdate), 
-    }),
+        birthdate: new Date(formData.birthdate),
+      }),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error("Error message", errorData.message);
-      
+      throw new Error(errorData.message || "Error desconocido");
     }
 
     const updatedUser = await response.json();
-    return updatedUser
-
+    return updatedUser;
   } catch (error) {
-    console.error('Error al actualizar el perfil:', error);
+    console.error("Error al actualizar el perfil:", error);
   }
+};
+
+export const getUser_Id = async (id: string, token: string) => {
+  console.log(token);
+
+  const response = await fetch(`${API}/Users/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const data = await response.json();
+  return data;
 };

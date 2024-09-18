@@ -7,20 +7,24 @@ import {
   IRegister,
 } from "@/interface/interfaceUser";
 import { useRouter } from "next/navigation";
-import { postSignin, postSignup } from "../server/fechUser";
+import { postSignin, postSignup, getUser_Id } from "../server/fechUser";
 
 export const UserContext = createContext<IUserContext>({
-  user: {} as IUser,
+  user: null,
   setUser: () => {},
   login: async () => false,
   register: async () => false,
   logout: () => {},
   isAuthenticated: false,
+  setIsAuthenticated: () => {},
+  isProfileComplete: false,
+  setIsProfileComplete: () => {},
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<IUser>({} as IUser);
+  const [user, setUser] = useState<IUser | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isProfileComplete, setIsProfileComplete] = useState<boolean>(false);
   const router = useRouter();
 
   const login = async (credentials: ILogin) => {
@@ -31,10 +35,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("user", JSON.stringify(data));
       setUser(data.user);
       setIsAuthenticated(true);
-      router.push("/");
+      setIsProfileComplete(checkProfileComplete(data));
+
       return true;
     } catch (error) {
       console.log(error);
@@ -54,8 +59,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
     setUser({} as IUser);
     setIsAuthenticated(false);
+    setIsProfileComplete(false);
     router.push("/");
   };
 
@@ -65,17 +72,30 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       setIsAuthenticated(true);
     }
-  }, [user]);
+  }, []);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      setUser(JSON.parse(user));
-      return;
+    const userData =
+      typeof window !== "undefined" && localStorage.getItem("user");
+    console.log("en el contexto", userData);
+    if (userData) {
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+      setIsProfileComplete(checkProfileComplete(parsedUser));
+    } else {
+      setUser(null);
     }
-
-    setUser({} as IUser);
   }, []);
+
+  const checkProfileComplete = (user: IUser) => {
+    return !!(
+      user.name &&
+      user.email &&
+      user.country &&
+      user.city &&
+      user.birthdate
+    );
+  };
 
   return (
     <UserContext.Provider
@@ -86,6 +106,9 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         register,
         logout,
         isAuthenticated,
+        isProfileComplete,
+        setIsProfileComplete,
+        setIsAuthenticated,
       }}
     >
       {children}

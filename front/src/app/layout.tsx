@@ -3,6 +3,7 @@ import "./globals.css";
 import { Montserrat } from "next/font/google";
 import { UserProvider } from "@/context/userContext";
 import { GastosProvider } from "@/context/gastosContext";
+
 const montserrat = Montserrat({ subsets: ["latin"], weight: "400" });
 
 export const metadata: Metadata = {

@@ -52,6 +52,7 @@ export default function RegisterComponent() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (userData.password !== userData.confirmPassword) {
       Swal.fire({
         icon: "error",
@@ -65,17 +66,16 @@ export default function RegisterComponent() {
       const userDataToSubmit = {
         email: userData.email,
         password: userData.password,
-        confirmPassword: userData.confirmPassword,
-        role: "userfree",
       };
+
       try {
         const success = await register(userDataToSubmit);
 
         if (success) {
           Swal.fire({
             icon: "success",
-            title: "¡Registrado con Exito!",
-            text: "Usuario registrado con exitosamente, por favor ingresar con sus credenciales",
+            title: "¡Registrado con éxito!",
+            text: "Usuario registrado exitosamente, por favor ingresar con sus credenciales",
             customClass: {
               confirmButton: "button-principal",
             },
