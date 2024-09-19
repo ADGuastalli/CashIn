@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const morgan = require('morgan');
+const cors = require("cors");
 const passport = require('passport');
 const routes = require('./src/routes/index');
 const { sequelize } = require('./src/models/index'); 
@@ -11,7 +12,7 @@ require('./src/config/passport');
 
 app.use(morgan("dev"));
 app.use(express.json());
-
+app.use(cors());
 // Inicializa Passport (sin sesiones)
 app.use(passport.initialize());
 
