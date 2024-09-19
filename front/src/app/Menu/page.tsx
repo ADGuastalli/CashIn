@@ -14,7 +14,7 @@ export default function Menu() {
   // si no esta completo el formulario lo redirijo
   const { userProfile } = useContext(UserContext);
   const router = useRouter();
-
+  console.log("id", userProfile)
   return (
     <div>
       <div>

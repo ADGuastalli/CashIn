@@ -20,15 +20,16 @@ type GastosAction =
   | {
       type: "SELECT_TIPO_GASTO";
       payload: { tipoGasto: string; subtipos: string[] };
-    };
+    }
+  | { type: "CLEAN_TIPO_GASTO" };
 
 const GastosContext = createContext<
-  | {
-      state: GastosState;
-      dispatch: React.Dispatch<GastosAction>;
-    }
-  | undefined
->(undefined);
+    | {
+        state: GastosState;
+        dispatch: React.Dispatch<GastosAction>;
+      }
+    | undefined
+  >(undefined);
 
 const gastosReducer = (
   state: GastosState,
@@ -47,6 +48,12 @@ const gastosReducer = (
         ...state,
         selectedTipoGasto: action.payload.tipoGasto,
         subtipos: action.payload.subtipos,
+      };
+    case "CLEAN_TIPO_GASTO":
+      return {
+        ...state,
+        selectedTipoGasto: undefined, 
+        subtipos: []
       };
     default:
       throw new Error("Acción no soportada");
