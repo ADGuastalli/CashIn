@@ -35,8 +35,8 @@ router.post('/users', userController.postUser);
 router.post('/users/login', userController.loginUser)
 router.get('/users', authenticateToken, userController.getAllUsers);
 router.get('/users/:id', userController.getUserById);
-router.put('/users/:id', userController.updateUser);
 router.delete('/users/:id', userController.deleteUser);
+router.put('/user/:userId/complete-profile', userController.completeUserProfile);
 
 router.post('/cities', cityController.createCity);
 router.get('/cities', cityController.getAllCities);

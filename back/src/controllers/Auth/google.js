@@ -14,7 +14,7 @@ const googleAuth = (req, res) => {
     const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '24h' });
 
     // Redirigir al frontend con el token
-    res.redirect(`http://localhost:5173/profile?token=${token}`);
+    res.redirect(`http://localhost:3000/profile?token=${token}`);
   })(req, res);
 };
 

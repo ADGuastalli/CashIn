@@ -71,8 +71,8 @@ models.City.hasMany(models.User, { foreignKey: 'city_id' });
 models.User.belongsTo(models.City, { foreignKey: 'city_id' });
 
 // User -> Data (Uno a uno)
-models.User.hasOne(models.Data, { foreignKey: 'data_id' });
-models.Data.belongsTo(models.User, { foreignKey: 'data_id' });
+models.User.hasOne(models.Data, { foreignKey: 'user_id' });
+models.Data.belongsTo(models.User, { foreignKey: 'user_id' });
 
 // User -> Session (Uno a uno)
 models.User.hasOne(models.Session, { foreignKey: 'user_id' });
