@@ -46,6 +46,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,   // Columna para almacenar el ID de Child
       allowNull: true,
     },
+    financial_level_id: {
+      type: DataTypes.INTEGER,   // Columna para almacenar el ID de Child
+      allowNull: true,
+    },
     saving_id: {
       type: DataTypes.INTEGER,   // Columna para almacenar el ID de Saving
       allowNull: true,

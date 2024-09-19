@@ -1,7 +1,7 @@
 const passport = require('passport');
 const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const User = require('../models/index'); // Ajustar según la ubicación de tu modelo de usuario
+const { User } = require('../models/index'); // Ajustar según la ubicación de tu modelo de usuario
 
 // Estrategia de Facebook
 passport.use(
@@ -42,18 +42,22 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+        console.log('Perfil recibido de Google:', profile);
         let user = await User.findOne({ where: { googleId: profile.id } });
 
         if (!user) {
+          console.log('Creando nuevo usuario...');
           user = await User.create({
             googleId: profile.id,
-            email: profile.emails[0].value, // Google siempre proporciona email
+            email: profile.emails[0].value,
             name: profile.displayName,
           });
         }
 
+        console.log('Usuario autenticado:', user);
         return done(null, user);
       } catch (error) {
+        console.error('Error durante la autenticación:', error);
         return done(error, false);
       }
     }
