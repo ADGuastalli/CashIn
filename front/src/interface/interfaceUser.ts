@@ -6,15 +6,14 @@ interface IUserProfile {
   country: string;
   city: string;
   birthdate: string;
-  status: boolean;
-  role: string;
-  employ: "independiente" | "asalariado" | "contratista" | "emprendedor" | "ama de casa" | "estudiante";
-  live_with: boolean;
-  family_group: number;
+  ocupacion?: "independiente" | "asalariado" | "contratista" | "emprendedor" | "ama de casa" | "estudiante";
+  vivecon?: boolean;
+  hijos?: boolean;
+  cantidad_de_hijos?: number;
+  estadocivil?: string ;
 }
 
 interface IUser {
-  //deberia agregar userId
   name: string;
   email: string;
   password: string;
@@ -57,6 +56,7 @@ interface IErrorsRegister {
 
 interface IUserContext {
   user: IUser;
+  userProfile: IUserProfile;
   setUser: React.Dispatch<React.SetStateAction<IUser>>;
   login: (credentials: ILogin) => Promise<boolean>;
   register: (credentials: IRegister) => Promise<boolean>;

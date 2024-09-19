@@ -1,9 +1,10 @@
+
 import { API } from "../helpers/helper";
 import { ILogin, IRegister, IUserProfile } from "../interface/interfaceUser";
 
 export const postSignin = async (credentials: ILogin) => {
   try {
-    const response = await fetch(`${API}/auth/signin`, {
+    const response = await fetch(`${API}/users`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -16,6 +17,7 @@ export const postSignin = async (credentials: ILogin) => {
     }
 
     const data = await response.json();
+
     return data;
   } catch (error) {
     console.log(error);
@@ -24,7 +26,7 @@ export const postSignin = async (credentials: ILogin) => {
 };
 
 export const postSignup = async (credentials: IRegister) => {
-  const response = await fetch(`${API}/auth/signup`, {
+  const response = await fetch(`${API}/users`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -40,38 +42,24 @@ export const postSignup = async (credentials: IRegister) => {
   return data;
 };
 
+export const getUserId = async (userId: string ) => {
+  console.log("",userId)
+  const response = await fetch(`${API}/users/${userId}`);
 
-export const updateUserProfile = async (formData: IUserProfile,token:string | null) => {
-  try {
-    const userId = formData.email; //
-
-    // Verificar que el token y el ID están presentes
-    if (!token || !userId) {
-      throw new Error("Usuario no disponible");
-    }
-
-    const response = await fetch(`${API}/users/${userId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-       body: JSON.stringify({
-        ...formData,
-        birthdate: new Date(formData.birthdate), 
-    }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error("Error message", errorData.message);
-      
-    }
-
-    const updatedUser = await response.json();
-    return updatedUser
-
-  } catch (error) {
-    console.error('Error al actualizar el perfil:', error);
+  if (!response.ok) {
+    throw new Error("Invalid credentials");
   }
+  const data = await response.json();
+  
+    const user: IUserProfile = {
+        userId: userId,
+        name: data.user_name,
+        last_name: data.last_name,
+        city: data.city_id,
+        country: data.country_id,
+        email: data.email,
+        birthdate: data.birthdate,
+    }
+  return user;
 };
+

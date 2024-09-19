@@ -65,7 +65,7 @@ export default function GastoIndividualComponet() {
   );
 
   return (
-    <div>
+    <div >
       <div>
         <Link href="/Menu">
           <Button_Menu />

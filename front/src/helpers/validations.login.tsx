@@ -119,7 +119,7 @@ const validateForm = (formData: IUserProfile): {[key:string]:string} => {
   if (!formData.country) newErrors.country = 'El país es obligatorio.';
   if (!formData.city) newErrors.city = 'La ciudad es obligatoria.';
   if (!formData.birthdate) newErrors.birthdate = 'La fecha de nacimiento es obligatoria.';
-  if (isNaN(formData.family_group) || formData.family_group < 0) newErrors.son_quantity = 'El número de hijos debe ser un número positivo.';
+  if (isNaN(formData.cantidad_de_hijos as number) || formData.cantidad_de_hijos as number  < 0) newErrors.cantidad_de_hijos = 'El número de hijos debe ser un número positivo.';
 
   
 

@@ -1,34 +1,29 @@
 'use client'
 import React from 'react'
 import { useState } from 'react'
-import { IUserProfile, IUser } from '@/interface/interfaceUser' 
+import { IUserProfile } from '@/interface/interfaceUser' 
 import { validateForm } from '@/helpers/validations.login'
 import Swal from "sweetalert2";
-import { updateUserProfile } from '@/server/fechUser' 
-
+import { updateUserProfile } from '@/server/fetchUserFormProfile'
 import { Input_profile } from '../ui/Input'
 import { Label_profile } from '../ui/Label'
 import { Button_actions } from '../ui/Buttons'
+import { useRouter } from 'next/navigation'
 
+function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
 
-function FormProfile( {DataUser}: {DataUser:IUser}) {
-
-    console.log(DataUser); // extraer user id
-   
+    const router = useRouter()
 
     const [formData, setFormData] = useState<IUserProfile>({
-        userId:"",
-        name: '',
-        last_name: '',
-        email: '',
-        country: '',
-        city: '',
-        birthdate: '',
-        status: false,
-        role: '',
-        employ: 'independiente',
-        live_with: false,
-        family_group: 0,
+        userId: DataUser.userId,
+        name: DataUser.name,
+        last_name: DataUser.last_name,
+        city: DataUser.city,
+        country: DataUser.country,
+        email: DataUser.email,
+        birthdate: DataUser.birthdate,
+        ocupacion: DataUser.ocupacion,
+        estadocivil: DataUser.estadocivil,
     })
 
     const [errors,setErrors] = useState<{[key:string]:string}>({});
@@ -72,20 +67,18 @@ function FormProfile( {DataUser}: {DataUser:IUser}) {
             if (response.ok) {
                 console.log('User data submitted successfully');
                 setFormData({
-                    userId:"",
-                    name: '',
-                    last_name: '',
-                    email: '',
-                    country: '',
-                    city: '',
-                    birthdate: '', 
-                    status: false,
-                    role: '',
-                    employ: 'independiente',
-                    live_with: false,
-                    family_group: 0,
+                  userId: DataUser.userId,
+                  name: DataUser.name,
+                  last_name: DataUser.last_name,
+                  city: DataUser.city,
+                  country: DataUser.country,
+                  email: DataUser.email,
+                  birthdate: DataUser.birthdate,
+                  ocupacion: DataUser.ocupacion,
+                  estadocivil: DataUser.estadocivil,
                 });
                 setErrors({});
+                router.push("/Menu")
             } else {
                 console.error('Error submitting user data');
             }
@@ -185,10 +178,11 @@ function FormProfile( {DataUser}: {DataUser:IUser}) {
         <select
           className='block py-2.5 px-0 w-full text-sm text-text_color bg-transparent border-0 border-b-2 border-gray-300 appearance-none
            focus:outline-none focus:ring-0 focus:border-blue-600 peer '
-          name="employ"
-          value={formData.employ}
+          name="ocupacion"
+          value={formData.ocupacion}
           onChange={handleChange}
         >
+          <option>selecciona</option>
           <option value="independiente">Independiente</option>
           <option value="asalariado">Asalariado</option>
           <option value="contratista">Contratista</option>
@@ -198,30 +192,47 @@ function FormProfile( {DataUser}: {DataUser:IUser}) {
         </select>
       </div>
 
+      <div className='relative z-0 w-full mb-6 group mt-4'>
+        <Label_profile>Estado civil:</Label_profile>
+        <select
+          className='block py-2.5 px-0 w-full text-sm text-text_color bg-transparent border-0 border-b-2 border-gray-300 appearance-none
+           focus:outline-none focus:ring-0 focus:border-blue-600 peer '
+          name="estadoCivil"
+          value={formData.estadocivil}
+          onChange={handleChange}
+        >
+          <option>selecciona</option>
+          <option value="independiente">Casado</option>
+          <option value="asalariado">Soltero</option>
+          <option value="contratista">Divorciado</option>
+          <option value="emprendedor">Viudo</option>
+        </select>
+      </div>
+
       <div className='flex items-center h-5'>
         <div className='flex items-center h-5'>
           <input
             className='w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300'
             type="checkbox"
             name="life"
-            checked={formData.live_with}
+            checked={formData.hijos}
             onChange={handleChange}
           />
         </div>
-        <label  className="ms-2 text-sm font-medium text-gray-900 ">Vive solo: si / no </label>
+        <label  className="ms-2 text-sm font-medium text-gray-900 ">Hijos: si / no </label>
       </div>
 
       <div className='relative z-0 w-full mb-6 group mt-4'>
         <Label_profile>Number of Children:</Label_profile>
         <Input_profile
           type="number"
-          name="son_quantity"
-          value={formData.family_group}
+          name="cantidad_de_hijos"
+          value={formData.cantidad_de_hijos}
           onChange={handleChange}
           min="0"
           required
         />
-        {errors.son_quantity && <p style={{ color: 'red' }}>{errors.son_quantity}</p>}
+        {errors.cantidad_de_hijos && <p style={{ color: 'red' }}>{errors.cantidad_de_hijos}</p>}
       </div>
 
       <Button_actions type="submit">Submit</Button_actions>
