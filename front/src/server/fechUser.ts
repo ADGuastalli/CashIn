@@ -1,10 +1,9 @@
-
 import { API } from "../helpers/helper";
-import { ILogin, IRegister} from "../interface/interfaceUser";
+import { ILogin, IRegister } from "../interface/interfaceUser";
 
 export const postSignin = async (credentials: ILogin) => {
   try {
-    const response = await fetch(`${API}/users`, {
+    const response = await fetch(`${API}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,7 +32,6 @@ export const postSignup = async (credentials: IRegister) => {
     },
     body: JSON.stringify(credentials),
   });
-  console.log(response);
 
   if (!response.ok) {
     throw new Error("Error en el registro");
@@ -44,7 +42,7 @@ export const postSignup = async (credentials: IRegister) => {
   return data;
 };
 
-export const getUser_Id = async (id: string, token: string ) => {
+export const getUser_Id = async (id: string, token: string) => {
   console.log(token);
 
   const response = await fetch(`${API}/Users/${id}`, {

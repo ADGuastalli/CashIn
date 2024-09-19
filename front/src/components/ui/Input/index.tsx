@@ -15,7 +15,7 @@ export function Input(props: Props) {
 export function Input_profile(props: Props) {
   return (
     <input
-      className="block py-2.5 px-0 w-96 text-sm text-text_color bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white
+      className="block py-2.5 px-0 w-96 text-lg bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-[#0095a9]
              dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
       {...props}
     />

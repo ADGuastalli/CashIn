@@ -1,31 +1,30 @@
-'use client'
-import React from 'react'
-import { useState } from 'react'
-import { IUserProfile } from '@/interface/interfaceUser' 
-import { validateForm } from '@/helpers/validations.login'
+"use client";
+import React, { useState } from "react";
+import { IUserProfile } from "@/interface/interfaceUser";
+import { validateForm } from "@/helpers/validations.login";
 import Swal from "sweetalert2";
-import { updateUserProfile } from '@/server/fetchUserFormProfile'
-import { useRouter } from 'next/navigation'
-import { Label_profile } from '../ui/Label'
-import { Input_profile } from '../ui/Input'
-import { Button_actions } from '../ui/Buttons'
+import { updateUserProfile } from "@/server/fetchUserFormProfile";
+import { useRouter } from "next/navigation";
+import { Label_profile } from "../ui/Label";
+import { Input_profile } from "../ui/Input";
+import { Button_actions } from "../ui/Buttons";
 
-function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
+function FormProfile({ DataUser }: { DataUser: IUserProfile }) {
+  const router = useRouter();
 
-    const router = useRouter()
+  const [formData, setFormData] = useState<IUserProfile>({
+    id: DataUser.id || "",
+    last_name: DataUser.last_name || "",
+    city: DataUser.city || "",
+    country: DataUser.country || "",
+    email: DataUser.email || "",
+    birthdate: DataUser.birthdate || "",
+    ocupacion: DataUser.ocupacion,
+    estadocivil: DataUser.estadocivil,
+    hijos: DataUser.hijos || false,
+    cantidad_de_hijos: DataUser.cantidad_de_hijos || 0,
+  });
 
-    const [formData, setFormData] = useState<IUserProfile>({
-        userId: DataUser.userId,
-        name: DataUser.name,
-        last_name: DataUser.last_name,
-        city: DataUser.city,
-        country: DataUser.country,
-        email: DataUser.email,
-        birthdate: DataUser.birthdate,
-        ocupacion: DataUser.ocupacion,
-        estadocivil: DataUser.estadocivil,
-    })
-    
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const handleChange = (
@@ -33,18 +32,14 @@ function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
   ) => {
     const { name, value, type } = e.target;
 
-    if (type == "checkbox" && e.target instanceof HTMLInputElement) {
-      setFormData({
-        ...formData,
-        [name]: e.target.checked,
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-    }
-    setErrors(validateForm(formData));
+    const updatedData = {
+      ...formData,
+      [name]:
+        type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
+    };
+
+    setFormData(updatedData);
+    setErrors(validateForm(updatedData));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -54,55 +49,35 @@ function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
       const token = localStorage.getItem("token");
       try {
         if (!token) {
-          return (
-            <>
-              {Swal.fire({
-                title: "Deberias estar logueado",
-                html: `
-                Ir a  <b>Login</b>,
-                <a href="/User/Login" autofocus>Acá</a>,
-              `,
-                confirmButtonAriaLabel: "Aceptar",
-              })}</>)
-            }
-           else{
-            const response = await updateUserProfile(formData,token)
-            if (response.ok) {
-            console.log('User data submitted successfully');
-            setFormData({
-              userId: DataUser.userId,
-              name: DataUser.name,
-              last_name: DataUser.last_name,
-              city: DataUser.city,
-              country: DataUser.country,
-              email: DataUser.email,
-              birthdate: DataUser.birthdate,
-              ocupacion: DataUser.ocupacion,
-              estadocivil: DataUser.estadocivil,
-            });
-            setErrors({});
-            router.push("/Menu")
+          Swal.fire({
+            title: "Deberías estar logueado",
+            html: `
+            Ir a  <b>Login</b>,
+            <a href="/User/Login" autofocus>Acá</a>`,
+            confirmButtonAriaLabel: "Aceptar",
+          });
         } else {
-            console.error('Error submitting user data');
-        }
-           }
-          } catch (error) {
-            console.error('Request failed', error);
+          const response = await updateUserProfile(formData, token);
+          if (response.ok) {
+            Swal.fire("Perfil actualizado", "", "success");
+            setErrors({});
+            router.push("/Menu");
+          } else {
+            console.error("Error submitting user data");
           }
-      }else{
-        Swal.fire({
-          title: "Error",
-          text: "Deves verificar los campos.",
-          icon: "error",
-          confirmButtonText: "Intentar de nuevo",
-          customClass: {
-            confirmButton: "button-error",
-          },
-        });
+        }
+      } catch (error) {
+        console.error("Request failed", error);
       }
-      
+    } else {
+      Swal.fire({
+        title: "Error",
+        text: "Debes verificar los campos.",
+        icon: "error",
+        confirmButtonText: "Intentar de nuevo",
+      });
     }
-
+  };
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mt-5">
@@ -111,7 +86,7 @@ function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
         <Input_profile
           type="text"
           name="last_name"
-          value={formData.last_name}
+          value={formData.last_name || ""}
           onChange={handleChange}
           required
         />
@@ -123,7 +98,7 @@ function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
         <Input_profile
           type="email"
           name="email"
-          value={formData.email}
+          value={formData.email || ""}
           onChange={handleChange}
           required
         />
@@ -135,7 +110,7 @@ function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
         <Input_profile
           type="text"
           name="country"
-          value={formData.country}
+          value={formData.country || ""}
           onChange={handleChange}
           required
         />
@@ -147,7 +122,7 @@ function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
         <Input_profile
           type="text"
           name="city"
-          value={formData.city}
+          value={formData.city || ""}
           onChange={handleChange}
           required
         />
@@ -159,7 +134,7 @@ function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
         <Input_profile
           type="date"
           name="birthdate"
-          value={formData.birthdate}
+          value={formData.birthdate || ""}
           onChange={handleChange}
           required
         />
@@ -169,10 +144,10 @@ function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
       <div className="relative z-0 w-full mb-6 group mt-4">
         <Label_profile>Situacion laboral:</Label_profile>
         <select
-          className='block py-2.5 px-0 w-full text-sm text-text_color bg-transparent border-0 border-b-2 border-gray-300 appearance-none
-           focus:outline-none focus:ring-0 focus:border-blue-600 peer '
+          className="block py-2.5 px-0 w-full text-sm text-text_color bg-transparent border-0 border-b-2 border-gray-300 appearance-none
+           focus:outline-none focus:ring-0 focus:border-blue-600 peer "
           name="ocupacion"
-          value={formData.ocupacion}
+          value={formData.ocupacion || ""}
           onChange={handleChange}
         >
           <option>selecciona</option>
@@ -185,13 +160,13 @@ function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
         </select>
       </div>
 
-      <div className='relative z-0 w-full mb-6 group mt-4'>
+      <div className="relative z-0 w-full mb-6 group mt-4">
         <Label_profile>Estado civil:</Label_profile>
         <select
-          className='block py-2.5 px-0 w-full text-sm text-text_color bg-transparent border-0 border-b-2 border-gray-300 appearance-none
-           focus:outline-none focus:ring-0 focus:border-blue-600 peer '
-          name="estadoCivil"
-          value={formData.estadocivil}
+          className="block py-2.5 px-0 w-full text-sm text-text_color bg-transparent border-0 border-b-2 border-gray-300 appearance-none
+           focus:outline-none focus:ring-0 focus:border-blue-600 peer "
+          name="estadocivil"
+          value={formData.estadocivil || ""}
           onChange={handleChange}
         >
           <option>selecciona</option>
@@ -202,31 +177,37 @@ function FormProfile( {DataUser}: {DataUser:IUserProfile}) {
         </select>
       </div>
 
-      <div className='flex items-center h-5'>
-        <div className='flex items-center h-5'>
+      <div className="flex items-center h-5">
+        <div className="flex items-center h-5">
           <input
             className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
             type="checkbox"
-            name="life"
+            name="hijos"
             checked={formData.hijos}
             onChange={handleChange}
           />
         </div>
-        <label  className="ms-2 text-sm font-medium text-gray-900 ">Hijos: si / no </label>
+        <label className="ms-2 text-sm font-medium text-gray-900 ">
+          ¿Tienes hijos?{" "}
+        </label>
       </div>
 
-      <div className="relative z-0 w-full mb-6 group mt-4">
-        <Label_profile>Number of Children:</Label_profile>
-        <Input_profile
-          type="number"
-          name="cantidad_de_hijos"
-          value={formData.cantidad_de_hijos}
-          onChange={handleChange}
-          min="0"
-          required
-        />
-        {errors.cantidad_de_hijos && <p style={{ color: 'red' }}>{errors.cantidad_de_hijos}</p>}
-      </div>
+      {formData.hijos && (
+        <div className="relative z-0 w-full mb-6 group mt-4">
+          <Label_profile>Number of Children:</Label_profile>
+          <Input_profile
+            type="number"
+            name="cantidad_de_hijos"
+            value={formData.cantidad_de_hijos || 0}
+            onChange={handleChange}
+            min="0"
+            required
+          />
+          {errors.cantidad_de_hijos && (
+            <p style={{ color: "red" }}>{errors.cantidad_de_hijos}</p>
+          )}
+        </div>
+      )}
 
       <Button_actions type="submit">Submit</Button_actions>
     </form>
