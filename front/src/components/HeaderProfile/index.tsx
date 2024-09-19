@@ -1,8 +1,9 @@
 import React from 'react'
-import { IUser } from '@/interface/interfaceUser'
+import { IUserProfile } from '@/interface/interfaceUser'
 import { Button_actions } from '../ui/Buttons'
 import Image from 'next/image'
-function HeaderProfile({user} : {user: IUser}) {
+
+function HeaderProfile({user} : {user: IUserProfile}) {
     const status = {
         nivel_1: "Pobreza",
         nivel_2: "Endeudamiento",

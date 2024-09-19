@@ -1,6 +1,6 @@
 
 import { API } from "../helpers/helper";
-import { ILogin, IRegister, IUserProfile } from "../interface/interfaceUser";
+import { ILogin, IRegister} from "../interface/interfaceUser";
 
 export const postSignin = async (credentials: ILogin) => {
   try {
@@ -33,33 +33,26 @@ export const postSignup = async (credentials: IRegister) => {
     },
     body: JSON.stringify(credentials),
   });
+  console.log(response);
 
   if (!response.ok) {
-    throw new Error("Invalid credentials");
+    throw new Error("Error en el registro");
   }
 
   const data = await response.json();
+  console.log(data);
   return data;
 };
 
-export const getUserId = async (userId: string ) => {
-  console.log("",userId)
-  const response = await fetch(`${API}/users/${userId}`);
+export const getUser_Id = async (id: string, token: string ) => {
+  console.log(token);
 
-  if (!response.ok) {
-    throw new Error("Invalid credentials");
-  }
+  const response = await fetch(`${API}/Users/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   const data = await response.json();
-  
-    const user: IUserProfile = {
-        userId: userId,
-        name: data.user_name,
-        last_name: data.last_name,
-        city: data.city_id,
-        country: data.country_id,
-        email: data.email,
-        birthdate: data.birthdate,
-    }
-  return user;
+  return data;
 };
-

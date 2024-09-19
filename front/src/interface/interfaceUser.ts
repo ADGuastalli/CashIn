@@ -22,6 +22,7 @@ interface IUser {
   birthdate: Date;
   status: boolean;
   role: string;
+  user_name: string;
 }
 
 interface ILogin {
@@ -32,7 +33,15 @@ interface ILogin {
 interface IRegister {
   email: string;
   password: string;
-  confirmPassword: string;
+  confirmPassword?: string;
+  country_id?: number;
+  city_id?: number;
+  status_id?: number;
+  last_name?: string;
+  user_name?: string;
+  birthdate?: Date;
+  googleId?: string;
+  facebookId?: string;
 }
 
 interface IErrorsLogin {
@@ -55,13 +64,16 @@ interface IErrorsRegister {
 }
 
 interface IUserContext {
-  user: IUser;
+  user: IUser | null;
   userProfile: IUserProfile;
-  setUser: React.Dispatch<React.SetStateAction<IUser>>;
+  setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
   login: (credentials: ILogin) => Promise<boolean>;
   register: (credentials: IRegister) => Promise<boolean>;
   logout: () => void;
   isAuthenticated: boolean;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+  isProfileComplete: boolean;
+  setIsProfileComplete: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export type {
