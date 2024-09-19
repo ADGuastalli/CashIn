@@ -7,7 +7,11 @@ import Link from "next/link";
 import Logo from "../../public/assets/svg/CASHIN-03.svg";
 import UserIcon from "../../public/assets/svg/user-circle-svgrepo-com.svg";
 import Swal from "sweetalert2";
-import { Button_nadvar, Button_actions } from "@/components/ui/Buttons";
+import {
+  Button_nadvar,
+  Button_actions,
+  Button_Menu,
+} from "@/components/ui/Buttons";
 
 export default function Navbar() {
   const { user, setUser, isAuthenticated, logout } = useContext(UserContext);
@@ -110,9 +114,13 @@ export default function Navbar() {
                   />
                 </Link>
               </div>
+              <Link href="/Menu">
+                <Button_Menu />
+              </Link>
               <button
                 onClick={handleLogout}
-                className="relative rounded-full border-2 border-[#97D6DF] bg-[#FF3E1A] px-4 py-2 text-sm font-bold uppercase text-white transition duration-150 ease-in-out hover:bg-[#FF5722] focus:outline-none dark:bg-[#FF3E1A] dark:hover:bg-[#FF5722]"
+                className="font-bold rounded-xl bg-bad_status text-white px-6 py-1 m-2 text-xl 
+      transition-transform duration-300 transform hover:scale-105"
               >
                 Cerrar Sesión
               </button>

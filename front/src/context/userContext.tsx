@@ -25,7 +25,9 @@ export const UserContext = createContext<IUserContext>({
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>({} as IUser);
-  const [userProfile, setUserProfile] = useState<IUserProfile>({} as IUserProfile);
+  const [userProfile, setUserProfile] = useState<IUserProfile>(
+    {} as IUserProfile
+  );
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isProfileComplete, setIsProfileComplete] = useState<boolean>(false);
   const router = useRouter();
@@ -33,6 +35,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const login = async (credentials: ILogin) => {
     try {
       const data = await postSignin(credentials);
+      console.log("data post login", data);
+
       if (!data.token) {
         throw new Error("Invalid Token");
       }
@@ -41,8 +45,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("user", JSON.stringify(data.id));
 
       setIsAuthenticated(true);
-      
-      setUser(data.id)
+
+      setUser(data.id);
       router.push("/");
       return true;
     } catch (error) {
@@ -70,14 +74,14 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     router.push("/");
   };
 
-  const getUserDataProfile = async (user: string, token: string ) => {
-    if (typeof token === "string") {  
+  const getUserDataProfile = async (user: string, token: string) => {
+    if (typeof token === "string") {
       const dataUser = await getUser_Id(user, token);
       setUserProfile(dataUser);
     } else {
       console.error("Token inválido. No se pudo obtener los datos del perfil.");
     }
-  }
+  };
 
   useEffect(() => {
     const token =
@@ -100,12 +104,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const user = localStorage.getItem("user");
     const token =
-      typeof window !== "undefined" && localStorage.getItem("token")
-    if(user) getUserDataProfile(JSON.parse(user), token as string)
-  },[])
+      typeof window !== "undefined" && localStorage.getItem("token");
+    if (user) getUserDataProfile(JSON.parse(user), token as string);
+  }, []);
 
   const checkProfileComplete = (user: IUser) => {
     return !!(

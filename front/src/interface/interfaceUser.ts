@@ -1,16 +1,21 @@
 interface IUserProfile {
-  userId: string;
-  name: string;
+  id: string;
   last_name: string;
   email: string;
   country: string;
   city: string;
   birthdate: string;
-  ocupacion?: "independiente" | "asalariado" | "contratista" | "emprendedor" | "ama de casa" | "estudiante";
+  ocupacion?:
+    | "independiente"
+    | "asalariado"
+    | "contratista"
+    | "emprendedor"
+    | "ama de casa"
+    | "estudiante";
   vivecon?: boolean;
   hijos?: boolean;
   cantidad_de_hijos?: number;
-  estadocivil?: string ;
+  estadocivil?: string;
 }
 
 interface IUser {
