@@ -9,7 +9,7 @@ const debtController = require('../controllers/Debt/debt');
 const debtCategoryController = require('../controllers/DebtCategory/debtCategory');
 const dwellingController = require('../controllers/Dwelling/dwelling');
 const expenseController = require('../controllers/Expense/expense');
-const expenseTypeController = require('../controllers/ExpenseType/expenseType');
+const expenseCategoryController = require('../controllers/ExpenseCategory/expenseCategory');
 const goalController = require('../controllers/Goal/goal');
 const goalCategoryController = require('../controllers/GoalCategory/goalCategory');
 const incomeController = require('../controllers/Income/income');
@@ -22,10 +22,11 @@ const personalPropertyController = require('../controllers/PersonalProperty/pers
 const personalPropertyTypeController = require('../controllers/PersonalPropertyType/personalPropertyType');
 const savingController = require('../controllers/Saving/saving');
 const statusController = require('../controllers/Status/status');
+const courseController = require('../controllers/Course/course');
+const bookController = require('../controllers/Book/book');
 const { authenticateToken } = require('../middlewares/auth');
 const { googleAuth } = require("../controllers/Auth/google");
 const { facebookAuth } = require("../controllers/Auth/facebook");
-
 
 
 const router = Router();
@@ -34,8 +35,8 @@ router.post('/users', userController.postUser);
 router.post('/users/login', userController.loginUser)
 router.get('/users', authenticateToken, userController.getAllUsers);
 router.get('/users/:id', userController.getUserById);
-router.put('/users/:id', userController.updateUser);
 router.delete('/users/:id', userController.deleteUser);
+router.put('/user/:userId/complete-profile', userController.completeUserProfile);
 
 router.post('/cities', cityController.createCity);
 router.get('/cities', cityController.getAllCities);
@@ -79,11 +80,11 @@ router.get('/expense/:id', expenseController.getExpenseById);
 router.put('/expense/:id', expenseController.updateExpense);
 router.delete('/expense/:id', expenseController.deleteExpense);
 
-router.post('/expense-types', expenseTypeController.createExpenseType);
-router.get('/expense-types', expenseTypeController.getAllExpenseTypes);
-router.get('/expense-types/:id', expenseTypeController.getExpenseTypeById);
-router.put('/expense-types/:id', expenseTypeController.updateExpenseType);
-router.delete('/expense-types/:id', expenseTypeController.deleteExpenseType);
+router.post('/expense-types', expenseCategoryController.createExpenseCategory);
+router.get('/expense-types', expenseCategoryController.getAllExpenseCategorys);
+router.get('/expense-types/:id', expenseCategoryController.getExpenseCategoryById);
+router.put('/expense-types/:id', expenseCategoryController.updateExpenseCategory);
+router.delete('/expense-types/:id', expenseCategoryController.deleteExpenseCategory);
 
 router.post('/goals', goalController.createGoal);
 router.get('/goals', goalController.getAllGoals);
@@ -157,6 +158,18 @@ router.get('/status/:id', statusController.getStatusById);
 router.put('/status/:id', statusController.updateStatus);
 router.delete('/status/:id', statusController.deleteStatus);
 
+router.post('/book', bookController.createBook);
+router.get('/book', bookController.getAllBooks);
+router.get('/book/:id', bookController.getBookById);
+router.put('/book/:id', bookController.updateBook);
+router.delete('/book/:id', bookController.deleteBook);
+
+router.post('/course', courseController.createCourse);
+router.get('/course', courseController.getAllCourses);
+router.get('/course/:id', courseController.getCourseById);
+router.put('/course/:id', courseController.updateCourse);
+router.delete('/course/:id', courseController.deleteCourse);
+
 // Iniciar autenticación con Facebook
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 
@@ -169,5 +182,4 @@ router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 
 // Callback de autenticación de Google
 router.get('/auth/google/callback', googleAuth);
 
-module.exports = router; 
-
+module.exports = router

@@ -1,7 +1,7 @@
 // controllers/auth/facebookAuthController.js
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const User = require('../../models/User'); // Ajustar según la ubicación de tu modelo de usuario
+const { User } = require('../../models/User'); // Ajustar según la ubicación de tu modelo de usuario
 
 // Estrategia de Facebook
 const facebookAuth = (req, res) => {
@@ -14,7 +14,7 @@ const facebookAuth = (req, res) => {
     const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '24h' });
 
     // Redirigir al frontend con el token
-    res.redirect(`http://localhost:5173/profile?token=${token}`);
+    res.redirect(`http://localhost:3000/profile?token=${token}`);
   })(req, res);
 };
 

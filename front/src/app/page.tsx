@@ -2,6 +2,8 @@ import Logo from "../public/assets/svg/CASHIN-03.svg";
 import Imagen2 from "../public/assets/imagen2.png";
 import Image from "next/image";
 import Navbar from "@/components/Nadvar";
+import BooksComponet from "@/components/Books";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -28,6 +30,12 @@ export default function Home() {
             <span className="font-bold">Ayudará</span> a manejar tu dinero de
             manera <span className="font-bold">Inteligente</span>.
           </h1>
+        </div>
+        <div className="flex flex-col justify-center items-start text-center my-10 mt-20">
+          <h2 className="text-3xl mb-10 font-bold">
+            Conoce nuestra serie de Libros de Educación Financiera
+          </h2>
+          <BooksComponet />
         </div>
       </div>
     </div>

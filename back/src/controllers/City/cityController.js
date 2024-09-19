@@ -1,14 +1,14 @@
 const { City } = require('../../models/index'); 
 
 async function createCity(req, res) {
-  const { city } = req.body;
+  const { city, country_id } = req.body;
 
-  if (!city) {
-    return res.status(400).json({ error: 'El nombre de la ciudad es obligatorio' });
+  if (!city || !country_id) {
+    return res.status(400).json({ error: 'El nombre de la ciudad y el country_id son obligatorios' });
   }
 
   try {
-    const newCity = await City.create({ city });
+    const newCity = await City.create({ city, country_id }); // Incluir country_id
     return res.status(201).json(newCity);
   } catch (error) {
     console.error('Error al crear la ciudad:', error);
@@ -16,15 +16,17 @@ async function createCity(req, res) {
   }
 }
 
+
 async function getAllCities(req, res) {
   try {
-    const cities = await City.findAll();
+    const cities = await City.findAll(); 
     return res.status(200).json(cities);
   } catch (error) {
     console.error('Error al obtener las ciudades:', error);
     return res.status(500).json({ error: 'Error al obtener las ciudades' });
   }
 }
+
 
 async function getCityById(req, res) {
   const { id } = req.params;
@@ -43,17 +45,19 @@ async function getCityById(req, res) {
 
 async function updateCity(req, res) {
   const { id } = req.params;
-  const { city } = req.body;
+  const { city, country_id } = req.body;
 
-  if (!city) {
-    return res.status(400).json({ error: 'El nombre de la ciudad es obligatorio' });
+  if (!city && !country_id) {
+    return res.status(400).json({ error: 'Debe proporcionar al menos el nombre de la ciudad o el country_id' });
   }
 
   try {
-    const updatedCity = await City.update({ city }, { where: { city_id: id } });
+    const updatedCity = await City.update({ city, country_id }, { where: { city_id: id } });
+
     if (!updatedCity[0]) {
       return res.status(404).json({ error: 'Ciudad no encontrada' });
     }
+
     return res.status(200).json({ message: 'Ciudad actualizada correctamente' });
   } catch (error) {
     console.error('Error al actualizar la ciudad:', error);
