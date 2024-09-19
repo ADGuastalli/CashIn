@@ -9,14 +9,14 @@ import { useContext } from 'react'
 import { UserContext } from '@/context/userContext'
 
 function PresupuestoRegistro() {
-  const {user} = useContext(UserContext)
+  const {userProfile} = useContext(UserContext)
   
   const [visiblegastos, setVisibleGastos] = useState(false)
   
   return (
     <div>
         <DrawerNav/>
-        <HeaderProfile user={user}/>
+        <HeaderProfile user={userProfile}/>
         <MenuFunctions setForm={setVisibleGastos} visible={visiblegastos}/>
         <MenuFormsActions visible={visiblegastos}/>
         <MisMetas metas=""/>
