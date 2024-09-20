@@ -14,7 +14,7 @@ function HeaderProfile({user} : {user: IUserProfile}) {
         nivel_7: "Libertad financiera",
     }
     return (
-    <div className='flex flex-col-reverse items-center md:flex-row justify-between  w-screen h-auto px-4 py-4 md:pl-72 md:pr-10 bg-white shadow-md'>
+    <div className='flex flex-col-reverse items-center md:flex-row justify-between  w-screen h-auto px-4 pt-4 md:pl-72 md:pr-10 bg-white shadow-md'>
         <div>
             <h2>Analisis de bienestar financiero</h2>
             <p>Status</p>
@@ -30,7 +30,7 @@ function HeaderProfile({user} : {user: IUserProfile}) {
         <div>
             <div className='flex justify-around  mb-4'>
                 <div>
-                    <h3>Bienvenido {user.name} !!</h3>
+                    <h3>Bienvenido {user.last_name} !!</h3>
                     <button className='text-xs'>cerrar sesion</button>
                 </div>
                 <div className='ml-4'>
