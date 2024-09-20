@@ -10,12 +10,11 @@ import {
 } from "../ui/Buttons";
 import Link from "next/link";
 import { Input } from "../ui/Input";
-import { UserContext } from "../../context/userContext";
-import { useState, useContext } from "react";
+
+import { useState } from "react";
 import Swal from "sweetalert2";
 
 export default function DiagnosticoComponet() {
-  const { user } = useContext(UserContext);
   const [sueldo, setSueldo] = useState("");
   const [monto, setMonto] = useState("");
   const [sueldos, setSueldos] = useState<
