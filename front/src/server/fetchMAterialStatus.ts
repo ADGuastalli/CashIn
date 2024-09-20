@@ -1,5 +1,10 @@
 import { API } from "@/helpers/helper";
 
+interface IMarital {
+  marital_status_id: string;
+  marital_status: string;
+}
+
 export const getAllMaritalStatuses = async () => {
   try {
     const response = await fetch(`${API}/marital-status`, {
@@ -18,9 +23,9 @@ export const getAllMaritalStatuses = async () => {
   }
 };
 
-export const getMaritalStatusById = async (status_id: any) => {
+export const getMaritalStatusById = async (marital_status_id: IMarital) => {
   try {
-    const response = await fetch(`${API}/marital-status/${status_id}`, {
+    const response = await fetch(`${API}/marital-status/${marital_status_id}`, {
       method: "GET",
     });
 

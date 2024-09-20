@@ -1,5 +1,10 @@
 import { API } from "@/helpers/helper";
 
+interface IDwelling {
+  dwelling_id: string;
+  dwelling: string;
+}
+
 export const getAllDwellings = async () => {
   try {
     const response = await fetch(`${API}/dwelling`, {
@@ -18,7 +23,7 @@ export const getAllDwellings = async () => {
   }
 };
 
-export const getDwellingById = async (dwelling_id: any) => {
+export const getDwellingById = async (dwelling_id: IDwelling) => {
   try {
     const response = await fetch(`${API}/dwelling/${dwelling_id}`, {
       method: "GET",

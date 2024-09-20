@@ -1,6 +1,11 @@
 import { API } from "@/helpers/helper";
 
-export const createCountry = async (country: any) => {
+interface ICountry {
+  country: string;
+  country_id: string;
+}
+
+export const createCountry = async (country: ICountry) => {
   try {
     const response = await fetch(`${API}/country`, {
       method: "POST",
@@ -21,7 +26,7 @@ export const createCountry = async (country: any) => {
   }
 };
 
-export const getAllCountries = async () => {
+export const getAllCountries = async (): Promise<ICountry[]> => {
   try {
     const response = await fetch(`${API}/country`, {
       method: "GET",
@@ -40,7 +45,7 @@ export const getAllCountries = async () => {
   }
 };
 
-export const getCountryById = async (country_id: any) => {
+export const getCountryById = async (country_id: string) => {
   try {
     const response = await fetch(`${API}/country/${country_id}`, {
       method: "GET",
