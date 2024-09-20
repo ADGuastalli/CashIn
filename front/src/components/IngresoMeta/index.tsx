@@ -9,11 +9,10 @@ import {
 import Logo from "../../public/assets/svg/CASHIN-03.svg";
 import { Input } from "../ui/Input";
 import Image from "next/image";
-import { UserContext } from "../../context/userContext";
-import { useState, useContext } from "react";
+
+import { useState } from "react";
 
 export default function IngresoMetaComponet() {
-  const { user } = useContext(UserContext);
   const [bien, setBien] = useState("");
   const [monto, setMonto] = useState("");
   const [bienes, setBienes] = useState<{ tipoBien: string; monto: string }[]>(

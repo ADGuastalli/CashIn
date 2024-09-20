@@ -1,6 +1,11 @@
 import { API } from "@/helpers/helper";
 
-export const createCities = async (city: any) => {
+export default interface ICity {
+  city_id: string;
+  city: string;
+}
+
+export const createCities = async (city: ICity) => {
   try {
     const response = await fetch(`${API}/cities`, {
       method: "POST",
@@ -21,7 +26,7 @@ export const createCities = async (city: any) => {
   }
 };
 
-export const getAllCities = async () => {
+export const getAllCities = async (): Promise<ICity[]> => {
   try {
     const response = await fetch(`${API}/cities`, {
       method: "GET",
@@ -31,15 +36,16 @@ export const getAllCities = async () => {
       throw new Error("Error al obtener los ciudades");
     }
 
-    const data = await response.json();
+    const data: ICity[] = await response.json();
     console.log("Ciudades:", data);
     return data;
   } catch (error) {
     console.error(error);
+    return [];
   }
 };
 
-export const getCitiesById = async (city_id: any) => {
+export const getCitiesById = async (city_id: string) => {
   try {
     const response = await fetch(`${API}/cities/${city_id}`, {
       method: "GET",

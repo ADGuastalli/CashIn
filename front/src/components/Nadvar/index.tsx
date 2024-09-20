@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/Buttons";
 
 export default function Navbar() {
-  const { user, setUser, isAuthenticated, logout } = useContext(UserContext);
+  const { user, isAuthenticated, logout } = useContext(UserContext);
   const [isActive, setIsActive] = useState(false);
 
   const handleLogout = () => {

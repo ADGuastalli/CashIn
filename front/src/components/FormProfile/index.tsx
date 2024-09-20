@@ -9,9 +9,9 @@ import { Label_profile } from "../ui/Label";
 import { Input_profile } from "../ui/Input";
 import { Button_actions } from "../ui/Buttons";
 import { getAllCountries } from "@/server/fetchCountry";
-import { getAllCities } from "@/server/fetchCity";
+import ICity, { getAllCities } from "@/server/fetchCity";
 import { getAllMaritalStatuses } from "@/server/fetchMAterialStatus";
-import { getAllOccupations } from "@/server/fechtOcupation";
+import IOccupation, { getAllOccupations } from "@/server/fechtOcupation";
 import { getAllDwellings } from "@/server/fetchDwelling";
 import { useContext } from "react";
 import { UserContext } from "../../context/userContext";
@@ -52,7 +52,7 @@ function FormProfile({ DataUser }: { DataUser: IUserProfile }) {
     fetchCountries();
   }, []);
 
-  const [citys, setCitys] = useState<{ city_id: string; city: string }[]>([]);
+  const [citys, setCitys] = useState<ICity[]>([]);
 
   useEffect(() => {
     const fetchCitys = async () => {
@@ -66,9 +66,7 @@ function FormProfile({ DataUser }: { DataUser: IUserProfile }) {
     fetchCitys();
   }, []);
 
-  const [ocupations, setOccupations] = useState<
-    { occupation_id: string; occupation: string }[]
-  >([]);
+  const [ocupations, setOccupations] = useState<IOccupation[]>([]);
 
   useEffect(() => {
     const fetchOccupations = async () => {

@@ -3,7 +3,6 @@ import Imagen2 from "../public/assets/imagen2.png";
 import Image from "next/image";
 import Navbar from "@/components/Nadvar";
 import BooksComponet from "@/components/Books";
-import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
