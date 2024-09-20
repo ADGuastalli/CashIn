@@ -1,4 +1,8 @@
-import { IErrorsLogin, IErrorsRegister } from "../interface/interfaceUser";
+import {
+  IErrorsLogin,
+  IErrorsRegister,
+  IUserProfile,
+} from "../interface/interfaceUser";
 
 const validateLogin = (
   values: IErrorsLogin,
@@ -6,8 +10,8 @@ const validateLogin = (
 ): IErrorsLogin => {
   const errors: IErrorsLogin = {};
 
-  if (fieldsToValidate.includes("username") && !values.username) {
-    errors.username = "*";
+  if (fieldsToValidate.includes("email") && !values.email) {
+    errors.email = "*";
   }
 
   if (fieldsToValidate.includes("password") && !values.password) {
@@ -93,7 +97,7 @@ const validateRegister = (
     if (!values.confirmPassword) {
       errors.confirmPassword = "*";
     } else if (values.password !== values.confirmPassword) {
-      errors.confirmPassword = "Las contraseñas no coinciden.";
+      errors.confirmPassword = "Las contraseñas no coinciden";
     }
   }
 
@@ -109,4 +113,29 @@ const validateRegister = (
   return errors;
 };
 
-export { validateRegister, validateLogin };
+const validateForm = (formData: IUserProfile): { [key: string]: string } => {
+  const newErrors: { [key: string]: string } = {};
+  if (!formData.user_name) newErrors.user_name = "* El nombre es obligatorio.";
+  if (!formData.last_name)
+    newErrors.last_name = "* El apellido es obligatorio.";
+  if (!formData.email)
+    newErrors.email = "* El correo electrónico es obligatorio.";
+  if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email))
+    newErrors.email = "* El correo electrónico no es válido.";
+  if (!formData.country_id) newErrors.country_id = "* El país es obligatorio.";
+  if (!formData.occupation_id) {
+    newErrors.occupation_id = "* La situación laboral es obligatoria.";
+  }
+  if (!formData.marital_status_id) {
+    newErrors.marital_status_id = "* El estado civil es obligatorio.";
+  }
+  if (!formData.city_id) newErrors.city_id = "* La ciudad es obligatoria.";
+  if (!formData.birthdate)
+    newErrors.birthdate = "* La fecha de nacimiento es obligatoria.";
+  if (isNaN(formData.child as number) || (formData.child as number) < 0)
+    newErrors.child = "* El número de hijos debe ser un número positivo.";
+
+  return newErrors;
+};
+
+export { validateRegister, validateLogin, validateForm };

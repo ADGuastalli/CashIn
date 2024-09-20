@@ -9,15 +9,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: "#A0E4EB",
-        secondary: "#0396A6",
-        backGround: "#E1F3F5",
-        actions: "#F2B441",
+        primary: "#0095A9",
+        second: "#A0E4EB",
+        third: "#0095A952",
+        backGround: "#00658031",
+        actions: "#FFC843",
+        aux_actions: "#8E6C1A",
         ok_status: "#B3EDD7",
-        bad_status: "#F2786D",
-        ralative_status: "#F2B441",
-        text_title: "#006580",
-        text:"#60BDC9",
+        aux_ok_status: "#B3EDD7",
+        bad_status: "#F77354",
+        text_title: "#065D69",
+        text_color: "#0396A6"
       },
     },
   },

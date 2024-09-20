@@ -8,31 +8,21 @@ import eye from "../../public/assets/svg/eye-svgrepo-com.svg";
 import eyeClouse from "../../public/assets/svg/eye-slash-svgrepo-com.svg";
 import Image from "next/image";
 import Swal from "sweetalert2";
+import { Input } from "../ui/Input";
 
 export default function RegisterComponent() {
   const { register } = useContext(UserContext);
   const router = useRouter();
   const [userData, setUserData] = useState({
-    name: "",
-    username: "",
     email: "",
     password: "",
     confirmPassword: "",
-    country: "",
-    city: "",
-    birthdate: "",
   });
 
   const [errors, setErrors] = useState<IErrorsRegister>({
-    name: "",
-    username: "",
     email: "",
     password: "",
     confirmPassword: "",
-    country: "",
-    city: "",
-    birthdate: "",
-    status: false,
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -40,14 +30,9 @@ export default function RegisterComponent() {
 
   const todosLosCamposCompletos = () => {
     return (
-      userData.name !== "" &&
-      userData.username !== "" &&
       userData.email !== "" &&
       userData.password !== "" &&
-      userData.confirmPassword !== "" &&
-      userData.country !== "" &&
-      userData.city !== "" &&
-      userData.birthdate !== ""
+      userData.confirmPassword !== ""
     );
   };
 
@@ -61,21 +46,13 @@ export default function RegisterComponent() {
 
     setUserData(newUserData);
     setErrors(
-      validateRegister(newUserData, [
-        "name",
-        "username",
-        "email",
-        "password",
-        "confirmPassword",
-        "country",
-        "city",
-        "birthdate",
-      ])
+      validateRegister(newUserData, ["email", "password", "confirmPassword"])
     );
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     if (userData.password !== userData.confirmPassword) {
       Swal.fire({
         icon: "error",
@@ -87,25 +64,18 @@ export default function RegisterComponent() {
       });
     } else {
       const userDataToSubmit = {
-        name: userData.name,
-        username: userData.username,
         email: userData.email,
         password: userData.password,
-        confirmPassword: userData.confirmPassword,
-        country: userData.country,
-        city: userData.city,
-        birthdate: userData.birthdate,
-        status: true,
-        role: "user",
       };
+
       try {
         const success = await register(userDataToSubmit);
 
         if (success) {
           Swal.fire({
             icon: "success",
-            title: "¡Registrado con Exito!",
-            text: "Usuario registrado con exitosamente, por favor ingresar con sus credenciales",
+            title: "¡Registrado con éxito!",
+            text: "Usuario registrado exitosamente, por favor ingresar con sus credenciales",
             customClass: {
               confirmButton: "button-principal",
             },
@@ -137,17 +107,8 @@ export default function RegisterComponent() {
 
   return (
     <form onSubmit={handleSubmit} className="max-w-4xl mx-auto p-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
         {[
-          { name: "name", placeholder: "Apellido/s y Nombre/s" },
-          { name: "country", placeholder: "Pais" },
-          { name: "city", placeholder: "Ciudad" },
-          {
-            name: "birthdate",
-            placeholder: "Fecha de Nacimiento",
-            type: "date",
-          },
-          { name: "username", placeholder: "Username" },
           { name: "email", placeholder: "Email" },
           {
             name: "password",
@@ -166,15 +127,13 @@ export default function RegisterComponent() {
             key={name}
             className="relative flex flex-col items-start rounded"
           >
-            <input
+            <Input
               type={type}
               name={name}
-              className="block w-96 rounded bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#77DD77] transition duration-150 ease-in-out border border-[#89E186]"
               id={name}
               placeholder={placeholder}
               onChange={handleInputChange}
             />
-            {/* Agregar icono de mostrar/ocultar contraseña */}
             {name === "password" || name === "confirmPassword" ? (
               <button
                 type="button"
