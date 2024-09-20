@@ -20,7 +20,7 @@ export const createCities = async (city: ICity) => {
     }
 
     const data = await response.json();
-    console.log("Ciudad creado:", data);
+    console.log("Ciudad creada:", data);
   } catch (error) {
     console.error(error);
   }
