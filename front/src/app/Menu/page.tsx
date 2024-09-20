@@ -14,6 +14,7 @@ export default function Menu() {
   // si no esta completo el formulario lo redirijo
   const { userProfile } = useContext(UserContext);
   const router = useRouter();
+  console.log("user profile", userProfile);
 
   return (
     <div>
@@ -24,7 +25,7 @@ export default function Menu() {
       </div>
       <div className="flex flex-col justify-center items-center min-h-screen">
         {hasNullProperties(userProfile) && (
-          <ModalFormComplete router={router} id={userProfile.id} />
+          <ModalFormComplete router={router} user_id={userProfile.user_id} />
         )}
         <Image
           src={Logo}
