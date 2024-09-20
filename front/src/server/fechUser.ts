@@ -52,5 +52,16 @@ export const getUser_Id = async (id: string, token: string) => {
     },
   });
   const data = await response.json();
-  return data;
+  console.log("data",data)
+  const newData = {
+    id: data.user_id,
+    last_name: data.last_name,
+    email: data.email,
+    country: data.country_id,
+    city: data.city_id,
+    birthdate: data.birthdate,
+  }
+  return newData;
 };
+
+
