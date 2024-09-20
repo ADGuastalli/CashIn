@@ -14,6 +14,7 @@ export const UserContext = createContext<IUserContext>({
   user: {} as IUser,
   userProfile: {} as IUserProfile,
   setUser: () => {},
+  setUserProfile: () => {},
   login: async () => false,
   register: async () => false,
   logout: () => {},
@@ -75,6 +76,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const getUserDataProfile = async (user: string, token: string) => {
+    console.log("user", user, "token", token);
+
     if (typeof token === "string") {
       const dataUser = await getUser_Id(user, token);
       setUserProfile(dataUser);
@@ -127,6 +130,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         user,
         userProfile,
         setUser,
+        setUserProfile,
         login,
         register,
         logout,

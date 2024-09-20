@@ -5,15 +5,16 @@ export const updateUserProfile = async (
   formData: IUserProfile,
   token: string | null
 ) => {
-  try {
-    const userId = formData.id;
+  console.log("formdataaaa", formData);
 
-    // Verificar que el token y el ID están presentes
+  try {
+    const userId = formData.user_id;
+
     if (!token || !userId) {
       throw new Error("Usuario no disponible");
     }
-    //el que sea para completar el perfil ojo enviar ocupacion por separado
-    const response = await fetch(`${API}/users/${userId}`, {
+
+    const response = await fetch(`${API}/user/${userId}/complete-profile`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -25,15 +26,10 @@ export const updateUserProfile = async (
       }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error("Error message", errorData.message);
-    }
-
-    const updatedUser = await response.json();
-    return updatedUser;
+    return response;
   } catch (error) {
     console.error("Error al actualizar el perfil:", error);
+    throw error;
   }
 };
 
