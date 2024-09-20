@@ -7,10 +7,6 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
-import Libro1 from "../../public/assets/Libro1.png";
-import Libro2 from "../../public/assets/Libro2.png";
-import Libro3 from "../../public/assets/Libro3.png";
-import Libro4 from "../../public/assets/Libro4.png";
 import Image from "next/image";
 
 const style: React.CSSProperties = {
@@ -49,7 +45,7 @@ export default function BooksComponet() {
       <div>
         <Card sx={{ maxWidth: 280 }}>
           <Image
-            src={Libro1}
+            src="https://i.postimg.cc/yd9M4nwX/libro1.png"
             alt="Academia de educación Financiera 1"
             width={345}
             height={345}
@@ -88,7 +84,7 @@ export default function BooksComponet() {
       <div>
         <Card sx={{ maxWidth: 280 }}>
           <Image
-            src={Libro2}
+            src="https://i.postimg.cc/nrGNMrVX/libro2.png"
             alt="Academia de educación Financiera 2"
             width={345}
             height={345}
@@ -126,7 +122,7 @@ export default function BooksComponet() {
       <div>
         <Card sx={{ maxWidth: 272 }}>
           <Image
-            src={Libro3}
+            src="https://i.postimg.cc/hvBHSTnF/libro3.png"
             alt="Academia de educación Financiera 3"
             width={345}
             height={345}
@@ -164,7 +160,7 @@ export default function BooksComponet() {
       <div>
         <Card sx={{ maxWidth: 272 }}>
           <Image
-            src={Libro4}
+            src="https://i.postimg.cc/kMQ0T1N7/libro4.png"
             alt="Academia de educación Financiera 4"
             width={345}
             height={345}
