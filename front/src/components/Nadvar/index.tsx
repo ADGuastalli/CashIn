@@ -16,6 +16,7 @@ import {
 export default function Navbar() {
   const { user, isAuthenticated, logout } = useContext(UserContext);
   const [isActive, setIsActive] = useState(false);
+  console.log(user);
 
   const handleLogout = () => {
     Swal.fire({
@@ -75,12 +76,12 @@ export default function Navbar() {
         } lg:block lg:flex-row flex-col lg:space-y-0 space-y-4`}
       >
         <div className="flex-grow flex flex-col lg:flex-row lg:space-x-8">
-          <Link href="/home/homeRutinas" onClick={handleMenuClick}>
+          <Link href="#Producto" onClick={handleMenuClick}>
             <Button_nadvar className="text-sm lg:text-base">
               PRODUCTOS
             </Button_nadvar>
           </Link>
-          <Link href="/home/homePlanes" onClick={handleMenuClick}>
+          <Link href="#Educacion" onClick={handleMenuClick}>
             <Button_nadvar className="text-sm lg:text-base">
               EDUCACION
             </Button_nadvar>
@@ -100,7 +101,7 @@ export default function Navbar() {
           {isAuthenticated ? (
             <>
               <span className="text-[#97D6DF] dark:text-[#97D6DF] text-sm lg:text-lg">
-                Bienvenido, {user?.name || user?.email || ""}
+                Bienvenido, {user?.user_name || user?.email || ""}
               </span>
               <div className="flex items-center ms-10 md:me-2">
                 <Link
