@@ -111,7 +111,7 @@ export default function LoginComponent() {
         <button
           type="button"
           onClick={() => setShowPassword((prev) => !prev)}
-          className="absolute right-3 top-3 text-gray-600"
+          className="absolute right-3 top-6 text-gray-600"
         >
           <Image
             src={showPassword ? eye : eyeClouse}

@@ -1,13 +1,21 @@
-import { IUserProfile  } from "@/interface/interfaceUser";
+import { IUserProfile } from "@/interface/interfaceUser";
 
-export function hasNullProperties(obj: IUserProfile){
-    const propertiesToCheck: (keyof IUserProfile)[] = ['birthdate', 'city', 'country', 'email', 'last_name', 'name', 'userId'];
+export function hasNullProperties(obj: IUserProfile) {
+  const propertiesToCheck: (keyof IUserProfile)[] = [
+    "birthdate",
+    "city_id",
+    "country_id",
+    "email",
+    "last_name",
+    "user_name",
+    "user_id",
+  ];
 
-    // eslint-disable-next-line prefer-const
-    for(let prop of propertiesToCheck){
-        if(obj[prop] === null){
-            return true
-        }
+  // eslint-disable-next-line prefer-const
+  for (let prop of propertiesToCheck) {
+    if (obj[prop] === null) {
+      return true;
     }
-    return false
+  }
+  return false;
 }
