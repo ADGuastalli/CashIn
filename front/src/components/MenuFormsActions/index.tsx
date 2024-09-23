@@ -1,6 +1,9 @@
 import React from 'react'
 import Card_presupuesto from '../ui/Cards'
 import FormGastosDashboard from '../Gastos/indexFormGastosDashboard'
+import SueldoFromDashboard from '../IngresoSueldo/SueldoFormdashboard'
+import BienesFormDashboard from '../Diagnostico/bienesFormDashboard'
+import DeudasFormDashboard from '../Diagnostico/deudasFormDashboard'
 
 function MenuFormsActions({visible} : {visible:boolean[]}) {
   return (
@@ -16,18 +19,18 @@ function MenuFormsActions({visible} : {visible:boolean[]}) {
           </div>
           )}
         {
-          visible[1] && (<div className='w-56 h-auto' >
-            Ingresos
+          visible[1] && (<div className=' h-auto' >
+            <SueldoFromDashboard/>
           </div>)
         }  
         {
-          visible[3] && (<div className='w-56 h-auto' >
-            Bienes
+          visible[3] && (<div className='h-auto' >
+            <BienesFormDashboard/>
           </div>)
         }
         {
-          visible[4] && (<div className='w-56 h-auto' >
-            Deuda
+          visible[4] && (<div className='h-auto' >
+            <DeudasFormDashboard/>
           </div>)
         }
         </div>

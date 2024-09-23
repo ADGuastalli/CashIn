@@ -7,7 +7,7 @@ import MisMetas from '@/components/MisMetas'
 import MenuFunctions from '@/components/MenuFunctions'
 import { useContext } from 'react'
 import { UserContext } from '@/context/userContext'
-
+import Graficos from '@/components/Graficos'
 function PresupuestoRegistro() {
   const {userProfile} = useContext(UserContext)
   
@@ -25,6 +25,7 @@ function PresupuestoRegistro() {
                        visible={[visiblegastos,visibleIngresos,visibleMetas,visibleBienes,visibleDeudas]}/>
         <MenuFormsActions visible={[visiblegastos,visibleIngresos,visibleMetas,visibleBienes,visibleDeudas]}/>
         <MisMetas visible={visibleMetas}/>
+        <Graficos/>
     </div>
   )
 }
