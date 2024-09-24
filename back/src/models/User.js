@@ -39,6 +39,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    googleAccessToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    googleRefreshToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     facebookId: {
       type: DataTypes.STRING,
       allowNull: true,
