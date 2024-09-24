@@ -56,7 +56,7 @@ export default function BooksComponet() {
           <CardActions>
             <Button
               size="small"
-              onClick={handleOpen2}
+              onClick={handleOpen1}
               className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
       transition-transform duration-300 transform hover:scale-105"
             >
@@ -160,7 +160,7 @@ export default function BooksComponet() {
           <CardActions>
             <Button
               size="small"
-              onClick={handleOpen2}
+              onClick={handleOpen3}
               className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
       transition-transform duration-300 transform hover:scale-105"
             >
@@ -209,7 +209,7 @@ export default function BooksComponet() {
           <CardActions>
             <Button
               size="small"
-              onClick={handleOpen2}
+              onClick={handleOpen4}
               className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
       transition-transform duration-300 transform hover:scale-105"
             >

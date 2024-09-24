@@ -5,6 +5,15 @@ import {
   ReactPayPalScriptOptions,
 } from "@paypal/react-paypal-js";
 import { API } from "@/helpers/helper";
+interface PayPalApproveData {
+  orderID: string;
+}
+
+// Define the shape of the error object from PayPal
+interface PayPalError {
+  message?: string;
+  name?: string;
+}
 
 interface OrderData {
   id: string;
@@ -14,7 +23,6 @@ interface OrderData {
   }>;
   debug_id?: string;
 }
-
 const Button_Paypal = () => {
   const initialOptions: ReactPayPalScriptOptions = {
     clientId:
@@ -48,7 +56,7 @@ const Button_Paypal = () => {
     }
   };
 
-  const onApprove = async (data: any) => {
+  const onApprove = async (data: PayPalApproveData) => {
     try {
       console.log("Aprobación de PayPal, datos:", data);
 
@@ -78,7 +86,7 @@ const Button_Paypal = () => {
     window.location.assign("/your-cancel-page");
   };
 
-  const onError = (err: any) => {
+  const onError = (err: PayPalError) => {
     console.error("Error de PayPal:", err);
     alert(`Hubo un error: ${err.message || "Error desconocido"}`);
     window.location.assign("/your-error-page-here");
