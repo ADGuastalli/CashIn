@@ -1,43 +1,43 @@
+
 const { User, Country, City, MaritalStatus, Dwelling, Data, Child} = require('../../models/index');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-
 const postUser = async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    // Validar que todos los datos necesarios estén presentes
-    if (!email || !password ) {
-        return res.status(400).json({ error: 'Faltan datos requeridos' });
-    }
+  // Validar que todos los datos necesarios estén presentes
+  if (!email || !password) {
+    return res.status(400).json({ error: "Faltan datos requeridos" });
+  }
 
-    try {
+  try {
+    // Hashear la contraseña antes de guardarla
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Hashear la contraseña antes de guardarla
-        const hashedPassword = await bcrypt.hash(password, 10);
+    // Crear el nuevo usuario
+    const newUser = await User.create({
+      email,
+      password: hashedPassword,
+    });
 
-        // Crear el nuevo usuario
-        const newUser = await User.create({
-            email,
-            password: hashedPassword,
-        });
+    const jwtSecret = process.env.JWT_SECRET;
 
-        const jwtSecret = process.env.JWT_SECRET;
+    const token = jwt.sign({ userId: newUser.id }, jwtSecret, {
+      expiresIn: "24h",
+    });
 
-        const token = jwt.sign({ userId: newUser.id }, jwtSecret, { expiresIn: '24h' });
-
-        // Enviar la respuesta con el usuario y el token
-        res.status(201).json({
-            id: newUser.user_id,
-            email: newUser.email,
-            token, // Enviar el token al usuario
-        });
-
-    } catch (error) {
-        console.error('Error al crear el usuario:', error);
-        res.status(400).json({ error: 'Error al crear el usuario' });
-    }
+    // Enviar la respuesta con el usuario y el token
+    res.status(201).json({
+      id: newUser.user_id,
+      email: newUser.email,
+      token, // Enviar el token al usuario
+    });
+  } catch (error) {
+    console.error("Error al crear el usuario:", error);
+    res.status(400).json({ error: "Error al crear el usuario" });
+  }
 };
 
 const completeUserProfile = async (req, res) => {
@@ -128,128 +128,136 @@ const completeUserProfile = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-    const { email, password } = req.body;
-  
-    // Verificar que los datos necesarios estén presentes
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email y contraseña son requeridos' });
+  const { email, password } = req.body;
+
+  // Verificar que los datos necesarios estén presentes
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email y contraseña son requeridos" });
+  }
+
+  try {
+    // Buscar el usuario por el email
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
-  
-    try {
-      // Buscar el usuario por el email
-      const user = await User.findOne({ where: { email } });
-  
-      if (!user) {
-        return res.status(404).json({ error: 'Usuario no encontrado' });
-      }
-  
-      // Comparar la contraseña ingresada con el hash almacenado
-      const isMatch = await bcrypt.compare(password, user.password);
-  
-      if (!isMatch) {
-        return res.status(401).json({ error: 'Contraseña incorrecta' });
-      }
-  
-      // Generar un token JWT
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
-  
-      // Enviar la respuesta con el token
-      res.status(200).json({
-        id: user.user_id,
-        user_name: user.user_name,
-        email: user.email,
-        token, // Enviar el token al usuario
-      });
-  
-    } catch (error) {
-      console.error('Error al iniciar sesión:', error);
-      res.status(500).json({ error: 'Error al iniciar sesión' });
+
+    // Comparar la contraseña ingresada con el hash almacenado
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ error: "Contraseña incorrecta" });
     }
-  };
+
+    // Generar un token JWT
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
+    // Enviar la respuesta con el token
+    res.status(200).json({
+      id: user.user_id,
+      user_name: user.user_name,
+      email: user.email,
+      token, // Enviar el token al usuario
+    });
+  } catch (error) {
+    console.error("Error al iniciar sesión:", error);
+    res.status(500).json({ error: "Error al iniciar sesión" });
+  }
+};
 
 const getAllUsers = async (req, res) => {
-    try {
-        const users = await User.findAll();
-        res.status(200).json(users);
-    } catch (error) {
-        console.error('Error al obtener los usuarios:', error);
-        res.status(500).json({ error: 'Error al obtener los usuarios' });
-    }
+  try {
+    const users = await User.findAll();
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error al obtener los usuarios:", error);
+    res.status(500).json({ error: "Error al obtener los usuarios" });
+  }
 };
 
 const getUserById = async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    try {
-        const user = await User.findByPk(id);
+  try {
+    const user = await User.findByPk(id);
 
-        if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-
-        res.status(200).json(user);
-    } catch (error) {
-        console.error('Error al obtener el usuario:', error);
-        res.status(500).json({ error: 'Error al obtener el usuario' });
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error al obtener el usuario:", error);
+    res.status(500).json({ error: "Error al obtener el usuario" });
+  }
 };
 
 const updateUser = async (req, res) => {
-    const { id } = req.params;
-    const { country_id, city_id, birthdate, last_name, user_name, email, password } = req.body;
+  const { id } = req.params;
+  const {
+    country_id,
+    city_id,
+    birthdate,
+    last_name,
+    user_name,
+    email,
+    password,
+  } = req.body;
 
-    try {
-        const user = await User.findByPk(id);
+  try {
+    const user = await User.findByPk(id);
 
-        if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-
-        if (password) {
-            const hashedPassword = await bcrypt.hash(password, 10);
-            user.password = hashedPassword;
-        }
-
-        user.country_id = country_id || user.country_id;
-        user.city_id = city_id || user.city_id;
-        user.birthdate = birthdate || user.birthdate;
-        user.last_name = last_name || user.last_name;
-        user.user_name = user_name || user.user_name;
-        user.email = email || user.email;
-
-        await user.save();
-
-        res.status(200).json({
-            id: user.id,
-            country_id: user.country_id,
-            city_id: user.city_id,
-            birthdate: user.birthdate,
-            last_name: user.last_name,
-            user_name: user.user_name,
-            email: user.email,
-        });
-    } catch (error) {
-        console.error('Error al actualizar el usuario:', error);
-        res.status(500).json({ error: 'Error al actualizar el usuario' });
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+    }
+    user.country_id = country_id || user.country_id;
+    user.city_id = city_id || user.city_id;
+    user.birthdate = birthdate || user.birthdate;
+    user.last_name = last_name || user.last_name;
+    user.user_name = user_name || user.user_name;
+    user.email = email || user.email;
+
+    await user.save();
+
+    res.status(200).json({
+      id: user.id,
+      country_id: user.country_id,
+      city_id: user.city_id,
+      birthdate: user.birthdate,
+      last_name: user.last_name,
+      user_name: user.user_name,
+      email: user.email,
+    });
+  } catch (error) {
+    console.error("Error al actualizar el usuario:", error);
+    res.status(500).json({ error: "Error al actualizar el usuario" });
+  }
 };
 
 const deleteUser = async (req, res) => {
-    const { id } = req.params;
+  const { id } = req.params;
 
-    try {
-        const user = await User.findByPk(id);
+  try {
+    const user = await User.findByPk(id);
 
-        if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-
-        await user.destroy();
-        res.status(200).json({ message: 'Usuario eliminado correctamente' });
-    } catch (error) {
-        console.error('Error al eliminar el usuario:', error);
-        res.status(500).json({ error: 'Error al eliminar el usuario' });
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
+
+    await user.destroy();
+    res.status(200).json({ message: "Usuario eliminado correctamente" });
+  } catch (error) {
+    console.error("Error al eliminar el usuario:", error);
+    res.status(500).json({ error: "Error al eliminar el usuario" });
+  }
 };
 
 module.exports = {
@@ -261,3 +269,4 @@ module.exports = {
     getUserById,
     deleteUser
 };
+
