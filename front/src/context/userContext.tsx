@@ -43,8 +43,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         throw new Error("Invalid Token");
       }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.id));
+      typeof window !== "undefined" &&
+        localStorage.setItem("token", data.token);
+      typeof window !== "undefined" &&
+        localStorage.setItem("user", JSON.stringify(data.id));
 
       setIsAuthenticated(true);
 
@@ -58,7 +60,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleGoogleLogin = (token: string) => {
-    localStorage.setItem("token", token);
+    typeof window !== "undefined" && localStorage.setItem("token", token);
     const user = JSON.parse(atob(token.split(".")[1]));
     setUser(user);
     setIsAuthenticated(true);
@@ -76,8 +78,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    typeof window !== "undefined" && localStorage.removeItem("token");
+    typeof window !== "undefined" && localStorage.removeItem("user");
     setUser({} as IUser);
     setIsAuthenticated(false);
     setIsProfileComplete(false);
@@ -117,7 +119,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const user = typeof window !== "undefined" && localStorage.getItem("user");
     const token =
       typeof window !== "undefined" && localStorage.getItem("token");
     if (user) getUserDataProfile(JSON.parse(user), token as string);
