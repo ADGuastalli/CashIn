@@ -32,13 +32,15 @@ passport.use(
   )
 );
 
-// Estrategia de Google
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: 'http://localhost:3000/auth/google/callback',
+      scope: ['profile', 'email', 'https://www.googleapis.com/auth/calendar'],
+      accessType: 'offline',
+      approvalPrompt: 'force', // En lugar de 'prompt: "consent"', usa esto para forzar el refresh token
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -51,7 +53,16 @@ passport.use(
             googleId: profile.id,
             email: profile.emails[0].value,
             name: profile.displayName,
+            googleAccessToken: accessToken,
+            googleRefreshToken: refreshToken,
           });
+        } else {
+          // Si el usuario ya existe, actualiza los tokens de Google
+          user.googleAccessToken = accessToken;
+          if (refreshToken) {
+            user.googleRefreshToken = refreshToken;
+          }
+          await user.save();
         }
 
         console.log('Usuario autenticado:', user);
@@ -63,6 +74,9 @@ passport.use(
     }
   )
 );
+
+
+
 
 // Serialización y deserialización de usuarios
 passport.serializeUser((user, done) => {

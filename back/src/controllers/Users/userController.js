@@ -167,73 +167,6 @@ const loginUser = async (req, res) => {
     }
   };
 
-
-const completeFormUser = async (req, res) => {
-    const { country, city, birthdate, last_name, user_name, email, password } = req.body;
-
-    // Validar que todos los datos necesarios estén presentes
-    if (!country || !city || !birthdate || !last_name || !user_name || !email || !password ) {
-        return res.status(400).json({ error: 'Faltan datos requeridos' });
-    }
-
-    try {
-
-        // Buscar el country_id basado en el nombre del país
-        const countryRecord = await Country.findOne({ where: { country: country } });
-
-        if (!countryRecord) {
-            return res.status(404).json({ error: 'País no encontrado' });
-        }
-
-        const country_id = countryRecord.country_id;
-
-        // Buscar city_id basado en el nombre city
-
-        const cityRecord = await City.findOne({ where: { city: city }})
-
-        if(!cityRecord) {
-            return res.status(404).json({ error: 'Ciudad no encontrada' });
-        }
-
-        const city_id = cityRecord.city_id
-
-        // Hashear la contraseña antes de guardarla
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Crear el nuevo usuario
-        const newUser = await User.create({
-            country_id,
-            city_id, 
-            last_name,
-            user_name,
-            birthdate,
-            email,
-            password: hashedPassword,
-        });
-
-        const jwtSecret = process.env.JWT_SECRET;
-
-        const token = jwt.sign({ userId: newUser.id }, jwtSecret, { expiresIn: '24h' });
-
-        // Enviar la respuesta con el usuario y el token
-        res.status(201).json({
-            id: newUser.id,
-            country_id: newUser.country_id,
-            city_id: newUser.city_id,
-            birthdate: newUser.birthdate,
-            last_name: newUser.last_name,
-            user_name: newUser.user_name,
-            email: newUser.email,
-            token, // Enviar el token al usuario
-        });
-
-    } catch (error) {
-        console.error('Error al crear el usuario:', error);
-        res.status(400).json({ error: 'Error al crear el usuario' });
-    }
-};
-
-
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.findAll();
@@ -323,6 +256,7 @@ module.exports = {
     postUser,
     loginUser,
     completeUserProfile,
+    updateUser,
     getAllUsers,
     getUserById,
     deleteUser

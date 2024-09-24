@@ -24,6 +24,7 @@ const savingController = require('../controllers/Saving/saving');
 const statusController = require('../controllers/Status/status');
 const courseController = require('../controllers/Course/course');
 const bookController = require('../controllers/Book/book');
+const calendarControllers = require('../controllers/CalendarControllers/calendarController')
 const { authenticateToken } = require('../middlewares/auth');
 const { googleAuth } = require("../controllers/Auth/google");
 const { facebookAuth } = require("../controllers/Auth/facebook");
@@ -177,9 +178,17 @@ router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'
 router.get('/auth/facebook/callback', facebookAuth);
 
 // Iniciar autenticación con Google
-router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/auth/google', passport.authenticate('google', { scope: [
+    'profile',
+    'email',
+    'https://www.googleapis.com/auth/calendar'
+] }));
 
 // Callback de autenticación de Google
 router.get('/auth/google/callback', googleAuth);
+
+router.get('/events', calendarControllers.getEvents);
+router.post('/create-event', calendarControllers.createEvent);
+
 
 module.exports = router
