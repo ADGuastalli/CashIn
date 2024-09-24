@@ -4,7 +4,6 @@ import Image from "next/image";
 import Navbar from "@/components/Nadvar";
 import BooksComponet from "@/components/Books";
 import CursosComponet from "@/components/Cursos";
-import Button_Paypal from "@/components/Paypal";
 
 export default function Home() {
   return (
@@ -44,7 +43,6 @@ export default function Home() {
         <div>
           <CursosComponet />
         </div>
-        <Button_Paypal />
       </div>
     </div>
   );
