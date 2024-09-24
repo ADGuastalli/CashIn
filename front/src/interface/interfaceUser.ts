@@ -75,6 +75,7 @@ interface IUserContext {
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
   isProfileComplete: boolean;
   setIsProfileComplete: React.Dispatch<React.SetStateAction<boolean>>;
+  handleGoogleLogin: (token: string) => void;
 }
 
 export type {

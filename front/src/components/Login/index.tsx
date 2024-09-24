@@ -10,6 +10,7 @@ import eyeClouse from "../../public/assets/svg/eye-slash-svgrepo-com.svg";
 import Image from "next/image";
 import { Input } from "../ui/Input";
 import Link from "next/link";
+import { API } from "@/helpers/helper";
 
 export default function LoginComponent() {
   const { login } = useContext(UserContext);
@@ -47,9 +48,9 @@ export default function LoginComponent() {
       if (success) {
         Swal.fire({
           title: "¡Login Exitoso!",
-          text: "Serás redirigido en 3 segundos...",
+          text: "Serás redirigido en 2 segundos...",
           icon: "success",
-          timer: 3000,
+          timer: 2000,
           showConfirmButton: false,
         });
 
@@ -79,6 +80,10 @@ export default function LoginComponent() {
         },
       });
     }
+  };
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${API}/auth/google`;
   };
 
   return (
@@ -147,6 +152,15 @@ export default function LoginComponent() {
           disabled={!todosLosCamposRequeridos()}
         >
           Ingresar
+        </button>
+      </div>
+      <div className="flex justify-center mt-4">
+        <button
+          type="button"
+          className="bg-[#4285F4] text-white py-2 px-5 rounded-md font-bold cursor-pointer"
+          onClick={handleGoogleLogin}
+        >
+          Ingresar con Google
         </button>
       </div>
       <div>
