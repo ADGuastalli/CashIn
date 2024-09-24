@@ -18,7 +18,6 @@ const style: React.CSSProperties = {
   backgroundColor: "background.paper",
   border: "2px solid #0095a9",
   boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
-
   padding: 4,
 };
 
@@ -41,7 +40,6 @@ export default function BooksComponet() {
 
   return (
     <div className="grid grid-cols-4 grid-rows-1 gap-12">
-      {/* Libro 1 */}
       <div>
         <Card sx={{ maxWidth: 280 }}>
           <Image
@@ -56,7 +54,12 @@ export default function BooksComponet() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" onClick={handleOpen1}>
+            <Button
+              size="small"
+              onClick={handleOpen2}
+              className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
+      transition-transform duration-300 transform hover:scale-105"
+            >
               Leer más
             </Button>
           </CardActions>
@@ -73,14 +76,23 @@ export default function BooksComponet() {
             </Typography>
             <Typography id="modal-modal-description1" sx={{ mt: 2 }}>
               En el libro “Academia de educación Financiera 1” el participante
-              tendrá la oportunidad de ver la historia del comercio, del dinero,
-              los billetes y monedas...
+              tendrá la oportunidad, en el desarrollo de sus ocho capítulos, de
+              ver la historia del comercio, del dinero, los billetes y monedas
+              para crear una marco conceptual sobre este importante tema. En los
+              capítulos siguientes conocerá el concepto de ingresos y sus
+              diferentes tipos; los gastos y la correcta distribución de los
+              mismos, con lo cual tendrá la capacidad de elaborar su propio
+              estado financiero. Adicionalmente aprenderá sobre el ahorro y la
+              importancia del mismo. Tendrá la capacidad de identificar sus
+              bienes y clasificarlos en activos, además de que conocerá el
+              concepto de los pasivos o deudas. Adicionalmente podrá tener una
+              inclusión adecuada al ámbito financiero, conociendo las diferentes
+              instituciones financieras y los productos que ofrece.
             </Typography>
           </Box>
         </Modal>
       </div>
 
-      {/* Libro 2 */}
       <div>
         <Card sx={{ maxWidth: 280 }}>
           <Image
@@ -95,7 +107,12 @@ export default function BooksComponet() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" onClick={handleOpen2}>
+            <Button
+              size="small"
+              onClick={handleOpen2}
+              className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
+      transition-transform duration-300 transform hover:scale-105"
+            >
               Leer más
             </Button>
           </CardActions>
@@ -111,14 +128,22 @@ export default function BooksComponet() {
               Academia de educación Financiera 2
             </Typography>
             <Typography id="modal-modal-description2" sx={{ mt: 2 }}>
-              En “Academia de educación Financiera 2” consta de diez
-              capítulos...
+              En “Academia de educación Financiera 2” consta de diez capítulos,
+              en los que puede ver la historia de la banca, del dinero y cómo
+              usarlo de manera adecuada; el concepto de los productos de
+              bancarios, los ingresos y sus diferentes tipos; los gastos y la
+              correcta distribución de los mismos, el ahorro y la importancia
+              del mismo, podrá identificar sus bienes y clasificarlos en
+              activos, además de que conocerá el concepto de los pasivos o
+              deudas; así como las deducciones fiscales. Por otro lado aprenderá
+              sobre la inteligencia financiera, la importancia de la
+              planificación financiera y estratégica y como planificar su futuro
+              a través del mapa de los sueños.
             </Typography>
           </Box>
         </Modal>
       </div>
 
-      {/* Libro 3 */}
       <div>
         <Card sx={{ maxWidth: 272 }}>
           <Image
@@ -133,7 +158,12 @@ export default function BooksComponet() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" onClick={handleOpen3}>
+            <Button
+              size="small"
+              onClick={handleOpen2}
+              className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
+      transition-transform duration-300 transform hover:scale-105"
+            >
               Leer más
             </Button>
           </CardActions>
@@ -149,14 +179,20 @@ export default function BooksComponet() {
               Academia de educación Financiera 3
             </Typography>
             <Typography id="modal-modal-description3" sx={{ mt: 2 }}>
-              En “Academia de educación Financiera 3” el participante tendrá la
-              oportunidad de ver la historia de la globalización, el internet...
+              sus diez capítulos, de ver la historia de la globalización, el
+              internet, comercio electrónico, los productos y servicios
+              bancarios, las deudas, las inversiones, las deducciones fiscales,
+              la inflación y el emprendurísmo. Las competencias a desarrollar
+              son la inteligencia comercial, inteligencia financiera y la
+              inteligencia intelectual. Adicionalmente tendrá que utilizar sus
+              conocimientos matemáticos para resolver algunos de los problemas
+              planteados al utilizar las fórmulas de cálculos de interés y las
+              tasas de rendimiento, ejercicios de calculo del capital.
             </Typography>
           </Box>
         </Modal>
       </div>
 
-      {/* Libro 4 */}
       <div>
         <Card sx={{ maxWidth: 272 }}>
           <Image
@@ -171,7 +207,12 @@ export default function BooksComponet() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small" onClick={handleOpen4}>
+            <Button
+              size="small"
+              onClick={handleOpen2}
+              className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
+      transition-transform duration-300 transform hover:scale-105"
+            >
               Leer más
             </Button>
           </CardActions>
@@ -188,7 +229,17 @@ export default function BooksComponet() {
             </Typography>
             <Typography id="modal-modal-description4" sx={{ mt: 2 }}>
               Por último “Academia de educación Financiera 4” a través de sus
-              once capítulos, el participante podrá conocer la administración...
+              once capítulos, el participante podrá conocer la administración
+              del dinero, la introducción al sistema financiero, conocerá los
+              ingresos y gastos (correcta distribución y administración); las
+              deducciones fiscales; los bienes los activos y pasivos, la
+              planificación financiera para el desarrollo de un plan financiero
+              personal o familiar, la inteligencia financiera, conocerá lo que
+              es el empleo, oficios, ser empresario o emprendedor, las
+              diferentes tipos de empresas que existen en republica dominicana y
+              como se forman; por ultimo esta el tema de economía personal que
+              trata de la correcta inclusión en el sistema financiero, los
+              productos bancarios y cómo obtener los mismos.
             </Typography>
           </Box>
         </Modal>

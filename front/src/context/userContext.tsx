@@ -16,6 +16,7 @@ export const UserContext = createContext<IUserContext>({
   setUser: () => {},
   setUserProfile: () => {},
   login: async () => false,
+  handleGoogleLogin: () => {},
   register: async () => false,
   logout: () => {},
   isAuthenticated: false,
@@ -54,6 +55,14 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       console.log(error);
       throw error;
     }
+  };
+
+  const handleGoogleLogin = (token: string) => {
+    localStorage.setItem("token", token);
+    const user = JSON.parse(atob(token.split(".")[1]));
+    setUser(user);
+    setIsAuthenticated(true);
+    router.push("/Menu");
   };
 
   const register = async (user: IRegister) => {
@@ -132,6 +141,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setUser,
         setUserProfile,
         login,
+        handleGoogleLogin,
         register,
         logout,
         isAuthenticated,
