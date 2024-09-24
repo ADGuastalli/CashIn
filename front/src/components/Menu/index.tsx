@@ -83,7 +83,7 @@ export default function MenuIcons() {
         </div>
       </Link>
 
-      <Link href="#">
+      <Link href="https://chatgpt.com/g/g-R6OiPvkkm-cashinbot">
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
             <Image src={ImgChat} alt="Chat" width={60} height={60} />
@@ -92,7 +92,7 @@ export default function MenuIcons() {
         </div>
       </Link>
 
-      <Link href="#">
+      <Link href="">
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
             <Image src={ImgUser} alt="Mi perfil" width={60} height={60} />
