@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-
+import React, { useState, useEffect, useContext } from "react";
 import Logo from "../../public/assets/svg/CASHIN-03.svg";
 import {
   Button_Menu,
@@ -11,13 +10,43 @@ import Link from "next/link";
 import Image from "next/image";
 import { Input } from "../ui/Input";
 import Swal from "sweetalert2";
+import { UserContext } from "@/context/userContext";
+import { useRouter } from "next/navigation";
 
 export default function IngresoFinanzasMetaComponet() {
+  const { isAuthenticated } = useContext(UserContext);
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const [sueldo, setSueldo] = useState("");
   const [monto, setMonto] = useState("");
   const [sueldos, setSueldos] = useState<
     { tipoSueldo: string; monto: string }[]
   >([]);
+
+  useEffect(() => {
+    if (isAuthenticated !== undefined) {
+      setLoading(false);
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (!isAuthenticated) {
+      Swal.fire({
+        title: "Acceso denegado",
+        text: "Para ingresar debes estar logueado.",
+        icon: "warning",
+        confirmButtonText: "Ir a Login",
+        allowOutsideClick: false,
+        showCloseButton: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/User/Login");
+        }
+      });
+    }
+  }, [loading, isAuthenticated, router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,6 +81,10 @@ export default function IngresoFinanzasMetaComponet() {
     0
   );
 
+  if (loading) {
+    return null; // Aquí puedes mostrar un spinner si lo deseas
+  }
+
   return (
     <div>
       <div>
@@ -74,17 +107,17 @@ export default function IngresoFinanzasMetaComponet() {
                 <label className="text-lg font-bold">Tipo de Ingreso</label>
                 <select
                   className="bg-white focus:outline-none focus:ring focus:ring-secondary border 
-             border-gray-300 rounded-lg py-4 px-4 mx-2 my-2 block w-96 appearance-none leading-normal
-             invalid:border-pink-500 invalid:text-pink-600
-             focus:invalid:border-pink-500 focus:invalid:ring-pink-500 "
+                  border-gray-300 rounded-lg py-4 px-4 mx-2 my-2 block w-96 appearance-none leading-normal
+                  invalid:border-pink-500 invalid:text-pink-600
+                  focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
                   value={sueldo}
                   onChange={(e) => setSueldo(e.target.value)}
                 >
                   <option value="">Seleccione una opción</option>
                   <option value="INGRESO 1">INGRESO 1</option>
                   <option value="INGRESO 2">INGRESO 2</option>
-                  <option value="INGRESOSO POR INTERESES">
-                    INGRESOSO POR INTERESES
+                  <option value="INGRESO POR INTERESES">
+                    INGRESO POR INTERESES
                   </option>
                   <option value="BONIFICACION POR LEY">
                     BONIFICACION POR LEY
@@ -93,7 +126,7 @@ export default function IngresoFinanzasMetaComponet() {
                     INCENTIVOS Y HORAS EXTRAS
                   </option>
                   <option value="VACACIONES">VACACIONES</option>
-                  <option value="REEMBOLSOSS">REEMBOLSOS</option>
+                  <option value="REEMBOLSOS">REEMBOLSOS</option>
                   <option value="NEGOCIOS">NEGOCIOS</option>
                   <option value="DIVISION DE ACCIONES">
                     DIVISION DE ACCIONES

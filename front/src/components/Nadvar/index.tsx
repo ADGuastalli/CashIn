@@ -91,7 +91,7 @@ export default function Navbar() {
               MERCADO FINANCIERO
             </Button_nadvar>
           </Link>
-          <Link href="/Construccion" onClick={handleMenuClick}>
+          <Link href="/Contacto" onClick={handleMenuClick}>
             <Button_nadvar className="text-sm lg:text-base">
               CONTACTO
             </Button_nadvar>

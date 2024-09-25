@@ -51,7 +51,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAuthenticated(true);
 
       setUser(data.id);
-      router.push("/");
       return true;
     } catch (error) {
       console.log(error);
