@@ -1,31 +1,31 @@
-const { Router } = require("express")
-const passport = require('passport');
+const { Router } = require("express");
+const passport = require("passport");
 
-const userController = require('../controllers/Users/userController')
-const cityController = require('../controllers/City/cityController');
-const countryController = require('../controllers/Country/countryController')
-const childController = require('../controllers/Child/Child')
-const debtController = require('../controllers/Debt/debt');
-const debtCategoryController = require('../controllers/DebtCategory/debtCategory');
-const dwellingController = require('../controllers/Dwelling/dwelling');
-const expenseController = require('../controllers/Expense/expense');
-const expenseCategoryController = require('../controllers/ExpenseCategory/expenseCategory');
-const goalController = require('../controllers/Goal/goal');
-const goalCategoryController = require('../controllers/GoalCategory/goalCategory');
-const incomeController = require('../controllers/Income/income');
-const maritalStatusController = require('../controllers/MaritalStatus/maritalStatus');
-const modelDataController = require('../controllers/ModelData/modelData');
-const monthlyIncomeTypeController = require('../controllers/MonthlyIncomeType/monthlyIncomeType');
-const occupationController = require('../controllers/Occupation/occupation');
-const payMethodController = require('../controllers/PayMethod/payMethod');
-const personalPropertyController = require('../controllers/PersonalProperty/personalProperty');
-const personalPropertyTypeController = require('../controllers/PersonalPropertyType/personalPropertyType');
-const savingController = require('../controllers/Saving/saving');
-const statusController = require('../controllers/Status/status');
-const courseController = require('../controllers/Course/course');
-const bookController = require('../controllers/Book/book');
-const calendarControllers = require('../controllers/CalendarControllers/calendarController')
-const { authenticateToken } = require('../middlewares/auth');
+const userController = require("../controllers/Users/userController");
+const cityController = require("../controllers/City/cityController");
+const countryController = require("../controllers/Country/countryController");
+const childController = require("../controllers/Child/Child");
+const debtController = require("../controllers/Debt/debt");
+const debtCategoryController = require("../controllers/DebtCategory/debtCategory");
+const dwellingController = require("../controllers/Dwelling/dwelling");
+const expenseController = require("../controllers/Expense/expense");
+const expenseCategoryController = require("../controllers/ExpenseCategory/expenseCategory");
+const goalController = require("../controllers/Goal/goal");
+const goalCategoryController = require("../controllers/GoalCategory/goalCategory");
+const incomeController = require("../controllers/Income/income");
+const maritalStatusController = require("../controllers/MaritalStatus/maritalStatus");
+const modelDataController = require("../controllers/ModelData/modelData");
+const monthlyIncomeTypeController = require("../controllers/MonthlyIncomeType/monthlyIncomeType");
+const occupationController = require("../controllers/Occupation/occupation");
+const payMethodController = require("../controllers/PayMethod/payMethod");
+const personalPropertyController = require("../controllers/PersonalProperty/personalProperty");
+const personalPropertyTypeController = require("../controllers/PersonalPropertyType/personalPropertyType");
+const savingController = require("../controllers/Saving/saving");
+const statusController = require("../controllers/Status/status");
+const courseController = require("../controllers/Course/course");
+const bookController = require("../controllers/Book/book");
+const calendarControllers = require("../controllers/CalendarControllers/calendarController");
+const { authenticateToken } = require("../middlewares/auth");
 const paypalController = require("../controllers/Paypal/paypalController");
 const { googleAuth } = require("../controllers/Auth/google");
 const { facebookAuth } = require("../controllers/Auth/facebook");
@@ -245,11 +245,12 @@ router.get("/auth/facebook/callback", facebookAuth);
 
 // Iniciar autenticación con Google
 
-router.get('/auth/google', passport.authenticate('google', { scope: [
-    'profile',
-    'email',
-    'https://www.googleapis.com/auth/calendar'
-] }));
+router.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email", "https://www.googleapis.com/auth/calendar"],
+  })
+);
 
 // Callback de autenticación de Google
 router.get("/auth/google/callback", googleAuth);
@@ -265,8 +266,8 @@ router.post(
   paypalController.capturePaypalOrder
 );
 
-router.get('/events', calendarControllers.getEvents);
-router.post('/create-event', calendarControllers.createEvent);
+router.get("/events", calendarControllers.getEvents);
+router.post("/create-event", calendarControllers.createEvent);
+router.get("/available-slots", calendarControllers.getAvailableSlots);
 
-
-module.exports = router
+module.exports = router;

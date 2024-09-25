@@ -153,7 +153,8 @@ function FormProfile({ DataUser }: { DataUser: IUserProfile }) {
     e.preventDefault();
 
     if (Object.keys(errors).length === 0) {
-      const token = localStorage.getItem("token");
+      const token =
+        typeof window !== "undefined" && localStorage.getItem("token");
       try {
         if (!token) {
           Swal.fire({

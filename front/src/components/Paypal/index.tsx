@@ -5,6 +5,17 @@ import {
   ReactPayPalScriptOptions,
 } from "@paypal/react-paypal-js";
 import { API } from "@/helpers/helper";
+import Swal from "sweetalert2"; // Importa SweetAlert2
+
+interface PayPalApproveData {
+  orderID: string;
+}
+
+// Define the shape of the error object from PayPal
+interface PayPalError {
+  message?: string;
+  name?: string;
+}
 
 interface OrderData {
   id: string;
@@ -48,7 +59,7 @@ const Button_Paypal = () => {
     }
   };
 
-  const onApprove = async (data: any) => {
+  const onApprove = async (data: PayPalApproveData) => {
     try {
       console.log("Aprobación de PayPal, datos:", data);
 
@@ -56,7 +67,7 @@ const Button_Paypal = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          orderID: data.orderID, // Usa el orderID que recibes al aprobar el pago
+          orderID: data.orderID,
         }),
       });
 
@@ -69,19 +80,46 @@ const Button_Paypal = () => {
       const details = await response.json();
       console.log("Detalles de la transacción capturada:", details);
 
-      alert(`Transacción completada por ${details.payer.name.given_name}`);
+      // Mostrar alerta de éxito y redirigir a /Calendario
+      await Swal.fire({
+        title: "Transacción completada",
+        text: `Transacción completada por ${details.payer.name.given_name}`,
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+
+      // Redirigir a /Calendario después de cerrar la alerta
+      window.location.assign("/Calendario");
     } catch (error) {
       console.error("Error en la captura de PayPal:", error);
+
+      // Aserción de tipo para acceder a `message`
+      const errorMessage =
+        (error as { message?: string }).message || "Error desconocido";
+
+      // Mostrar alerta de error
+      Swal.fire({
+        title: "Error",
+        text: `Hubo un error: ${errorMessage}`,
+        icon: "error",
+        confirmButtonText: "OK",
+      });
     }
   };
   const onCancel = () => {
     window.location.assign("/your-cancel-page");
   };
 
-  const onError = (err: any) => {
+  const onError = (err: PayPalError) => {
     console.error("Error de PayPal:", err);
-    alert(`Hubo un error: ${err.message || "Error desconocido"}`);
-    window.location.assign("/your-error-page-here");
+
+    // Mostrar alerta de error
+    Swal.fire({
+      title: "Error de PayPal",
+      text: `Hubo un error: ${err.message || "Error desconocido"}`,
+      icon: "error",
+      confirmButtonText: "OK",
+    });
   };
 
   return (
