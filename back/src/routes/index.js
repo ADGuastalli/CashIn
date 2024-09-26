@@ -25,6 +25,7 @@ const statusController = require('../controllers/Status/status');
 const courseController = require('../controllers/Course/course');
 const bookController = require('../controllers/Book/book');
 const calendarControllers = require('../controllers/CalendarControllers/calendarController')
+const incomeCategoryController = require('../controllers/IncomeCategory/IncomeCategory');
 const { authenticateToken } = require('../middlewares/auth');
 const { googleAuth } = require("../controllers/Auth/google");
 const { facebookAuth } = require("../controllers/Auth/facebook");
@@ -34,7 +35,7 @@ const router = Router();
 
 router.post('/users', userController.postUser);
 router.post('/users/login', userController.loginUser)
-router.get('/users', authenticateToken, userController.getAllUsers);
+router.get('/users', userController.getAllUsers);
 router.get('/users/:id', userController.getUserById);
 router.delete('/users/:id', userController.deleteUser);
 router.put('/user/:userId/complete-profile', userController.completeUserProfile);
@@ -105,6 +106,12 @@ router.get('/incomes/:id', incomeController.getIncomeById);
 router.put('/incomes/:id', incomeController.updateIncome);
 router.delete('/incomes/:id', incomeController.deleteIncome);
 
+router.post('/income-categories', incomeCategoryController.createIncomeCategory);
+router.get('/income-categories', incomeCategoryController.getAllIncomeCategories);
+router.get('/income-categories/:id', incomeCategoryController.getIncomeCategoryById);
+router.put('/income-categories/:id', incomeCategoryController.updateIncomeCategory);
+router.delete('/income-categories/:id', incomeCategoryController.deleteIncomeCategory);
+
 router.post('/marital-status', maritalStatusController.createMaritalStatus);
 router.get('/marital-status', maritalStatusController.getAllMaritalStatuses);
 router.get('/marital-status/:id', maritalStatusController.getMaritalStatusById);
@@ -171,20 +178,14 @@ router.get('/course/:id', courseController.getCourseById);
 router.put('/course/:id', courseController.updateCourse);
 router.delete('/course/:id', courseController.deleteCourse);
 
-// Iniciar autenticación con Facebook
+
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-
-// Callback de autenticación de Facebook
 router.get('/auth/facebook/callback', facebookAuth);
-
-// Iniciar autenticación con Google
 router.get('/auth/google', passport.authenticate('google', { scope: [
     'profile',
     'email',
     'https://www.googleapis.com/auth/calendar'
 ] }));
-
-// Callback de autenticación de Google
 router.get('/auth/google/callback', googleAuth);
 
 router.get('/events', calendarControllers.getEvents);

@@ -3,13 +3,13 @@ const { DebtCategory } = require('../../models/index');  // Importar el modelo D
 // CREATE: Crear un nuevo registro en la tabla DebtCategory
 const createDebtCategory = async (req, res) => {
   try {
-    const { debt_category } = req.body;
+    const { debt } = req.body;
 
-    if (!debt_category) {
+    if (!debt) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const newDebtCategory = await DebtCategory.create({ debt_category });
+    const newDebtCategory = await DebtCategory.create({ debt });
     res.status(201).json(newDebtCategory);
   } catch (error) {
     console.error('Error al crear el registro:', error);
@@ -49,9 +49,9 @@ const getDebtCategoryById = async (req, res) => {
 const updateDebtCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const { debt_category } = req.body;
+    const { debt } = req.body;
 
-    if (!debt_category) {
+    if (!debt) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
@@ -61,7 +61,7 @@ const updateDebtCategory = async (req, res) => {
       return res.status(404).json({ error: 'Registro no encontrado' });
     }
 
-    await existingDebtCategory.update({ debt_category });
+    await existingDebtCategory.update({ debt });
     res.status(200).json(existingDebtCategory);
   } catch (error) {
     console.error('Error al actualizar el registro:', error);

@@ -3,13 +3,13 @@ const { Income } = require('../../models/index');
 // CREATE: Crear un nuevo registro en la tabla Income
 const createIncome = async (req, res) => {
   try {
-    const { monthly_income_id, income, mount, date } = req.body;
+    const { income_category_id, income, mount, date, data_id} = req.body;
 
-    if (monthly_income_id == null || income == null || mount == null || date == null) {
+    if (income_category_id == null || income == null || mount == null|| date == null || data_id  == null) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const newIncome = await Income.create({ monthly_income_id, income, mount, date });
+    const newIncome = await Income.create({ income_category_id, income, mount, date, data_id });
     res.status(201).json(newIncome);
   } catch (error) {
     console.error('Error al crear el registro:', error);

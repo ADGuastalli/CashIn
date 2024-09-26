@@ -9,6 +9,7 @@ const { sequelize } = require('./src/models/index');
 const { authenticateToken } = require('./src/middlewares/auth');
 require('./src/config/passport');
 
+const app = express();
 
 app.use(morgan("dev"));
 app.use(express.json());

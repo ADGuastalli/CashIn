@@ -3,13 +3,13 @@ const { ExpenseCategory } = require('../../models/index');  // Importar el model
 // CREATE: Crear un nuevo registro en la tabla ExpenseType
 const createExpenseCategory = async (req, res) => {
   try {
-    const { expense_Category } = req.body;
+    const { expense_category } = req.body;
 
-    if (!expense_Category) {
+    if (!expense_category) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const newExpenseCategory = await ExpenseCategory.create({ expense_Category });
+    const newExpenseCategory = await ExpenseCategory.create({ expense_category });
     res.status(201).json(newExpenseCategory);
   } catch (error) {
     console.error('Error al crear el registro:', error);
