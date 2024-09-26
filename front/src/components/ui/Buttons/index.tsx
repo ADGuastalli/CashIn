@@ -96,6 +96,17 @@ export function Button_Menu() {
   );
 }
 
+export function Button_LeerMAs({ children, ...props }: Props) {
+  return (
+    <button
+      className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
+      transition-transform duration-300 transform hover:scale-105"
+    >
+      LEER MÁS
+    </button>
+  );
+}
+
 export function Button_Home() {
   return (
     <button

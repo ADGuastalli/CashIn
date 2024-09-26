@@ -56,90 +56,120 @@ const createDataForUser = async (userId) => {
 };
 
 const completeUserProfile = async (req, res) => {
-    const { userId } = req.params;
-    const { country_id, city_id, last_name, user_name, birthdate, marital_status_id, dwelling_id, child } = req.body;
+  const { userId } = req.params;
+  const {
+    user_id,
+    country_id,
+    city_id,
+    last_name,
+    user_name,
+    birthdate,
+    marital_status_id,
+    dwelling_id,
+    child,
+    occupation_id,
+  } = req.body;
+  console.log("userid back", req.body);
 
-    if (!country_id || !city_id || !last_name || !user_name || !birthdate || !marital_status_id || !dwelling_id) {
-        return res.status(400).json({ error: 'Faltan datos requeridos para completar el perfil' });
+  if (
+    !userId ||
+    !country_id ||
+    !city_id ||
+    !last_name ||
+    !user_name ||
+    !birthdate ||
+    !marital_status_id ||
+    !dwelling_id ||
+    !occupation_id
+  ) {
+    return res
+      .status(400)
+      .json({ error: "Faltan datos requeridos para completar el perfil" });
+  }
+
+  try {
+    // Encuentra el usuario junto con su perfil de datos
+    const user = await User.findByPk(userId, {
+      include: { model: Data },
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
     }
 
-    try {
-        // Encuentra el usuario junto con su perfil de datos
-        const user = await User.findByPk(userId, {
-            include: { model: Data }
-        });
+    const maritalStatus = await MaritalStatus.findByPk(marital_status_id);
+    const dwelling = await Dwelling.findByPk(dwelling_id);
 
-        if (!user) {
-            return res.status(404).json({ error: 'Usuario no encontrado' });
-        }
-
-        const maritalStatus = await MaritalStatus.findByPk(marital_status_id);
-        const dwelling = await Dwelling.findByPk(dwelling_id);
-
-        if (!maritalStatus) {
-            return res.status(404).json({ error: 'Estado civil no encontrado' });
-        }
-
-        if (!dwelling) {
-            return res.status(404).json({ error: 'Tipo de vivienda no encontrado' });
-        }
-
-        user.country_id = country_id;
-        user.city_id = city_id;
-        user.last_name = last_name;
-        user.user_name = user_name;
-        user.birthdate = birthdate;
-
-        if (user.Data) {
-            // Si ya existe el perfil de datos, lo actualiza
-            user.Data.marital_status_id = marital_status_id;
-            user.Data.dwelling_id = dwelling_id;
-            await user.Data.save();
-        } else {
-            // Si no existe, crea uno nuevo
-            const newData = await Data.create({
-                user_id: userId,  // Usa 'user_id' como la clave foránea
-                marital_status_id,
-                dwelling_id
-            });
-            user.Data = newData;
-        }
-
-        // Manejo del modelo Child
-        if (child && child > 0) {
-            // Si se recibe un número positivo para 'child', lo crea
-            await Child.create({
-                child: child
-            });
-        } else if (user.Child) {
-            // Si 'child' es 0 o no se recibe y existe un registro de Child, lo elimina
-            await user.Child.destroy();
-        }
-
-        await user.save();
-
-        res.status(200).json({
-            message: 'Perfil completado exitosamente',
-            user: {
-                id: user.user_id,
-                email: user.email,
-                country_id: user.country_id,
-                city_id: user.city_id,
-                last_name: user.last_name,
-                user_name: user.user_name,
-                birthdate: user.birthdate,
-                marital_status_id: user.Data.marital_status_id,
-                marital_status: maritalStatus.marital_status,
-                dwelling_id: user.Data.dwelling_id,
-                dwelling: dwelling.dwelling,
-                child: child > 0 ? child : null, // Se envía el valor de child si es mayor a 0
-            },
-        });
-
-    } catch (error) {
-        console.error('Error al completar el perfil del usuario:', error);
-        res.status(500).json({ error: 'Error al completar el perfil del usuario' });
+    if (!maritalStatus) {
+      return res.status(404).json({ error: "Estado civil no encontrado" });
     }
+
+    if (!dwelling) {
+      return res.status(404).json({ error: "Tipo de vivienda no encontrado" });
+    }
+    if (!occupation_id) {
+      return res.status(404).json({ error: "Ocupación no encontrada" });
+    }
+    user.user_id = user_id;
+    user.country_id = country_id;
+    user.city_id = city_id;
+    user.last_name = last_name;
+    user.user_name = user_name;
+    user.birthdate = birthdate;
+
+    if (user.Data) {
+      // Si ya existe el perfil de datos, lo actualiza
+      user.Data.marital_status_id = marital_status_id;
+      user.Data.dwelling_id = dwelling_id;
+      user.Data.occupation_id = occupation_id;
+      await user.Data.save();
+    } else {
+      // Si no existe, crea uno nuevo
+      const newData = await Data.create({
+        user_id: userId, // Usa 'user_id' como la clave foránea
+        marital_status_id,
+        dwelling_id,
+        occupation_id,
+      });
+      user.Data = newData;
+    }
+
+    // Manejo del modelo Child
+    if (child && child > 0) {
+      // Si se recibe un número positivo para 'child', lo crea
+      await Child.create({
+        child: child,
+      });
+    } else if (user.Child) {
+      // Si 'child' es 0 o no se recibe y existe un registro de Child, lo elimina
+      await user.Child.destroy();
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Perfil completado exitosamente",
+      user: {
+        id: user.user_id,
+        email: user.email,
+        country_id: user.country_id,
+        city_id: user.city_id,
+        last_name: user.last_name,
+        user_name: user.user_name,
+        birthdate: user.birthdate,
+        occupation_id: user.Data.occupation_id,
+        marital_status_id: user.Data.marital_status_id,
+        marital_status: maritalStatus.marital_status,
+        dwelling_id: user.Data.dwelling_id,
+        dwelling: dwelling.dwelling,
+        child: child > 0 ? child : null,
+      },
+    });
+    console.log(user);
+  } catch (error) {
+    console.error("Error al completar el perfil del usuario:", error);
+    res.status(500).json({ error: "Error al completar el perfil del usuario" });
+  }
 };
 
 const loginUser = async (req, res) => {
@@ -283,5 +313,5 @@ module.exports = {
     getAllUsers,
     getUserById,
     deleteUser
-};
 
+};

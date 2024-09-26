@@ -1,13 +1,13 @@
 require("dotenv").config();
 const express = require("express");
 
-const morgan = require('morgan');
+const morgan = require("morgan");
 const cors = require("cors");
-const passport = require('passport');
-const routes = require('./src/routes/index');
-const { sequelize } = require('./src/models/index'); 
-const { authenticateToken } = require('./src/middlewares/auth');
-require('./src/config/passport');
+const passport = require("passport");
+const routes = require("./src/routes/index");
+const { sequelize } = require("./src/models/index");
+const { authenticateToken } = require("./src/middlewares/auth");
+require("./src/config/passport");
 
 const app = express();
 

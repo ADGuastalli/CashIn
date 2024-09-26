@@ -115,21 +115,25 @@ const validateRegister = (
 
 const validateForm = (formData: IUserProfile): { [key: string]: string } => {
   const newErrors: { [key: string]: string } = {};
-  if (!formData.last_name) newErrors.last_name = "El apellido es obligatorio.";
+  if (!formData.user_name) newErrors.user_name = "* El nombre es obligatorio.";
+  if (!formData.last_name)
+    newErrors.last_name = "* El apellido es obligatorio.";
   if (!formData.email)
-    newErrors.email = "El correo electrónico es obligatorio.";
+    newErrors.email = "* El correo electrónico es obligatorio.";
   if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email))
-    newErrors.email = "El correo electrónico no es válido.";
-  if (!formData.country) newErrors.country = "El país es obligatorio.";
-  if (!formData.city) newErrors.city = "La ciudad es obligatoria.";
+    newErrors.email = "* El correo electrónico no es válido.";
+  if (!formData.country_id) newErrors.country_id = "* El país es obligatorio.";
+  if (!formData.occupation_id) {
+    newErrors.occupation_id = "* La situación laboral es obligatoria.";
+  }
+  if (!formData.marital_status_id) {
+    newErrors.marital_status_id = "* El estado civil es obligatorio.";
+  }
+  if (!formData.city_id) newErrors.city_id = "* La ciudad es obligatoria.";
   if (!formData.birthdate)
-    newErrors.birthdate = "La fecha de nacimiento es obligatoria.";
-  if (
-    isNaN(formData.cantidad_de_hijos as number) ||
-    (formData.cantidad_de_hijos as number) < 0
-  )
-    newErrors.cantidad_de_hijos =
-      "El número de hijos debe ser un número positivo.";
+    newErrors.birthdate = "* La fecha de nacimiento es obligatoria.";
+  if (isNaN(formData.child as number) || (formData.child as number) < 0)
+    newErrors.child = "* El número de hijos debe ser un número positivo.";
 
   return newErrors;
 };

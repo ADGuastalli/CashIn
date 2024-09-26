@@ -1,21 +1,16 @@
 interface IUserProfile {
-  id: string;
+  user_id: string;
+  user_name: string;
   last_name: string;
   email: string;
-  country: string;
-  city: string;
+  country_id: string;
+  city_id: string;
   birthdate: string;
-  ocupacion?:
-    | "independiente"
-    | "asalariado"
-    | "contratista"
-    | "emprendedor"
-    | "ama de casa"
-    | "estudiante";
+  occupation_id?: string;
   vivecon?: boolean;
-  hijos?: boolean;
-  cantidad_de_hijos?: number;
-  estadocivil?: string;
+  child: number;
+  marital_status_id?: string;
+  dwelling_id: string;
 }
 
 interface IUser {
@@ -72,6 +67,7 @@ interface IUserContext {
   user: IUser | null;
   userProfile: IUserProfile;
   setUser: React.Dispatch<React.SetStateAction<IUser | null>>;
+  setUserProfile: React.Dispatch<React.SetStateAction<IUserProfile>>;
   login: (credentials: ILogin) => Promise<boolean>;
   register: (credentials: IRegister) => Promise<boolean>;
   logout: () => void;

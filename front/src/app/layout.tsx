@@ -3,6 +3,7 @@ import "./globals.css";
 import { Montserrat } from "next/font/google";
 import { UserProvider } from "@/context/userContext";
 import { GastosProvider } from "@/context/gastosContext";
+import Footer from "@/components/Footer";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: "400" });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <UserProvider>
           <GastosProvider>{children}</GastosProvider>
         </UserProvider>
+        <Footer />
       </body>
     </html>
   );

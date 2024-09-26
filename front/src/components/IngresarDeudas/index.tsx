@@ -1,6 +1,6 @@
 "use client";
-import React, { useContext, useState } from "react";
-import { UserContext } from "../../context/userContext";
+import React, { useState } from "react";
+
 import Logo from "../../public/assets/svg/CASHIN-03.svg";
 import {
   Button_Menu,
@@ -13,7 +13,6 @@ import { Input } from "../ui/Input";
 import Swal from "sweetalert2";
 
 export default function PagarMisDeudasComponet() {
-  const { user } = useContext(UserContext);
   const [deuda, setDeuda] = useState("");
   const [monto, setMonto] = useState("");
   const [deudas, setDeudas] = useState<{ tipoDeuda: string; monto: string }[]>(
