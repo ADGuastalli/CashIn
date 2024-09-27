@@ -11,6 +11,7 @@ import Image from "next/image";
 import { Input } from "../ui/Input";
 import Link from "next/link";
 import { API } from "@/helpers/helper";
+import LoginGoogle from "../LoginGoogle";
 
 export default function LoginComponent() {
   const { login } = useContext(UserContext);
@@ -82,10 +83,6 @@ export default function LoginComponent() {
     }
   };
 
-  const handleGoogleLogin = () => {
-    window.location.href = `${API}/auth/google`;
-  };
-
   return (
     <form onSubmit={handleSubmit}>
       <div className="relative mb-6 flex flex-col items-center justify-center rounded">
@@ -155,13 +152,7 @@ export default function LoginComponent() {
         </button>
       </div>
       <div className="flex justify-center mt-4">
-        <button
-          type="button"
-          className="bg-[#4285F4] text-white py-2 px-5 rounded-md font-bold cursor-pointer"
-          onClick={handleGoogleLogin}
-        >
-          Ingresar con Google
-        </button>
+        <LoginGoogle />
       </div>
       <div>
         <Link href="/User/Register">
