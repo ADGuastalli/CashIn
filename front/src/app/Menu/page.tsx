@@ -18,6 +18,7 @@ export default function Menu() {
 
   useEffect(() => {
     console.log("Verificando autenticación:", isAuthenticated);
+    console.log("userProfile en menu:", userProfile);
 
     if (loading) return;
 

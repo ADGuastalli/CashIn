@@ -27,9 +27,7 @@ const bookController = require("../controllers/Book/book");
 const calendarControllers = require("../controllers/CalendarControllers/calendarController");
 const { authenticateToken } = require("../middlewares/auth");
 const paypalController = require("../controllers/Paypal/paypalController");
-const { googleAuth } = require("../controllers/Auth/google");
-const { facebookAuth } = require("../controllers/Auth/facebook");
-
+const googleAuthController = require("../controllers/Auth/google");
 const router = Router();
 
 router.post("/users", userController.postUser);
@@ -234,26 +232,8 @@ router.get("/course/:id", courseController.getCourseById);
 router.put("/course/:id", courseController.updateCourse);
 router.delete("/course/:id", courseController.deleteCourse);
 
-// Iniciar autenticación con Facebook
-router.get(
-  "/auth/facebook",
-  passport.authenticate("facebook", { scope: ["email"] })
-);
-
-// Callback de autenticación de Facebook
-router.get("/auth/facebook/callback", facebookAuth);
-
-// Iniciar autenticación con Google
-
-router.get(
-  "/auth/google",
-  passport.authenticate("google", {
-    scope: ["profile", "email", "https://www.googleapis.com/auth/calendar"],
-  })
-);
-
 // Callback de autenticación de Google
-router.get("/auth/google/callback", googleAuth);
+router.post("/auth/google", googleAuthController.googleAuth);
 
 // Paypal
 router.post(
