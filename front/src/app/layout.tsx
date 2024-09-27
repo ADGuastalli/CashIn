@@ -4,6 +4,7 @@ import { Montserrat } from "next/font/google";
 import { UserProvider } from "@/context/userContext";
 import { GastosProvider } from "@/context/gastosContext";
 import Footer from "@/components/Footer";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const montserrat = Montserrat({ subsets: ["latin"], weight: "400" });
 
@@ -21,7 +22,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <UserProvider>
-          <GastosProvider>{children}</GastosProvider>
+          <GoogleOAuthProvider
+            clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
+          >
+            <GastosProvider>{children}</GastosProvider>
+          </GoogleOAuthProvider>
         </UserProvider>
         <Footer />
       </body>

@@ -27,6 +27,7 @@ const Dwelling = require('./Dwelling');
 const Child = require('./Child');
 const Book = require('./Book');
 const Course = require('./Course');
+const IncomeCategory = require('./IncomeCategory');
 
 // Inicializar los modelos con la instancia de sequelize
 const models = {
@@ -44,6 +45,7 @@ const models = {
     Goal: Goal(sequelize, Sequelize.DataTypes),
     GoalCategory: GoalCategory(sequelize, Sequelize.DataTypes),
     Income: Income(sequelize, Sequelize.DataTypes),
+    IncomeCategory:  IncomeCategory(sequelize, Sequelize.DataTypes),
     MaritalStatus: MaritalStatus(sequelize, Sequelize.DataTypes),
     ModelData: ModelData(sequelize, Sequelize.DataTypes),
     MonthlyIncomeType: MonthlyIncomeType(sequelize, Sequelize.DataTypes),
@@ -111,10 +113,6 @@ models.PersonalProperty.belongsTo(models.Data, { foreignKey: 'data_id' });
 models.ExpenseCategory.hasMany(models.Expense, { foreignKey: 'expense_category_id' });
 models.Expense.belongsTo(models.ExpenseCategory, { foreignKey: 'expense_category_id' });
 
-// Income -> MonthlyIncomeType (Uno a muchos)
-models.MonthlyIncomeType.hasMany(models.Income, { foreignKey: 'income_category_id' });
-models.Income.belongsTo(models.MonthlyIncomeType, { foreignKey: 'income_category_id' });
-
 // Debt -> DebtCategory (Uno a muchos)
 models.DebtCategory.hasMany(models.Debt, { foreignKey: 'debt_category_id' });
 models.Debt.belongsTo(models.DebtCategory, { foreignKey: 'debt_category_id' });
@@ -126,6 +124,10 @@ models.Goal.belongsTo(models.GoalCategory, { foreignKey: 'goal_category_id' });
 // PersonalProperty -> PersonalPropertyType (Uno a muchos)
 models.PersonalPropertyType.hasMany(models.PersonalProperty, { foreignKey: 'personal_property_category_id' });
 models.PersonalProperty.belongsTo(models.PersonalPropertyType, { foreignKey: 'personal_property_category_id' });
+
+// Dentro de tu archivo de relaciones entre modelos
+models.IncomeCategory.hasMany(models.Income, { foreignKey: 'income_category_id' });
+models.Income.belongsTo(models.IncomeCategory, { foreignKey: 'income_category_id' });
 
 // Exportar sequelize y modelos
 module.exports = {

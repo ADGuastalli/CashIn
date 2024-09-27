@@ -1,20 +1,12 @@
-const {
-  User,
-  Country,
-  City,
-  MaritalStatus,
-  Dwelling,
-  Data,
-  Child,
-} = require("../../models/index");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+const { User, Country, City, MaritalStatus, Dwelling, Data, Child, sequelize } = require('../../models/index');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const postUser = async (req, res) => {
   const { email, password } = req.body;
 
-  // Validar que todos los datos necesarios estén presentes
+  // Validar que los datos requeridos estén presentes
   if (!email || !password) {
     return res.status(400).json({ error: "Faltan datos requeridos" });
   }
@@ -29,13 +21,16 @@ const postUser = async (req, res) => {
       password: hashedPassword,
     });
 
+    // Generar token JWT
     const jwtSecret = process.env.JWT_SECRET;
-
     const token = jwt.sign({ userId: newUser.id }, jwtSecret, {
       expiresIn: "24h",
     });
 
-    // Enviar la respuesta con el usuario y el token
+    // Llamar a la función para crear el registro en Data
+    await createDataForUser(newUser.user_id);
+
+    // Enviar respuesta
     res.status(201).json({
       id: newUser.user_id,
       email: newUser.email,
@@ -44,6 +39,19 @@ const postUser = async (req, res) => {
   } catch (error) {
     console.error("Error al crear el usuario:", error);
     res.status(400).json({ error: "Error al crear el usuario" });
+  }
+};
+
+const createDataForUser = async (userId) => {
+  try {
+    // Crear el registro en Data asociado al usuario
+    await Data.create({
+      user_id: userId, // Asociar el ID del usuario recién creado
+      // Puedes agregar valores adicionales para otras columnas si es necesario
+    });
+  } catch (error) {
+    console.error("Error al crear el registro en Data:", error);
+    throw error;  // Propagar el error si algo falla
   }
 };
 

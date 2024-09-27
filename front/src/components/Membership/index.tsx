@@ -1,11 +1,35 @@
-import React from "react";
+"use client";
+import React, { useContext, useEffect } from "react";
 import Link from "next/link";
 import { Button_Menu } from "../ui/Buttons";
 import Logo from "../../public/assets/svg/CASHIN-03.svg";
 import Image from "next/image";
 import PlanesComponet from "./planes";
+import { UserContext } from "@/context/userContext";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 export default function MembershipComponet() {
+  const { isAuthenticated } = useContext(UserContext);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      Swal.fire({
+        title: "Acceso denegado",
+        text: "Para ver nuestras membresías, debes estar logueado.",
+        icon: "warning",
+        confirmButtonText: "Ir a Login",
+        allowOutsideClick: false,
+        showCloseButton: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/User/Login"); // Redirigir a la página de login
+        }
+      });
+    }
+  }, [isAuthenticated, router]);
+
   return (
     <div>
       <div>
@@ -20,7 +44,7 @@ export default function MembershipComponet() {
             ¡HOLA! ¿Quieres conocer todo nuestro potencial?
           </h1>
           <h2 className="text-xl mt-1">
-            Selecciona la mejor membrecia para ti.
+            Selecciona la mejor membresía para ti.
           </h2>
         </div>
         <div className="mt-10">
