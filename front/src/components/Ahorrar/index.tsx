@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useContext, useEffect, useState } from "react";
 import Logo from "../../public/assets/svg/CASHIN-03.svg";
 import { Button_Menu } from "../ui/Buttons";
 import Link from "next/link";
@@ -7,8 +8,44 @@ import ImgEmer from "../../public/assets/svg/ambulance.svg";
 import ImgMeta from "../../public/assets/svg/suitcase.svg";
 import ImgRetiro from "../../public/assets/svg/old-couple.svg";
 import ImgVaca from "../../public/assets/svg/air-freight.svg";
+import { UserContext } from "@/context/userContext";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 export default function Ahorrarcomponet() {
+  const { isAuthenticated } = useContext(UserContext);
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (isAuthenticated !== undefined) {
+      setLoading(false);
+    }
+  }, [isAuthenticated]);
+
+  useEffect(() => {
+    if (loading) return;
+
+    if (!isAuthenticated) {
+      Swal.fire({
+        title: "Acceso denegado",
+        text: "Para ingresar debes estar logueado.",
+        icon: "warning",
+        confirmButtonText: "Ir a Login",
+        allowOutsideClick: false,
+        showCloseButton: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/User/Login");
+        }
+      });
+    }
+  }, [loading, isAuthenticated, router]);
+
+  if (loading) {
+    return null; // Aquí puedes mostrar un spinner si lo deseas
+  }
+
   return (
     <div>
       <div>

@@ -27,9 +27,7 @@ const bookController = require('../controllers/Book/book');
 const calendarControllers = require('../controllers/CalendarControllers/calendarController')
 const incomeCategoryController = require('../controllers/IncomeCategory/IncomeCategory');
 const { authenticateToken } = require('../middlewares/auth');
-const { googleAuth } = require("../controllers/Auth/google");
-const { facebookAuth } = require("../controllers/Auth/facebook");
-
+const googleAuthController = require("../controllers/Auth/google");
 
 const router = Router();
 
@@ -179,17 +177,22 @@ router.put('/course/:id', courseController.updateCourse);
 router.delete('/course/:id', courseController.deleteCourse);
 
 
-router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-router.get('/auth/facebook/callback', facebookAuth);
-router.get('/auth/google', passport.authenticate('google', { scope: [
-    'profile',
-    'email',
-    'https://www.googleapis.com/auth/calendar'
-] }));
-router.get('/auth/google/callback', googleAuth);
+// Callback de autenticación de Google
+router.post("/auth/google", googleAuthController.googleAuth);
 
-router.get('/events', calendarControllers.getEvents);
-router.post('/create-event', calendarControllers.createEvent);
+// Paypal
+router.post(
+  "/my-server/create-paypal-order",
+  paypalController.createPaypalOrder
+);
 
+router.post(
+  "/my-server/capture-paypal-order",
+  paypalController.capturePaypalOrder
+);
 
-module.exports = router
+router.get("/events", calendarControllers.getEvents);
+router.post("/create-event", calendarControllers.createEvent);
+router.get("/available-slots", calendarControllers.getAvailableSlots);
+
+module.exports = router;

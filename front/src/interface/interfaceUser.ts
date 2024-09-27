@@ -1,5 +1,6 @@
 interface IUserProfile {
   user_id: string;
+  id?: string;
   user_name: string;
   last_name: string;
   email: string;
@@ -23,6 +24,8 @@ interface IUser {
   status: boolean;
   role: string;
   user_name: string;
+  user_id: string;
+  id?: string;
 }
 
 interface ILogin {
@@ -75,6 +78,7 @@ interface IUserContext {
   setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
   isProfileComplete: boolean;
   setIsProfileComplete: React.Dispatch<React.SetStateAction<boolean>>;
+  handleGoogleLogin: (userData: IUser) => void;
 }
 
 export type {

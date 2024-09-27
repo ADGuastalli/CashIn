@@ -96,7 +96,7 @@ export function Button_Menu() {
   );
 }
 
-export function Button_LeerMAs({ children, ...props }: Props) {
+export function Button_LeerMAs() {
   return (
     <button
       className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
