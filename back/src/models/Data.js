@@ -10,6 +10,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,   // Columna para almacenar el ID de Expense
       allowNull: true,
     },
+    user_id: {
+      type: DataTypes.INTEGER,   // Clave foránea para relacionar con User
+      allowNull: false,          // Este campo no debe ser nulo
+    },
     status_id: {
       type: DataTypes.INTEGER,   // Columna para almacenar el ID de Status
       allowNull: true,
