@@ -25,7 +25,6 @@ interface OrderData {
   }>;
   debug_id?: string;
 }
-
 const Button_Paypal = () => {
   const initialOptions: ReactPayPalScriptOptions = {
     clientId:

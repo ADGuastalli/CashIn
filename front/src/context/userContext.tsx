@@ -92,6 +92,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       typeof window !== "undefined" &&
         localStorage.setItem("user", JSON.stringify(completeUser.user_id)); // Guarda el usuario completo
     }
+
   };
 
   const register = async (user: IRegister) => {
