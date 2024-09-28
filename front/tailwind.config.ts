@@ -19,7 +19,7 @@ const config: Config = {
         aux_ok_status: "#B3EDD7",
         bad_status: "#F77354",
         text_title: "#065D69",
-        text_color: "#0396A6"
+        text_color: "#0396A6",
       },
     },
   },
