@@ -36,7 +36,7 @@ export default function Menu() {
         }
       });
     }
-  }, [loading, isAuthenticated, router]);
+  }, [loading, isAuthenticated, userProfile, router]); // Agregado userProfile aquí
 
   useEffect(() => {
     if (isAuthenticated !== undefined) {

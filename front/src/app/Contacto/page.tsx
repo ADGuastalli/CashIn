@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button_Home } from "@/components/ui/Buttons";
 import ContactMail from "@/components/SolicitudFinanciera";
-import ConcretarCita from "@/components/CitaCalendario";
 
 export default function Contacto() {
   return (
