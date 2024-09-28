@@ -16,11 +16,12 @@ export default function Menu() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
+  // Solo ejecutar este efecto cuando el estado de autenticación esté listo
   useEffect(() => {
+    if (loading || isAuthenticated === undefined) return;
+
     console.log("Verificando autenticación:", isAuthenticated);
     console.log("userProfile en menu:", userProfile);
-
-    if (loading) return;
 
     if (!isAuthenticated) {
       Swal.fire({
@@ -36,16 +37,18 @@ export default function Menu() {
         }
       });
     }
-  }, [loading, isAuthenticated, userProfile, router]); // Agregado userProfile aquí
+  }, [loading, isAuthenticated, userProfile, router]);
 
+  // Este efecto se asegura de que el estado de carga se desactive
   useEffect(() => {
     if (isAuthenticated !== undefined) {
       setLoading(false);
     }
   }, [isAuthenticated]);
 
+  // Mostrar un indicador de carga en lugar de devolver null
   if (loading) {
-    return null;
+    return <div>Cargando...</div>; // O puedes usar un spinner o algo visualmente más atractivo
   }
 
   return (
@@ -57,7 +60,7 @@ export default function Menu() {
       </div>
       <div className="flex flex-col justify-center items-center min-h-screen">
         {hasNullProperties(userProfile) && (
-          <ModalFormComplete router={router} user_id={userProfile.user_id} />
+          <ModalFormComplete router={router} user_id={userProfile?.user_id} />
         )}
         <Image
           src={Logo}
@@ -69,7 +72,7 @@ export default function Menu() {
         <h1 className="text-3xl mt-6 mb-4">
           ¿Qué deseas hacer con nuestra app{" "}
           <span className="font-bold">
-            {userProfile.last_name || userProfile.email}
+            {userProfile?.last_name || userProfile?.email}
           </span>
           ?
         </h1>
