@@ -10,7 +10,7 @@ export default function Register() {
   return (
     <div>
       <div className="flex mt-3 ml-3">
-        <Link href="/">
+        <Link href="/User/Login">
           <ButtonBack />
         </Link>
       </div>
