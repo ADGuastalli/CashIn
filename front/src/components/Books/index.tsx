@@ -15,10 +15,11 @@ const style: React.CSSProperties = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: "90%", // Adjust width for mobile screens
-  maxWidth: 500, // Maximum width for larger screens
+  width: "90%",
+  maxWidth: 500,
   backgroundColor: "background.paper",
   border: "2px solid #0095a9",
+  borderRadius: "20px",
   boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
   padding: 4,
 };
@@ -42,8 +43,8 @@ export default function BooksComponet() {
 
   useEffect(() => {
     AOS.init({
-      duration: 1000, // Duración de la animación (1000ms = 1s)
-      once: true, // La animación solo sucede una vez al hacer scroll hacia abajo
+      duration: 1000,
+      once: true,
     });
   }, []);
 
@@ -51,15 +52,15 @@ export default function BooksComponet() {
     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 justify-items-center">
       <div data-aos="fade-up">
         <Card
-          sx={{ maxWidth: { xs: "100%", md: 280 } }}
-          className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
+          sx={{ maxWidth: { xs: "100%", md: 350 } }}
+          className="hover:scale-105 transition-transform duration-300 bg-[#0095a919] "
         >
           <Image
             src="https://i.postimg.cc/yd9M4nwX/libro1.png"
             alt="Academia de educación Financiera 1"
             width={345}
             height={345}
-            style={{ width: "100%", height: "auto", padding: "10px" }} // Responsive image styling
+            style={{ width: "100%", height: "auto", padding: "50px" }} // Responsive image styling
           />
           <CardContent>
             <Typography
@@ -117,7 +118,7 @@ export default function BooksComponet() {
 
       <div data-aos="fade-up">
         <Card
-          sx={{ maxWidth: { xs: "100%", md: 280 } }}
+          sx={{ maxWidth: { xs: "100%", md: 350 } }}
           className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
         >
           <Image
@@ -125,7 +126,7 @@ export default function BooksComponet() {
             alt="Academia de educación Financiera 2"
             width={345}
             height={345}
-            style={{ width: "100%", height: "auto", padding: "10px" }}
+            style={{ width: "100%", height: "auto", padding: "50px" }}
           />
           <CardContent>
             <Typography
@@ -181,7 +182,7 @@ export default function BooksComponet() {
 
       <div data-aos="fade-up">
         <Card
-          sx={{ maxWidth: { xs: "100%", md: 280 } }}
+          sx={{ maxWidth: { xs: "100%", md: 350 } }}
           className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
         >
           <Image
@@ -189,7 +190,7 @@ export default function BooksComponet() {
             alt="Academia de educación Financiera 3"
             width={345}
             height={345}
-            style={{ width: "100%", height: "auto", padding: "10px" }}
+            style={{ width: "100%", height: "auto", padding: "50px" }}
           />
           <CardContent>
             <Typography
@@ -245,7 +246,7 @@ export default function BooksComponet() {
 
       <div data-aos="fade-up">
         <Card
-          sx={{ maxWidth: { xs: "100%", md: 280 } }}
+          sx={{ maxWidth: { xs: "100%", md: 350 } }}
           className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
         >
           <Image
@@ -253,7 +254,7 @@ export default function BooksComponet() {
             alt="Academia de educación Financiera 4"
             width={345}
             height={345}
-            style={{ width: "100%", height: "auto", padding: "10px" }}
+            style={{ width: "100%", height: "auto", padding: "50px" }}
           />
           <CardContent>
             <Typography
