@@ -26,6 +26,7 @@ const courseController = require('../controllers/Course/course');
 const bookController = require('../controllers/Book/book');
 const calendarControllers = require('../controllers/CalendarControllers/calendarController')
 const incomeCategoryController = require('../controllers/IncomeCategory/IncomeCategory');
+const financialLevelController = require('../controllers/FinancialLevel/financialLevel');
 const { authenticateToken } = require('../middlewares/auth');
 const { googleAuth } = require("../controllers/Auth/google");
 const { facebookAuth } = require("../controllers/Auth/facebook");
@@ -178,6 +179,11 @@ router.get('/course/:id', courseController.getCourseById);
 router.put('/course/:id', courseController.updateCourse);
 router.delete('/course/:id', courseController.deleteCourse);
 
+router.post('/finzanciallevel', financialLevelController.createFinancialLevel);
+router.get('/finzanciallevel', financialLevelController.getAllFinancialLevels);
+router.get('/finzanciallevel/:id', financialLevelController.getFinancialLevelById);
+router.put('/finzanciallevel/:id', financialLevelController.updateFinancialLevel);
+router.delete('/finzanciallevel/:id', financialLevelController.deleteFinancialLevel);
 
 router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 router.get('/auth/facebook/callback', facebookAuth);
