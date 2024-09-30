@@ -59,6 +59,10 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING(255),
       allowNull: true,
+    },
+    premium: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     }
   }, {
     tableName: 'User',              

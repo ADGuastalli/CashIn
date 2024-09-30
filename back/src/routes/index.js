@@ -27,6 +27,7 @@ const bookController = require('../controllers/Book/book');
 const calendarControllers = require('../controllers/CalendarControllers/calendarController')
 const incomeCategoryController = require('../controllers/IncomeCategory/IncomeCategory');
 const financialLevelController = require('../controllers/FinancialLevel/financialLevel');
+const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expenses')
 const { authenticateToken } = require('../middlewares/auth');
 const { googleAuth } = require("../controllers/Auth/google");
 const { facebookAuth } = require("../controllers/Auth/facebook");
@@ -196,6 +197,9 @@ router.get('/auth/google/callback', googleAuth);
 
 router.get('/events', calendarControllers.getEvents);
 router.post('/create-event', calendarControllers.createEvent);
+
+router.get('/incomesExpenses/totalincome/:id', calculatorInconmeExpenses.calculateTotalIncome)
+router.get('/incomesExpenses/calculatetotalmortgagedebt/:id', calculatorInconmeExpenses.calculateTotalMortgageDebt)
 
 
 module.exports = router
