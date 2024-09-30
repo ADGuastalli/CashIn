@@ -106,37 +106,37 @@ export default function Navbar() {
                   Cerrar Sesión
                 </button>
               </div>
-              {/* Hamburger Menu for Small Screens */}
-              <button
-                className="flex items-center lg:hidden"
-                onClick={() => setIsActive(!isActive)}
-              >
-                <svg
-                  className="w-10 h-10 text-[#016285]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16m-7 6h7"
-                  />
-                </svg>
-              </button>
             </>
           ) : (
             <Link href="/User/Login">
               <Button_actions>Iniciar sesión</Button_actions>
             </Link>
           )}
+          {/* Hamburger Menu Button (always visible) */}
+          <button
+            className="flex items-center lg:hidden ml-5"
+            onClick={() => setIsActive(!isActive)}
+          >
+            <svg
+              className="w-10 h-10 text-[#016285]"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h16m-7 6h7"
+              />
+            </svg>
+          </button>
         </div>
       </div>
 
       {/* Hamburger Menu for Small Screens */}
-      {isActive && isAuthenticated && (
+      {isActive && (
         <div className="lg:hidden flex flex-col space-y-2 mt-2 w-full text-left">
           <div className="flex flex-col items-start space-y-2">
             <Link href="/Menu" onClick={handleMenuClick}>
@@ -169,20 +169,24 @@ export default function Navbar() {
                 CONTACTO
               </Button_nadvar>
             </Link>
-            <div className="flex flex-grow items-center">
-              <div className="ml-5 mr-32">
-                <Link href="/Menu">
-                  <Button_Menu />
-                </Link>
-              </div>
-              <button
-                onClick={handleLogout}
-                className="font-bold rounded-xl bg-bad_status text-white px-4 py-2 m-2 text-sm 
-                    transition-transform duration-300 transform hover:scale-105"
-              >
-                Cerrar Sesión
-              </button>
-            </div>
+            {isAuthenticated && (
+              <>
+                <div className="flex flex-grow items-center">
+                  <div className="ml-5 mr-32">
+                    <Link href="/Menu">
+                      <Button_Menu />
+                    </Link>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="font-bold rounded-xl bg-bad_status text-white px-4 py-2 m-2 text-sm 
+                      transition-transform duration-300 transform hover:scale-105"
+                  >
+                    Cerrar Sesión
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}
