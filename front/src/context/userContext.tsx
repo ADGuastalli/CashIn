@@ -23,6 +23,7 @@ export const UserContext = createContext<IUserContext>({
   setIsAuthenticated: () => {},
   isProfileComplete: false,
   setIsProfileComplete: () => {},
+  loading: true,
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -32,6 +33,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   );
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isProfileComplete, setIsProfileComplete] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
   const login = async (credentials: ILogin) => {
@@ -92,7 +94,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       typeof window !== "undefined" &&
         localStorage.setItem("user", JSON.stringify(completeUser.user_id)); // Guarda el usuario completo
     }
-
   };
 
   const register = async (user: IRegister) => {
@@ -133,6 +134,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       setIsAuthenticated(true);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -146,6 +148,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     } else {
       setUser(null);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -180,6 +183,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         isProfileComplete,
         setIsProfileComplete,
         setIsAuthenticated,
+        loading,
       }}
     >
       {children}

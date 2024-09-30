@@ -31,11 +31,28 @@ export function Button_rounded({ children, ...props }: Props) {
   );
 }
 
+// Define the Props interface for TypeScript
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+}
+
 export function Button_actions({ children, ...props }: Props) {
   return (
     <button
-      className="flex justify-center w-full bg-actions  text-aux_actions 
-         py-2 px-4 mx-2 my-2 rounded-sm"
+      className="
+        flex justify-center 
+        w-full 
+        bg-actions 
+        text-aux_actions 
+        py-2 px-1 
+        mx-2 my-2 
+        rounded-sm 
+        transition-all 
+        duration-300 
+        hover:bg-actions-hover 
+        md:py-2 md:px-6 
+        lg:py-2 lg:px-8
+      "
       {...props}
     >
       {children}
@@ -95,8 +112,8 @@ export function Button_nadvar({ children, ...props }: Props) {
 export function Button_Menu() {
   return (
     <button
-      className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
-      transition-transform duration-300 transform hover:scale-105"
+      className="font-bold rounded-xl bg-second text-white px-4 py-2 m-2 text-sm 
+      transition-transform duration-300 transform hover:scale-105 w-full sm:w-auto"
     >
       MENU
     </button>

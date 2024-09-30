@@ -79,6 +79,7 @@ interface IUserContext {
   isProfileComplete: boolean;
   setIsProfileComplete: React.Dispatch<React.SetStateAction<boolean>>;
   handleGoogleLogin: (userData: IUser) => void;
+  loading: boolean;
 }
 
 export type {

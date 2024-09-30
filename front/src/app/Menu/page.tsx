@@ -53,7 +53,7 @@ export default function Menu() {
 
   return (
     <div>
-      <div>
+      <div className="mt-3 ml-3">
         <Link href={"/"}>
           <Button_Home />
         </Link>
