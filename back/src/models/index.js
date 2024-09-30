@@ -28,6 +28,7 @@ const Child = require('./Child');
 const Book = require('./Book');
 const Course = require('./Course');
 const IncomeCategory = require('./IncomeCategory');
+const FinancialLevel = require('./FinancialLevel')
 
 // Inicializar los modelos con la instancia de sequelize
 const models = {
@@ -42,6 +43,7 @@ const models = {
     Dwelling: Dwelling(sequelize, Sequelize.DataTypes),
     Expense: Expense(sequelize, Sequelize.DataTypes),
     ExpenseCategory: ExpenseCategory(sequelize, Sequelize.DataTypes),
+    FinancialLevel: FinancialLevel(sequelize, Sequelize.DataTypes),
     Goal: Goal(sequelize, Sequelize.DataTypes),
     GoalCategory: GoalCategory(sequelize, Sequelize.DataTypes),
     Income: Income(sequelize, Sequelize.DataTypes),
@@ -128,6 +130,10 @@ models.PersonalProperty.belongsTo(models.PersonalPropertyType, { foreignKey: 'pe
 // Dentro de tu archivo de relaciones entre modelos
 models.IncomeCategory.hasMany(models.Income, { foreignKey: 'income_category_id' });
 models.Income.belongsTo(models.IncomeCategory, { foreignKey: 'income_category_id' });
+
+// FinancialLevel -> Data (Uno a muchos)
+models.FinancialLevel.hasMany(models.Data, { foreignKey: 'financial_level_id' });
+models.Data.belongsTo(models.FinancialLevel, { foreignKey: 'financial_level_id' });
 
 // Exportar sequelize y modelos
 module.exports = {
