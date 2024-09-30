@@ -11,7 +11,7 @@ export function Button_actions_rounded({ children, ...props }: Props) {
       {...props}
     >
       {React.isValidElement(children)
-        ? React.cloneElement(children as React.ReactElement<any>, {
+        ? React.cloneElement(children as React.ReactElement, {
             className: "w-6 h-6",
           })
         : children}
