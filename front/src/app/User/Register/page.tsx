@@ -27,9 +27,9 @@ export default function Register() {
           alt="Imagen1"
           width={300}
           height={300}
-          className="my-5"
+          className="my-5 w-[50%] sm:w-[300px]"
         />
-        <h1 className="text-5xl text-center mb-10">
+        <h1 className="lg:text-3xl md:text-2xl text-2xl text-center mb-10">
           <span className="font-bold">¡Hola!</span> Bienvenido(a){" "}
           <span className="font-bold">¿Quieres Registrarte?</span>
         </h1>
