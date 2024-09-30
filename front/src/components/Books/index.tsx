@@ -1,20 +1,22 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Image from "next/image";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const style: React.CSSProperties = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 500,
+  width: "90%", // Adjust width for mobile screens
+  maxWidth: 500, // Maximum width for larger screens
   backgroundColor: "background.paper",
   border: "2px solid #0095a9",
   boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
@@ -38,30 +40,45 @@ export default function BooksComponet() {
   const handleOpen4 = () => setOpen4(true);
   const handleClose4 = () => setOpen4(false);
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Duración de la animación (1000ms = 1s)
+      once: true, // La animación solo sucede una vez al hacer scroll hacia abajo
+    });
+  }, []);
+
   return (
-    <div className="grid grid-cols-4 grid-rows-1 gap-12">
-      <div>
-        <Card sx={{ maxWidth: 280 }}>
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 justify-items-center">
+      <div data-aos="fade-up">
+        <Card
+          sx={{ maxWidth: { xs: "100%", md: 280 } }}
+          className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
+        >
           <Image
             src="https://i.postimg.cc/yd9M4nwX/libro1.png"
             alt="Academia de educación Financiera 1"
             width={345}
             height={345}
+            style={{ width: "100%", height: "auto", padding: "10px" }} // Responsive image styling
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 1
             </Typography>
           </CardContent>
           <CardActions>
-            <Button
-              size="small"
-              onClick={handleOpen2}
+            <button
+              onClick={handleOpen1}
               className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
       transition-transform duration-300 transform hover:scale-105"
             >
               Leer más
-            </Button>
+            </button>
           </CardActions>
         </Card>
         <Modal
@@ -71,7 +88,12 @@ export default function BooksComponet() {
           aria-describedby="modal-modal-description1"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title1" variant="h6" component="h2">
+            <Typography
+              id="modal-modal-title1"
+              variant="h6"
+              component="h2"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 1
             </Typography>
             <Typography id="modal-modal-description1" sx={{ mt: 2 }}>
@@ -93,28 +115,36 @@ export default function BooksComponet() {
         </Modal>
       </div>
 
-      <div>
-        <Card sx={{ maxWidth: 280 }}>
+      <div data-aos="fade-up">
+        <Card
+          sx={{ maxWidth: { xs: "100%", md: 280 } }}
+          className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
+        >
           <Image
             src="https://i.postimg.cc/nrGNMrVX/libro2.png"
             alt="Academia de educación Financiera 2"
             width={345}
             height={345}
+            style={{ width: "100%", height: "auto", padding: "10px" }}
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 2
             </Typography>
           </CardContent>
           <CardActions>
-            <Button
-              size="small"
+            <button
               onClick={handleOpen2}
               className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
       transition-transform duration-300 transform hover:scale-105"
             >
               Leer más
-            </Button>
+            </button>
           </CardActions>
         </Card>
         <Modal
@@ -124,7 +154,12 @@ export default function BooksComponet() {
           aria-describedby="modal-modal-description2"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title2" variant="h6" component="h2">
+            <Typography
+              id="modal-modal-title2"
+              variant="h6"
+              component="h2"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 2
             </Typography>
             <Typography id="modal-modal-description2" sx={{ mt: 2 }}>
@@ -144,28 +179,36 @@ export default function BooksComponet() {
         </Modal>
       </div>
 
-      <div>
-        <Card sx={{ maxWidth: 272 }}>
+      <div data-aos="fade-up">
+        <Card
+          sx={{ maxWidth: { xs: "100%", md: 280 } }}
+          className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
+        >
           <Image
             src="https://i.postimg.cc/hvBHSTnF/libro3.png"
             alt="Academia de educación Financiera 3"
             width={345}
             height={345}
+            style={{ width: "100%", height: "auto", padding: "10px" }}
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 3
             </Typography>
           </CardContent>
           <CardActions>
-            <Button
-              size="small"
-              onClick={handleOpen2}
+            <button
+              onClick={handleOpen3}
               className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
       transition-transform duration-300 transform hover:scale-105"
             >
               Leer más
-            </Button>
+            </button>
           </CardActions>
         </Card>
         <Modal
@@ -175,46 +218,61 @@ export default function BooksComponet() {
           aria-describedby="modal-modal-description3"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title3" variant="h6" component="h2">
+            <Typography
+              id="modal-modal-title3"
+              variant="h6"
+              component="h2"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 3
             </Typography>
             <Typography id="modal-modal-description3" sx={{ mt: 2 }}>
-              sus diez capítulos, de ver la historia de la globalización, el
-              internet, comercio electrónico, los productos y servicios
-              bancarios, las deudas, las inversiones, las deducciones fiscales,
-              la inflación y el emprendurísmo. Las competencias a desarrollar
-              son la inteligencia comercial, inteligencia financiera y la
-              inteligencia intelectual. Adicionalmente tendrá que utilizar sus
-              conocimientos matemáticos para resolver algunos de los problemas
-              planteados al utilizar las fórmulas de cálculos de interés y las
-              tasas de rendimiento, ejercicios de calculo del capital.
+              En “Academia de educación Financiera 3” el participante tendrá la
+              oportunidad, en el desarrollo de sus diez capítulos, de ver la
+              historia de la globalización, el internet, comercio electrónico,
+              los productos y servicios bancarios, las deudas, las inversiones,
+              las deducciones fiscales, la inflación y el emprendurísmo. Las
+              competencias a desarrollar son la inteligencia comercial,
+              inteligencia financiera y la inteligencia intelectual.
+              Adicionalmente tendrá que utilizar sus conocimientos matemáticos
+              para resolver algunos de los problemas planteados al utilizar las
+              fórmulas de cálculos de interés y las tasas de rendimiento,
+              ejercicios de calculo del capital.
             </Typography>
           </Box>
         </Modal>
       </div>
 
-      <div>
-        <Card sx={{ maxWidth: 272 }}>
+      <div data-aos="fade-up">
+        <Card
+          sx={{ maxWidth: { xs: "100%", md: 280 } }}
+          className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
+        >
           <Image
             src="https://i.postimg.cc/kMQ0T1N7/libro4.png"
             alt="Academia de educación Financiera 4"
             width={345}
             height={345}
+            style={{ width: "100%", height: "auto", padding: "10px" }}
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 4
             </Typography>
           </CardContent>
           <CardActions>
-            <Button
-              size="small"
-              onClick={handleOpen2}
-              className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
-      transition-transform duration-300 transform hover:scale-105"
+            <button
+              onClick={handleOpen4}
+              className="font-bold rounded-xl bg-[#A0E4EB] text-white px-6 py-1 m-2 text-xl 
+              transition-transform duration-300 transform hover:scale-105"
             >
               Leer más
-            </Button>
+            </button>
           </CardActions>
         </Card>
         <Modal
@@ -224,7 +282,12 @@ export default function BooksComponet() {
           aria-describedby="modal-modal-description4"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title4" variant="h6" component="h2">
+            <Typography
+              id="modal-modal-title4"
+              variant="h6"
+              component="h2"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 4
             </Typography>
             <Typography id="modal-modal-description4" sx={{ mt: 2 }}>

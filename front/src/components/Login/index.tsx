@@ -10,6 +10,7 @@ import eyeClouse from "../../public/assets/svg/eye-slash-svgrepo-com.svg";
 import Image from "next/image";
 import { Input } from "../ui/Input";
 import Link from "next/link";
+import LoginGoogle from "../LoginGoogle";
 
 export default function LoginComponent() {
   const { login } = useContext(UserContext);
@@ -47,9 +48,9 @@ export default function LoginComponent() {
       if (success) {
         Swal.fire({
           title: "¡Login Exitoso!",
-          text: "Serás redirigido en 3 segundos...",
+          text: "Serás redirigido en 2 segundos...",
           icon: "success",
-          timer: 3000,
+          timer: 2000,
           showConfirmButton: false,
         });
 
@@ -149,7 +150,10 @@ export default function LoginComponent() {
           Ingresar
         </button>
       </div>
-      <div>
+      <div className="flex justify-center mt-4 w-full py-2 px-4 mx-2 my-2">
+        <LoginGoogle />
+      </div>
+      <div className="flex justify-center mt-4 mb-20">
         <Link href="/User/Register">
           <p className="text-center mt-4">¿No tienes cuenta? Registrate</p>
         </Link>

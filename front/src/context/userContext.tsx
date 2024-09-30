@@ -16,6 +16,7 @@ export const UserContext = createContext<IUserContext>({
   setUser: () => {},
   setUserProfile: () => {},
   login: async () => false,
+  handleGoogleLogin: () => {},
   register: async () => false,
   logout: () => {},
   isAuthenticated: false,
@@ -41,19 +42,57 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       if (!data.token) {
         throw new Error("Invalid Token");
       }
+      typeof window !== "undefined" && localStorage.clear();
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.id));
+      typeof window !== "undefined" &&
+        localStorage.setItem("token", data.token);
+      typeof window !== "undefined" &&
+        localStorage.setItem("user", JSON.stringify(data.id));
 
       setIsAuthenticated(true);
 
       setUser(data.id);
-      router.push("/");
       return true;
     } catch (error) {
       console.log(error);
       throw error;
     }
+  };
+
+  const handleGoogleLogin = async (userData: IUser) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      console.log("userData de Google", userData);
+      setIsAuthenticated(true);
+
+      // Llama a tu API para obtener los datos actualizados del usuario
+      const userId = userData.user_id; // Asegúrate de tener el user_id correcto aquí
+      const dataUser = await getUser_Id(userId, token); // Obtén los datos del perfil
+
+      // Transformar dataUser a IUser
+      const completeUser: IUser = {
+        name: dataUser.user_name, // Asegúrate de que esto sea correcto
+        email: dataUser.email,
+        password: "", // Manejar la contraseña apropiadamente
+        country: dataUser.country_id, // Asume que country_id se mapea a country
+        city: dataUser.city_id, // Asume que city_id se mapea a city
+        birthdate: new Date(dataUser.birthdate), // Asegúrate de convertir correctamente
+        status: true, // Define el valor predeterminado según tu lógica
+        role: "user", // Define el valor predeterminado según tu lógica
+        user_name: dataUser.user_name,
+        user_id: dataUser.user_id,
+      };
+
+      setUser(completeUser); // Actualiza el usuario con los datos completos
+      setIsProfileComplete(checkProfileComplete(completeUser));
+
+      // Almacena en localStorage
+      typeof window !== "undefined" && localStorage.setItem("token", token);
+      typeof window !== "undefined" &&
+        localStorage.setItem("user", JSON.stringify(completeUser.user_id)); // Guarda el usuario completo
+    }
+
   };
 
   const register = async (user: IRegister) => {
@@ -67,8 +106,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    typeof window !== "undefined" && localStorage.removeItem("token");
+    typeof window !== "undefined" && localStorage.removeItem("user");
     setUser({} as IUser);
     setIsAuthenticated(false);
     setIsProfileComplete(false);
@@ -80,6 +119,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (typeof token === "string") {
       const dataUser = await getUser_Id(user, token);
+      console.log("dataUser:", dataUser);
+
       setUserProfile(dataUser);
     } else {
       console.error("Token inválido. No se pudo obtener los datos del perfil.");
@@ -108,7 +149,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const user = typeof window !== "undefined" && localStorage.getItem("user");
     const token =
       typeof window !== "undefined" && localStorage.getItem("token");
     if (user) getUserDataProfile(JSON.parse(user), token as string);
@@ -132,6 +173,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setUser,
         setUserProfile,
         login,
+        handleGoogleLogin,
         register,
         logout,
         isAuthenticated,
