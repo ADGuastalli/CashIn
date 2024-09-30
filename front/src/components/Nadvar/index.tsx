@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/Buttons";
 
 export default function Navbar() {
-  const { isAuthenticated, logout } = useContext(UserContext);
+  const { isAuthenticated, logout, userProfile } = useContext(UserContext);
   const [isActive, setIsActive] = useState(false);
 
   const handleLogout = () => {
@@ -93,7 +93,9 @@ export default function Navbar() {
         <div className="flex items-center">
           {isAuthenticated ? (
             <>
-              {/* User Logo and Logout Button for Large Screens */}
+              <p className="text-center font-bold lg:text-base">
+                Bienvenido {userProfile?.user_name}
+              </p>
               <div className="hidden lg:flex items-center space-x-4">
                 <Link href="/Menu">
                   <Button_Menu />
