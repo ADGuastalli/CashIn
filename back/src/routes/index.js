@@ -28,8 +28,8 @@ const calendarControllers = require('../controllers/CalendarControllers/calendar
 const incomeCategoryController = require('../controllers/IncomeCategory/IncomeCategory');
 const financialLevelController = require('../controllers/FinancialLevel/financialLevel');
 const { authenticateToken } = require('../middlewares/auth');
-const { googleAuth } = require("../controllers/Auth/google");
-const { facebookAuth } = require("../controllers/Auth/facebook");
+const googleAuthController = require("../controllers/Auth/google");
+const paypalController = require("../controllers/Paypal/paypalController");
 
 
 const router = Router();
@@ -185,17 +185,22 @@ router.get('/finzanciallevel/:id', financialLevelController.getFinancialLevelByI
 router.put('/finzanciallevel/:id', financialLevelController.updateFinancialLevel);
 router.delete('/finzanciallevel/:id', financialLevelController.deleteFinancialLevel);
 
-router.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-router.get('/auth/facebook/callback', facebookAuth);
-router.get('/auth/google', passport.authenticate('google', { scope: [
-    'profile',
-    'email',
-    'https://www.googleapis.com/auth/calendar'
-] }));
-router.get('/auth/google/callback', googleAuth);
+// Callback de autenticación de Google
+router.post("/auth/google", googleAuthController.googleAuth);
 
-router.get('/events', calendarControllers.getEvents);
-router.post('/create-event', calendarControllers.createEvent);
+// Paypal
+router.post(
+  "/my-server/create-paypal-order",
+  paypalController.createPaypalOrder
+);
 
+router.post(
+  "/my-server/capture-paypal-order",
+  paypalController.capturePaypalOrder
+);
+
+router.get("/events", calendarControllers.getEvents);
+router.post("/create-event", calendarControllers.createEvent);
+router.get("/available-slots", calendarControllers.getAvailableSlots);
 
 module.exports = router

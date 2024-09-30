@@ -139,3 +139,45 @@ const validateForm = (formData: IUserProfile): { [key: string]: string } => {
 };
 
 export { validateRegister, validateLogin, validateForm };
+
+interface IErrors {
+  name?: string;
+  user_name?: string;
+  email?: string;
+  user_email?: string;
+  address?: string;
+  message?: string;
+  phone?: string;
+  password?: string;
+  repeat_password?: string;
+}
+
+interface IUserData {
+  user_name: string;
+  user_email: string;
+  message: string;
+}
+
+const validateMail = (
+  values: IUserData,
+  fieldsToValidate: string[]
+): IErrors => {
+  const errors: IErrors = {};
+  if (fieldsToValidate.includes("user_name") && !values.user_name) {
+    errors.user_name = "*";
+  }
+
+  if (
+    fieldsToValidate.includes("user_email") &&
+    (!values.user_email || !/\S+@\S+\.\S+/.test(values.user_email))
+  ) {
+    errors.user_email = "* Incorrect email format. Example: 4oLZ9@example.com";
+  }
+
+  if (fieldsToValidate.includes("message") && !values.message) {
+    errors.message = "*";
+  }
+  return errors;
+};
+
+export default validateMail;
