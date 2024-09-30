@@ -93,7 +93,6 @@ export default function Navbar() {
           </Link>
 
           <Link href="/Contacto" onClick={handleMenuClick}>
-
             <Button_nadvar className="text-sm lg:text-base">
               CONTACTO
             </Button_nadvar>

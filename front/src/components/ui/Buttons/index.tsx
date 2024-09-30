@@ -1,13 +1,20 @@
-interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+}
+import React from "react";
 
 export function Button_actions_rounded({ children, ...props }: Props) {
   return (
     <button
-      className="flex justify-center items-center w-32 h-32 bg-actions shadow-lg text-white 
-            py-8 px-8 mx-4 my-4 rounded-full "
+      className="flex justify-center items-center lg:w-32 lg:h-32 md:w-24 md:h-24 h-10 w-10 bg-actions shadow-lg text-white 
+            py-2 px-2 mx-4 my-4 rounded-full"
       {...props}
     >
-      {children}
+      {React.isValidElement(children)
+        ? React.cloneElement(children as React.ReactElement<any>, {
+            className: "w-6 h-6",
+          })
+        : children}
     </button>
   );
 }

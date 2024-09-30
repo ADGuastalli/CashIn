@@ -7,7 +7,6 @@ import { useGastos } from "../../context/gastosContext";
 import Logo from "../../public/assets/svg/CASHIN-03.svg";
 import { categorias } from "@/helpers/categorias";
 
-
 // Componente principal
 export default function GastosComponet() {
   const { dispatch } = useGastos();
@@ -27,15 +26,21 @@ export default function GastosComponet() {
           <Button_Menu />
         </Link>
       </div>
-      <div className="flex flex-col justify-center items-center min-h-screen">
-        <Image src={Logo} alt="Logo" width={300} height={300} />
+      <div className="flex flex-col justify-center items-center min-h-screen px-5">
+        <Image
+          src={Logo}
+          alt="Logo"
+          width={300}
+          height={300}
+          className="my-5 w-[50%] sm:w-[300px]"
+        />
         <div className="text-center mt-10">
-          <h1 className="text-2xl mt-6 font-black">
+          <h1 className="lg:text-3xl md:text-2xl text-2xl mt-6 font-black">
             Tipos de gastos a registrar
           </h1>
           <h2 className="text-xl mt-1">Escoge uno.</h2>
         </div>
-        <div className="grid grid-cols-3 sm:grid-cols-3 gap-8 text-center w-full max-w-4xl mt-10">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 text-center w-full max-w-4xl mt-10">
           {categorias.map(({ tipo, img, subtipos }, index) => (
             <Link href="/Menu/Gastos/GastoIndividual" key={index}>
               <div

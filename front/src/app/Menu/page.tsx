@@ -58,7 +58,7 @@ export default function Menu() {
           <Button_Home />
         </Link>
       </div>
-      <div className="flex flex-col justify-center items-center min-h-screen">
+      <div className="flex flex-col justify-center items-center min-h-screen px-5">
         {hasNullProperties(userProfile) && (
           <ModalFormComplete router={router} user_id={userProfile?.user_id} />
         )}
@@ -69,7 +69,7 @@ export default function Menu() {
           height={250}
           className="mt-2"
         />
-        <h1 className="text-3xl mt-6 mb-4">
+        <h1 className="lg:text-3xl md:text-2xl text-2xl text-center mt-6 mb-4">
           ¿Qué deseas hacer con nuestra app{" "}
           <span className="font-bold">
             {userProfile?.last_name || userProfile?.email}

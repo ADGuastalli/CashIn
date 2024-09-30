@@ -14,7 +14,8 @@ const style: React.CSSProperties = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 500,
+  width: "90%", // Adjust width for mobile screens
+  maxWidth: 500, // Maximum width for larger screens
   backgroundColor: "background.paper",
   border: "2px solid #0095a9",
   boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.25)",
@@ -39,14 +40,15 @@ export default function BooksComponet() {
   const handleClose4 = () => setOpen4(false);
 
   return (
-    <div className="grid grid-cols-4 grid-rows-1 gap-12">
+    <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 justify-items-center">
       <div>
-        <Card sx={{ maxWidth: 280 }}>
+        <Card sx={{ maxWidth: { xs: "100%", md: 280 } }}>
           <Image
             src="https://i.postimg.cc/yd9M4nwX/libro1.png"
             alt="Academia de educación Financiera 1"
             width={345}
             height={345}
+            style={{ width: "100%", height: "auto" }} // Responsive image styling
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
@@ -54,14 +56,13 @@ export default function BooksComponet() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button
-              size="small"
+            <button
               onClick={handleOpen1}
               className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
       transition-transform duration-300 transform hover:scale-105"
             >
               Leer más
-            </Button>
+            </button>
           </CardActions>
         </Card>
         <Modal
@@ -94,12 +95,13 @@ export default function BooksComponet() {
       </div>
 
       <div>
-        <Card sx={{ maxWidth: 280 }}>
+        <Card sx={{ maxWidth: { xs: "100%", md: 280 } }}>
           <Image
             src="https://i.postimg.cc/nrGNMrVX/libro2.png"
             alt="Academia de educación Financiera 2"
             width={345}
             height={345}
+            style={{ width: "100%", height: "auto" }}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
@@ -107,14 +109,13 @@ export default function BooksComponet() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button
-              size="small"
+            <button
               onClick={handleOpen2}
               className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
       transition-transform duration-300 transform hover:scale-105"
             >
               Leer más
-            </Button>
+            </button>
           </CardActions>
         </Card>
         <Modal
@@ -145,12 +146,13 @@ export default function BooksComponet() {
       </div>
 
       <div>
-        <Card sx={{ maxWidth: 272 }}>
+        <Card sx={{ maxWidth: { xs: "100%", md: 280 } }}>
           <Image
             src="https://i.postimg.cc/hvBHSTnF/libro3.png"
             alt="Academia de educación Financiera 3"
             width={345}
             height={345}
+            style={{ width: "100%", height: "auto" }}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
@@ -158,14 +160,13 @@ export default function BooksComponet() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button
-              size="small"
+            <button
               onClick={handleOpen3}
               className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
       transition-transform duration-300 transform hover:scale-105"
             >
               Leer más
-            </Button>
+            </button>
           </CardActions>
         </Card>
         <Modal
@@ -179,27 +180,30 @@ export default function BooksComponet() {
               Academia de educación Financiera 3
             </Typography>
             <Typography id="modal-modal-description3" sx={{ mt: 2 }}>
-              sus diez capítulos, de ver la historia de la globalización, el
-              internet, comercio electrónico, los productos y servicios
-              bancarios, las deudas, las inversiones, las deducciones fiscales,
-              la inflación y el emprendurísmo. Las competencias a desarrollar
-              son la inteligencia comercial, inteligencia financiera y la
-              inteligencia intelectual. Adicionalmente tendrá que utilizar sus
-              conocimientos matemáticos para resolver algunos de los problemas
-              planteados al utilizar las fórmulas de cálculos de interés y las
-              tasas de rendimiento, ejercicios de calculo del capital.
+              En “Academia de educación Financiera 3” el participante tendrá la
+              oportunidad, en el desarrollo de sus diez capítulos, de ver la
+              historia de la globalización, el internet, comercio electrónico,
+              los productos y servicios bancarios, las deudas, las inversiones,
+              las deducciones fiscales, la inflación y el emprendurísmo. Las
+              competencias a desarrollar son la inteligencia comercial,
+              inteligencia financiera y la inteligencia intelectual.
+              Adicionalmente tendrá que utilizar sus conocimientos matemáticos
+              para resolver algunos de los problemas planteados al utilizar las
+              fórmulas de cálculos de interés y las tasas de rendimiento,
+              ejercicios de calculo del capital.
             </Typography>
           </Box>
         </Modal>
       </div>
 
       <div>
-        <Card sx={{ maxWidth: 272 }}>
+        <Card sx={{ maxWidth: { xs: "100%", md: 280 } }}>
           <Image
             src="https://i.postimg.cc/kMQ0T1N7/libro4.png"
             alt="Academia de educación Financiera 4"
             width={345}
             height={345}
+            style={{ width: "100%", height: "auto" }}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
@@ -207,14 +211,13 @@ export default function BooksComponet() {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button
-              size="small"
+            <button
               onClick={handleOpen4}
-              className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
-      transition-transform duration-300 transform hover:scale-105"
+              className="font-bold rounded-xl bg-[#A0E4EB] text-white px-6 py-1 m-2 text-xl 
+              transition-transform duration-300 transform hover:scale-105"
             >
               Leer más
-            </Button>
+            </button>
           </CardActions>
         </Card>
         <Modal

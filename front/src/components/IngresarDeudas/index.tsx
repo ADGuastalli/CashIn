@@ -59,10 +59,18 @@ export default function PagarMisDeudasComponet() {
           <Button_Menu />
         </Link>
       </div>
-      <div className="flex flex-col justify-center items-center min-h-screen">
-        <Image src={Logo} alt="Logo" width={300} height={300} />
+      <div className="flex flex-col justify-center items-center  mx-auto p-5">
+        <Image
+          src={Logo}
+          alt="Logo"
+          width={300}
+          height={300}
+          className="my-5 w-[50%] sm:w-[300px]"
+        />
         <div className="text-center mt-5">
-          <h1 className="text-2xl mt-6 font-black">Hablemos de tus deudas</h1>
+          <h1 className="lg:text-3xl md:text-2xl text-2xl mt-6 font-black">
+            Hablemos de tus deudas
+          </h1>
           <h2 className="text-xl mt-1">
             Bríndanos por favor los datos sobre ellas y los montos
           </h2>
@@ -131,71 +139,77 @@ export default function PagarMisDeudasComponet() {
           </div>
 
           {deudas.length > 0 && (
-            <div className="grid grid-cols-3 grid-rows-1 gap-40">
-              <div className="flex flex-col items-center">
-                <Link href="/Menu">
-                  <Button_actions_rounded>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      className="w-6 h-6 text-[#C38A01]"
+            <div className="flex flex-col items-center mt-10">
+              {/* Lista de deudas */}
+              <ul className="flex flex-col items-center w-full mb-5">
+                {deudas.map((item, index) => (
+                  <li
+                    key={index}
+                    className="flex justify-between items-center p-4 rounded-lg mb-3 shadow w-96"
+                  >
+                    <div className="flex flex-col mr-20">
+                      <p className="font-bold text-gray-400">
+                        {item.tipoDeuda}
+                      </p>
+                      <p className="font-bold">Monto: ${item.monto}</p>
+                    </div>
+                    <button
+                      className="bg-red-400 text-black font-black text-sm hover:bg-red-500/80 p-2 rounded-full h-8 w-8 flex justify-center items-center"
+                      onClick={() => handleDelete(index)}
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 19l-7-7 7-7"
-                      />
-                    </svg>
-                  </Button_actions_rounded>
-                </Link>
-                <p className="font-black text-xl text-[#FAB100]">Atras</p>
-              </div>
-              <div className="">
-                <ul>
-                  {deudas.map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex justify-between items-center p-4 rounded-lg mb-3 shadow w-96"
-                    >
-                      <div className="flex flex-col mr-20">
-                        <p className="font-bold text-gray-400">
-                          {item.tipoDeuda}
-                        </p>
-                        <p className="font-bold">Monto: ${item.monto}</p>
-                      </div>
-                      <button
-                        className="bg-red-400 text-black font-black text-sm hover:bg-red-500/80 p-2 rounded-full h-8 w-8 flex justify-center items-center"
-                        onClick={() => handleDelete(index)}
+                      X
+                    </button>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Botones "Atrás" y "Continuar" alineados horizontalmente */}
+              <div className="flex justify-between w-full max-w-lg mt-5">
+                {/* Botón Atrás */}
+                <div className="flex flex-col items-center">
+                  <Link href="/Menu">
+                    <Button_actions_rounded>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-6 h-6 text-[#C38A01]"
                       >
-                        X
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="flex flex-col items-center">
-                <Link href="/Menu/PagarMisDeudas/Finanzas">
-                  <Button_actions_rounded>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      className="w-6 h-6 text-[#C38A01]"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
-                  </Button_actions_rounded>
-                </Link>
-                <p className="font-black text-xl text-[#FAB100]">Continuar</p>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 19l-7-7 7-7"
+                        />
+                      </svg>
+                    </Button_actions_rounded>
+                  </Link>
+                  <p className="font-black text-xl text-[#FAB100]">Atrás</p>
+                </div>
+
+                {/* Botón Continuar */}
+                <div className="flex flex-col items-center">
+                  <Link href="/Menu/PagarMisDeudas/Finanzas">
+                    <Button_actions_rounded>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        className="w-6 h-6 text-[#C38A01]"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </Button_actions_rounded>
+                  </Link>
+                  <p className="font-black text-xl text-[#FAB100]">Continuar</p>
+                </div>
               </div>
             </div>
           )}
