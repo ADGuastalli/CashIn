@@ -14,9 +14,10 @@ import {
 } from "@/components/ui/Buttons";
 
 export default function Navbar() {
-  const { user, isAuthenticated, logout } = useContext(UserContext);
+  const { user, isAuthenticated, logout, userProfile } =
+    useContext(UserContext);
   const [isActive, setIsActive] = useState(false);
-  console.log(user);
+  const userId = userProfile?.id;
 
   const handleLogout = () => {
     Swal.fire({
@@ -45,13 +46,60 @@ export default function Navbar() {
   };
 
   return (
-    <div className="relative z-10 backdrop-blur-lg border-b-2 border-black/5 bg-transparent flex flex-col mx-5 lg:flex-row items-center justify-between py-2 shadow-dark-mild lg:py-4 rounded-lg">
-      <div className="flex items-center px-3 flex-grow">
+    <div className="relative z-10 backdrop-blur-lg border-b-2 border-black/5 bg-transparent flex flex-col mx-5 py-2 shadow-dark-mild lg:py-4 rounded-lg">
+      {/* Contenedor para el logo, los botones y el botón de sesión */}
+      <div className="flex items-center justify-between w-full">
+        {/* Logo a la izquierda */}
         <Link href="/" className="flex items-center">
-          <Image src={Logo} alt="Logo" width={100} height={100} />
+          <Image
+            src={Logo}
+            alt="Logo"
+            width={100}
+            height={100}
+            className="my-5 w-[50%] sm:w-[100px]"
+          />
         </Link>
+
+        {/* Contenedor para los botones en el centro (solo en pantallas grandes) */}
+        <div className="flex-grow hidden lg:flex justify-center space-x-8">
+          <Link href="#Producto" onClick={handleMenuClick}>
+            <Button_nadvar className="text-sm font-bold lg:text-base transition-transform duration-200 transform hover:scale-105">
+              PRODUCTOS
+            </Button_nadvar>
+          </Link>
+          <Link href="#Educacion" onClick={handleMenuClick}>
+            <Button_nadvar className="text-sm font-bold lg:text-base transition-transform duration-200 transform hover:scale-105">
+              EDUCACION
+            </Button_nadvar>
+          </Link>
+          <Link href="/Construccion" onClick={handleMenuClick}>
+            <Button_nadvar className="text-sm font-bold lg:text-base transition-transform duration-200 transform hover:scale-105">
+              MERCADO FINANCIERO
+            </Button_nadvar>
+          </Link>
+          <Link href="/Contacto" onClick={handleMenuClick}>
+            <Button_nadvar className="text-sm font-bold lg:text-base transition-transform duration-200 transform hover:scale-105">
+              CONTACTO
+            </Button_nadvar>
+          </Link>
+        </div>
+
+        {/* Botón de sesión a la derecha */}
+        <div className="flex items-center">
+          {isAuthenticated ? (
+            <span className="text-[#97D6DF] dark:text-[#97D6DF] text-sm lg:text-lg hidden lg:block">
+              Bienvenido, {user?.user_name || user?.email || ""}
+            </span>
+          ) : (
+            <Link href="/User/Login">
+              <Button_actions>Iniciar sesión</Button_actions>
+            </Link>
+          )}
+        </div>
+
+        {/* Botón hamburguesa visible solo en pantallas pequeñas */}
         <button
-          className="lg:hidden flex items-center pl-10 py-1 text-white"
+          className="flex items-center lg:hidden ml-4"
           onClick={() => setIsActive(!isActive)}
         >
           <svg
@@ -70,71 +118,62 @@ export default function Navbar() {
           </svg>
         </button>
       </div>
-      <div
-        className={`lg:flex-grow lg:flex lg:items-center lg:space-x-8 ${
-          isActive ? "block mt-5" : "hidden"
-        } lg:block lg:flex-row flex-col lg:space-y-0 space-y-4`}
-      >
-        <div className="flex-grow flex flex-col lg:flex-row lg:space-x-8">
-          <Link href="#Producto" onClick={handleMenuClick}>
-            <Button_nadvar className="text-sm lg:text-base">
-              PRODUCTOS
-            </Button_nadvar>
-          </Link>
-          <Link href="#Educacion" onClick={handleMenuClick}>
-            <Button_nadvar className="text-sm lg:text-base">
-              EDUCACION
-            </Button_nadvar>
-          </Link>
-          <Link href="/Construccion" onClick={handleMenuClick}>
-            <Button_nadvar className="text-sm lg:text-base">
-              MERCADO FINANCIERO
-            </Button_nadvar>
-          </Link>
 
-          <Link href="/Contacto" onClick={handleMenuClick}>
-            <Button_nadvar className="text-sm lg:text-base">
-              CONTACTO
-            </Button_nadvar>
-          </Link>
-        </div>
-        <div className="flex items-center space-x-4 px-3 lg:space-x-6">
-          {isAuthenticated ? (
-            <>
-              <span className="text-[#97D6DF] dark:text-[#97D6DF] text-sm lg:text-lg">
-                Bienvenido, {user?.user_name || user?.email || ""}
-              </span>
-              <div className="flex items-center ms-10 md:me-2">
-                <Link
-                  href="/dashboard"
-                  className="text-[#97D6DF] dark:text-[#97D6DF] lg:px-2 hover:text-[#FF3E1A] text-sm"
-                >
-                  <Image
-                    src={UserIcon}
-                    alt="User Icon"
-                    className="w-10 h-10 lg:w-12 lg:h-12"
-                  />
-                </Link>
-              </div>
-              <Link href="/Menu">
-                <Button_Menu />
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="font-bold rounded-xl bg-bad_status text-white px-6 py-1 m-2 text-xl 
-      transition-transform duration-300 transform hover:scale-105"
+      {/* Contenido del menú desplegable (solo en pantallas pequeñas) */}
+      <div
+        className={`lg:hidden flex flex-col space-y-2 mt-5 ${
+          isActive ? "block" : "hidden"
+        }`}
+      >
+        <Link href="#Producto" onClick={handleMenuClick}>
+          <Button_nadvar className="text-sm font-bold lg:text-base">
+            PRODUCTOS
+          </Button_nadvar>
+        </Link>
+        <Link href="#Educacion" onClick={handleMenuClick}>
+          <Button_nadvar className="text-sm font-bold lg:text-base">
+            EDUCACION
+          </Button_nadvar>
+        </Link>
+        <Link href="/Construccion" onClick={handleMenuClick}>
+          <Button_nadvar className="text-sm font-bold lg:text-base">
+            MERCADO FINANCIERO
+          </Button_nadvar>
+        </Link>
+        <Link href="/Contacto" onClick={handleMenuClick}>
+          <Button_nadvar className="text-sm font-bold lg:text-base">
+            CONTACTO
+          </Button_nadvar>
+        </Link>
+      </div>
+
+      <div className="flex items-center space-x-4 px-3 lg:space-x-6">
+        {isAuthenticated && (
+          <>
+            <div className="flex items-center ms-10 md:me-2">
+              <Link
+                href={`/User/${userId}/presupuesto`}
+                className="text-[#97D6DF] dark:text-[#97D6DF] lg:px-2 hover:text-[#FF3E1A] text-sm"
               >
-                Cerrar Sesión
-              </button>
-            </>
-          ) : (
-            <>
-              <Link href="/User/Login" onClick={handleMenuClick}>
-                <Button_actions>Iniciar sesión</Button_actions>
+                <Image
+                  src={UserIcon}
+                  alt="User Icon"
+                  className="w-10 h-10 lg:w-12 lg:h-12"
+                />
               </Link>
-            </>
-          )}
-        </div>
+            </div>
+            <Link href="/Menu">
+              <Button_Menu />
+            </Link>
+            <button
+              onClick={handleLogout}
+              className="font-bold rounded-xl bg-bad_status text-white px-6 py-1 m-2 text-xl 
+                transition-transform duration-300 transform hover:scale-105"
+            >
+              Cerrar Sesión
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

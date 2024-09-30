@@ -31,13 +31,16 @@ export default function Home() {
           manera <span className="font-bold">Inteligente</span>.
         </h1>
       </div>
-      <div className=" sm:p-5 lg:p-10 mx-4 sm:mx-20 lg:mx-40 mb-20">
+      <div className=" px-6 sm:px-20 lg:px-40 py-2 sm:py-5 lg:py-10 w-full mx-0 mb-20">
+        <h2 className="text-2xl sm:text-3xl mb-6 sm:mb-10 font-bold">
+          CashInBOT
+        </h2>
         <ChatIALanding />
       </div>
-      <div className="bg-[#0095a919] p-6 sm:p-10 lg:p-20 mx-4 sm:mx-20 lg:mx-40 rounded-3xl mb-20">
+      <div className="bg-[#0095a919] px-6 sm:px-20 lg:px-40 py-2 sm:py-5 lg:py-10 w-full mx-0 mb-20">
         <h2
           id="Educacion"
-          className="text-2xl sm:text-3xl mb-6 sm:mb-10 font-bold"
+          className="text-2xl sm:text-3xl mb-6 sm:mb-10 font-bold text-right"
         >
           Cursos y Talleres
         </h2>
@@ -45,7 +48,7 @@ export default function Home() {
           <CursosComponet />
         </div>
       </div>
-      <div className="bg-[#0095a919] p-6 sm:p-10 lg:p-20 mx-4 sm:mx-20 lg:mx-40 rounded-3xl ">
+      <div className=" px-6 sm:px-20 lg:px-40 py-2 sm:py-5 lg:py-10 w-full mx-0 ">
         <h2
           id="Producto"
           className="text-2xl sm:text-3xl mb-6 sm:mb-10 font-bold text-left"

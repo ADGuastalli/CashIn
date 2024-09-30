@@ -1,13 +1,14 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Image from "next/image";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const style: React.CSSProperties = {
   position: "absolute",
@@ -39,19 +40,34 @@ export default function BooksComponet() {
   const handleOpen4 = () => setOpen4(true);
   const handleClose4 = () => setOpen4(false);
 
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Duración de la animación (1000ms = 1s)
+      once: true, // La animación solo sucede una vez al hacer scroll hacia abajo
+    });
+  }, []);
+
   return (
     <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4 justify-items-center">
-      <div>
-        <Card sx={{ maxWidth: { xs: "100%", md: 280 } }}>
+      <div data-aos="fade-up">
+        <Card
+          sx={{ maxWidth: { xs: "100%", md: 280 } }}
+          className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
+        >
           <Image
             src="https://i.postimg.cc/yd9M4nwX/libro1.png"
             alt="Academia de educación Financiera 1"
             width={345}
             height={345}
-            style={{ width: "100%", height: "auto" }} // Responsive image styling
+            style={{ width: "100%", height: "auto", padding: "10px" }} // Responsive image styling
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 1
             </Typography>
           </CardContent>
@@ -72,7 +88,12 @@ export default function BooksComponet() {
           aria-describedby="modal-modal-description1"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title1" variant="h6" component="h2">
+            <Typography
+              id="modal-modal-title1"
+              variant="h6"
+              component="h2"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 1
             </Typography>
             <Typography id="modal-modal-description1" sx={{ mt: 2 }}>
@@ -94,17 +115,25 @@ export default function BooksComponet() {
         </Modal>
       </div>
 
-      <div>
-        <Card sx={{ maxWidth: { xs: "100%", md: 280 } }}>
+      <div data-aos="fade-up">
+        <Card
+          sx={{ maxWidth: { xs: "100%", md: 280 } }}
+          className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
+        >
           <Image
             src="https://i.postimg.cc/nrGNMrVX/libro2.png"
             alt="Academia de educación Financiera 2"
             width={345}
             height={345}
-            style={{ width: "100%", height: "auto" }}
+            style={{ width: "100%", height: "auto", padding: "10px" }}
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 2
             </Typography>
           </CardContent>
@@ -125,7 +154,12 @@ export default function BooksComponet() {
           aria-describedby="modal-modal-description2"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title2" variant="h6" component="h2">
+            <Typography
+              id="modal-modal-title2"
+              variant="h6"
+              component="h2"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 2
             </Typography>
             <Typography id="modal-modal-description2" sx={{ mt: 2 }}>
@@ -145,17 +179,25 @@ export default function BooksComponet() {
         </Modal>
       </div>
 
-      <div>
-        <Card sx={{ maxWidth: { xs: "100%", md: 280 } }}>
+      <div data-aos="fade-up">
+        <Card
+          sx={{ maxWidth: { xs: "100%", md: 280 } }}
+          className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
+        >
           <Image
             src="https://i.postimg.cc/hvBHSTnF/libro3.png"
             alt="Academia de educación Financiera 3"
             width={345}
             height={345}
-            style={{ width: "100%", height: "auto" }}
+            style={{ width: "100%", height: "auto", padding: "10px" }}
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 3
             </Typography>
           </CardContent>
@@ -176,7 +218,12 @@ export default function BooksComponet() {
           aria-describedby="modal-modal-description3"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title3" variant="h6" component="h2">
+            <Typography
+              id="modal-modal-title3"
+              variant="h6"
+              component="h2"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 3
             </Typography>
             <Typography id="modal-modal-description3" sx={{ mt: 2 }}>
@@ -196,17 +243,25 @@ export default function BooksComponet() {
         </Modal>
       </div>
 
-      <div>
-        <Card sx={{ maxWidth: { xs: "100%", md: 280 } }}>
+      <div data-aos="fade-up">
+        <Card
+          sx={{ maxWidth: { xs: "100%", md: 280 } }}
+          className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"
+        >
           <Image
             src="https://i.postimg.cc/kMQ0T1N7/libro4.png"
             alt="Academia de educación Financiera 4"
             width={345}
             height={345}
-            style={{ width: "100%", height: "auto" }}
+            style={{ width: "100%", height: "auto", padding: "10px" }}
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 4
             </Typography>
           </CardContent>
@@ -227,7 +282,12 @@ export default function BooksComponet() {
           aria-describedby="modal-modal-description4"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title4" variant="h6" component="h2">
+            <Typography
+              id="modal-modal-title4"
+              variant="h6"
+              component="h2"
+              className="font-bold text-[#0095a9] text-center"
+            >
               Academia de educación Financiera 4
             </Typography>
             <Typography id="modal-modal-description4" sx={{ mt: 2 }}>

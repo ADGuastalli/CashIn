@@ -72,7 +72,13 @@ export default function GastoIndividualComponet() {
         </Link>
       </div>
       <div className="flex flex-col justify-center items-center min-h-screen">
-        <Image src={Logo} alt="Logo" width={300} height={300} />
+        <Image
+          src={Logo}
+          alt="Logo"
+          width={300}
+          height={300}
+          className="my-5 w-[50%] sm:w-[300px]"
+        />
         <div className="text-center mt-5">
           <h1 className="text-2xl mt-6 font-black">
             Por favor ingresa el gasto
