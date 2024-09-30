@@ -8,7 +8,7 @@ import ImgAhorro from "../../public/assets/svg/piggy-bank.svg";
 import ImgDiag from "../../public/assets/svg/review.svg";
 import ImgPresu from "../../public/assets/svg/budget.svg";
 import ImgUser from "../../public/assets/svg/user-circle-svgrepo-com.svg";
-import ImgChat from "../../public/assets/svg/chat.svg";
+import ImgChat from "../../public/assets/svg/chatIA.png";
 import { useContext } from "react";
 import { UserContext } from "@/context/userContext";
 
@@ -93,9 +93,9 @@ export default function MenuIcons() {
       <Link href="https://chatgpt.com/g/g-R6OiPvkkm-cashinbot">
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
-            <Image src={ImgChat} alt="Chat" width={60} height={60} />
+            <Image src={ImgChat} alt="Chat" width={90} height={90} />
           </div>
-          <p className="mt-2 text-lg font-bold">Chat IA</p>
+          <p className="mt-2 text-lg font-bold">CashInBOT</p>
         </div>
       </Link>
 
