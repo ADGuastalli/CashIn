@@ -27,6 +27,7 @@ const bookController = require('../controllers/Book/book');
 const calendarControllers = require('../controllers/CalendarControllers/calendarController')
 const incomeCategoryController = require('../controllers/IncomeCategory/IncomeCategory');
 const financialLevelController = require('../controllers/FinancialLevel/financialLevel');
+const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expenses')
 const { authenticateToken } = require('../middlewares/auth');
 const googleAuthController = require("../controllers/Auth/google");
 const paypalController = require("../controllers/Paypal/paypalController");
@@ -199,8 +200,11 @@ router.post(
   paypalController.capturePaypalOrder
 );
 
-router.get("/events", calendarControllers.getEvents);
-router.post("/create-event", calendarControllers.createEvent);
-router.get("/available-slots", calendarControllers.getAvailableSlots);
+router.get('/events', calendarControllers.getEvents);
+router.post('/create-event', calendarControllers.createEvent);
+
+
+router.get('/incomesExpenses/totalincome/:id', calculatorInconmeExpenses.calculateTotalIncome)
+router.get('/incomesExpenses/calculatetotalmortgagedebt/:id', calculatorInconmeExpenses.calculateTotalMortgageDebt)
 
 module.exports = router
