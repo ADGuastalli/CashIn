@@ -12,6 +12,7 @@ interface IUserProfile {
   child: number;
   marital_status_id?: string;
   dwelling_id: string;
+  premium: boolean;
 }
 
 interface IUser {

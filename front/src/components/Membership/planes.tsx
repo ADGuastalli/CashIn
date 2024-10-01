@@ -1,10 +1,16 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "@/context/userContext";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation"; // Importar el router para manejar la redirección
+import Button_Paypal from "../Paypal";
 
 export default function PlanesComponet() {
+  const [showPaypalButton, setShowPaypalButton] = useState(false);
+  const [paypalOrderDetails, setPaypalOrderDetails] = useState({
+    amount: 5.0,
+    description: "Membresia Premium",
+  });
   const { isAuthenticated } = useContext(UserContext); // Obtener el estado de autenticación
   const router = useRouter(); // Crear la instancia del router
 
@@ -24,13 +30,7 @@ export default function PlanesComponet() {
         }
       });
     } else {
-      // Lógica adicional si el usuario está autenticado y puede continuar con la compra
-      Swal.fire({
-        title: "¡Compra exitosa!",
-        text: "Has accedido a la membresía premium.",
-        icon: "success",
-        confirmButtonText: "Continuar",
-      });
+      setShowPaypalButton(true);
     }
   };
   return (
@@ -98,6 +98,14 @@ export default function PlanesComponet() {
         >
           COMPRAR
         </button>
+        <div className="mt-5">
+          {showPaypalButton && (
+            <Button_Paypal
+              orderDetails={paypalOrderDetails}
+              paymentType="membership"
+            />
+          )}
+        </div>
       </div>
     </div>
   );

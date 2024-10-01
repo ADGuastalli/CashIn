@@ -32,6 +32,7 @@ function FormProfile({ DataUser }: { DataUser: IUserProfile }) {
     marital_status_id: DataUser.marital_status_id,
     dwelling_id: DataUser.dwelling_id,
     child: DataUser.child || 0,
+    premium: DataUser.premium || false,
   });
 
   const [hasChildren, setHasChildren] = useState<boolean>(false);

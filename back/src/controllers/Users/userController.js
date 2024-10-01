@@ -1,7 +1,16 @@
-const { User, Country, City, MaritalStatus, Dwelling, Data, Child, sequelize } = require('../../models/index');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const {
+  User,
+  Country,
+  City,
+  MaritalStatus,
+  Dwelling,
+  Data,
+  Child,
+  sequelize,
+} = require("../../models/index");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const postUser = async (req, res) => {
   const { email, password } = req.body;
@@ -156,6 +165,7 @@ const completeUserProfile = async (req, res) => {
         dwelling_id: userData.dwelling_id,
         dwelling: dwelling.dwelling,
         child: child > 0 ? child : null,
+        premium: user.premium,
       },
     });
   } catch (error) {
@@ -241,6 +251,7 @@ const updateUser = async (req, res) => {
     user_name,
     email,
     password,
+    premium,
   } = req.body;
 
   try {
@@ -260,6 +271,7 @@ const updateUser = async (req, res) => {
     user.last_name = last_name || user.last_name;
     user.user_name = user_name || user.user_name;
     user.email = email || user.email;
+    user.premium = premium || user.premium;
 
     await user.save();
 
@@ -271,6 +283,7 @@ const updateUser = async (req, res) => {
       last_name: user.last_name,
       user_name: user.user_name,
       email: user.email,
+      premium: user.premium,
     });
   } catch (error) {
     console.error("Error al actualizar el usuario:", error);
@@ -297,12 +310,11 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
-    postUser,
-    loginUser,
-    completeUserProfile,
-    updateUser,
-    getAllUsers,
-    getUserById,
-    deleteUser
-
+  postUser,
+  loginUser,
+  completeUserProfile,
+  updateUser,
+  getAllUsers,
+  getUserById,
+  deleteUser,
 };
