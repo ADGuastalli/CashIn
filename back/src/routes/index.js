@@ -78,7 +78,7 @@ router.put('/dwelling/:id', dwellingController.updateDwelling);
 router.delete('/dwelling/:id', dwellingController.deleteDwelling);
 
 router.post('/expense', expenseController.createExpense);
-router.get('/expense', expenseController.getAllExpenses);
+router.get('/expense-by-user/:id', expenseController.getAllExpenses);
 router.get('/expense/:id', expenseController.getExpenseById);
 router.put('/expense/:id', expenseController.updateExpense);
 router.delete('/expense/:id', expenseController.deleteExpense);

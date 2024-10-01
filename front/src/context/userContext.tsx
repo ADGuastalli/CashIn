@@ -119,8 +119,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (typeof token === "string") {
       const dataUser = await getUser_Id(user, token);
-      console.log("dataUser:", dataUser);
-
       setUserProfile(dataUser);
     } else {
       console.error("Token inválido. No se pudo obtener los datos del perfil.");
