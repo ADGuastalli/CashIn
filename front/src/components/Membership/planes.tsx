@@ -2,19 +2,18 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "@/context/userContext";
 import Swal from "sweetalert2";
-import { useRouter } from "next/navigation"; // Importar el router para manejar la redirección
+import { useRouter } from "next/navigation";
 import Button_Paypal from "../Paypal";
 
 export default function PlanesComponet() {
   const [showPaypalButton, setShowPaypalButton] = useState(false);
-  const [paypalOrderDetails, setPaypalOrderDetails] = useState({
+  const paypalOrderDetails = {
     amount: 5.0,
     description: "Membresia Premium",
-  });
-  const { isAuthenticated } = useContext(UserContext); // Obtener el estado de autenticación
-  const router = useRouter(); // Crear la instancia del router
+  };
+  const { isAuthenticated } = useContext(UserContext);
+  const router = useRouter();
 
-  // Función para manejar el clic en el botón "COMPRAR"
   const handlePurchaseClick = () => {
     if (!isAuthenticated) {
       Swal.fire({
@@ -26,7 +25,7 @@ export default function PlanesComponet() {
         showCloseButton: false,
       }).then((result) => {
         if (result.isConfirmed) {
-          router.push("/User/Login"); // Redirigir al login si no está autenticado
+          router.push("/User/Login");
         }
       });
     } else {
