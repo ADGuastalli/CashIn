@@ -16,7 +16,7 @@ export default function Home() {
           alt="Logo"
           width={300}
           height={300}
-          className="mb-5 w-[80%] sm:w-[300px]" // Responsive adjustments
+          className="mb-5 w-[80%] sm:w-[400px]" // Responsive adjustments
         />
         <Image
           src={Imagen2}

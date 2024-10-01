@@ -88,9 +88,9 @@ export default function MenuIcons() {
       <Link href="https://chatgpt.com/g/g-R6OiPvkkm-cashinbot">
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
-            <Image src={ImgChat} alt="Chat" width={60} height={60} />
+            <Image src={ImgChat} alt="Chat" width={90} height={90} />
           </div>
-          <p className="mt-2 text-lg font-bold">Chat IA</p>
+          <p className="mt-2 text-lg font-bold">CashInBOT</p>
         </div>
       </Link>
 

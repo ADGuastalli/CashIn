@@ -112,7 +112,7 @@ export default function LoginComponent() {
         <button
           type="button"
           onClick={() => setShowPassword((prev) => !prev)}
-          className="absolute right-3 top-6 text-gray-600"
+          className="absolute right-3 top-6 mr-2 text-gray-600"
         >
           <Image
             src={showPassword ? eye : eyeClouse}
@@ -154,9 +154,12 @@ export default function LoginComponent() {
         <LoginGoogle />
       </div>
       <div className="flex justify-center mt-4 mb-20">
-        <Link href="/User/Register">
-          <p className="text-center mt-4">¿No tienes cuenta? Registrate</p>
-        </Link>
+        <p className="text-center">
+          ¿No tienes cuenta?{"  "}
+          <Link href="/User/Register">
+            <span className="font-bold">Registrate</span>
+          </Link>
+        </p>
       </div>
     </form>
   );

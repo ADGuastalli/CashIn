@@ -21,6 +21,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
+    rate: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false
+    },
+    recurrence:{
+      type: DataTypes.BOOLEAN,
+      allowNull: false
+    },
+    cuote: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    },
     date: {
       type: DataTypes.DATE,
       allowNull: false,

@@ -1,6 +1,38 @@
-import React from "react";
+"use client";
+import React, { useContext } from "react";
+import { UserContext } from "@/context/userContext";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation"; // Importar el router para manejar la redirección
 
 export default function PlanesComponet() {
+  const { isAuthenticated } = useContext(UserContext); // Obtener el estado de autenticación
+  const router = useRouter(); // Crear la instancia del router
+
+  // Función para manejar el clic en el botón "COMPRAR"
+  const handlePurchaseClick = () => {
+    if (!isAuthenticated) {
+      Swal.fire({
+        title: "Acceso denegado",
+        text: "Debes estar logueado para comprar la membresía premium.",
+        icon: "warning",
+        confirmButtonText: "Ir a Login",
+        allowOutsideClick: false,
+        showCloseButton: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/User/Login"); // Redirigir al login si no está autenticado
+        }
+      });
+    } else {
+      // Lógica adicional si el usuario está autenticado y puede continuar con la compra
+      Swal.fire({
+        title: "¡Compra exitosa!",
+        text: "Has accedido a la membresía premium.",
+        icon: "success",
+        confirmButtonText: "Continuar",
+      });
+    }
+  };
   return (
     <div className="grid grid-cols-3 gap-4">
       {/* Columna 1 - Funcionalidades */}
@@ -40,7 +72,7 @@ export default function PlanesComponet() {
         <div className="text-center">X</div>
         <div className="text-center">X</div>
         <button className="cursor-auto text-center font-bold h-14 mt-4 w-full bg-gray-300 rounded">
-          YA ADQUIRIDO
+          Membresia gratuita
         </button>
       </div>
 
@@ -60,7 +92,10 @@ export default function PlanesComponet() {
         <div className="text-center font-bold">SI</div>
         <div className="text-center font-bold">X</div>
         <div className="text-center font-bold">SI</div>
-        <button className="text-center font-bold h-14 mt-4 w-full bg-yellow-200 rounded">
+        <button
+          onClick={handlePurchaseClick}
+          className="text-center font-bold h-14 mt-4 w-full bg-yellow-200 rounded"
+        >
           COMPRAR
         </button>
       </div>
