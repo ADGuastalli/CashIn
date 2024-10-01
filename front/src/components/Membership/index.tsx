@@ -9,7 +9,7 @@ import PlanesComponet from "./planes";
 export default function MembershipComponet() {
   return (
     <div>
-      <div>
+      <div className="mt-3 ml-3">
         <Link href="/Menu">
           <Button_Menu />
         </Link>

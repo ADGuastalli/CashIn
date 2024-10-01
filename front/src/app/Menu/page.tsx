@@ -72,12 +72,43 @@ export default function Menu() {
         <h1 className="lg:text-3xl md:text-2xl text-2xl text-center mt-6 mb-4">
           ¿Qué deseas hacer con nuestra app{" "}
           <span className="font-bold">
-            {userProfile?.last_name || userProfile?.email}
+            {userProfile?.user_name || userProfile?.email}
           </span>
           ?
         </h1>
+        {userProfile.premium === false && (
+          <Link href="/Membership">
+            <div className="blinking-bg flex flex-col justify-center items-center py-2 px-3 rounded-lg">
+              <p className="text-center text-gray-500">
+                <span className="font-bold text-red-900 text-lg">
+                  ¡No eres premium!
+                </span>{" "}
+                Para poder acceder a todas las funciones de la app, debes
+                actualizar tu membresia.
+              </p>
+            </div>
+          </Link>
+        )}
         <MenuIcons />
       </div>
+
+      <style jsx>{`
+        .blinking-bg {
+          animation: blink 5s infinite;
+        }
+
+        @keyframes blink {
+          0% {
+            background-color: #fca5a5;
+          }
+          50% {
+            background-color: #ffffff;
+          }
+          100% {
+            background-color: #fca5a5;
+          }
+        }
+      `}</style>
     </div>
   );
 }
