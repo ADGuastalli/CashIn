@@ -8,6 +8,10 @@ import { useRouter } from "next/navigation";
 
 export default function ConcretarCita() {
   const [showPaypalButton, setShowPaypalButton] = useState(false);
+  const [paypalOrderDetails, setPaypalOrderDetails] = useState({
+    amount: 2.0, // Set the value to 2 dollars
+    description: "Solicitud de cita", // Description of the appointment
+  });
   const { isAuthenticated } = useContext(UserContext);
   const router = useRouter();
 
@@ -52,7 +56,14 @@ export default function ConcretarCita() {
       <Button_action onClick={handleButtonClick}>
         Solicitar una Cita
       </Button_action>
-      <div className="mt-5">{showPaypalButton && <Button_Paypal />}</div>
+      <div className="mt-5">
+        {showPaypalButton && (
+          <Button_Paypal
+            orderDetails={paypalOrderDetails}
+            paymentType="appointment"
+          />
+        )}
+      </div>
       <div className="mt-10 flex flex-col items-center justify-center mx-auto max-w-2xl">
         <p className="text-lg">
           En CASHIN, entendemos lo importante que es tomar decisiones
