@@ -1,4 +1,6 @@
 import React from "react";
+import { UserContext } from "@/context/userContext";
+import { useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ImgBolsa from "../../public/assets/svg/tax.svg";
@@ -15,7 +17,6 @@ export default function MenuIcons() {
   console.log("userProfileeeeee", userProfile);
 
   const userId = userProfile?.user_id;
-
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center w-full max-w-4xl mt-10">
