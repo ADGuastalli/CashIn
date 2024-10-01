@@ -27,6 +27,17 @@ interface IUser {
   user_name: string;
   user_id: string;
   id?: string;
+  last_name?: string;
+  googleId?: string;
+  facebookId?: string;
+  occupation_id?: string;
+  occupation?: string;
+  marital_status_id?: string;
+  marital_status?: string;
+  dwelling_id?: string;
+  dwelling?: string;
+  premium?: boolean;
+  child?: number;
 }
 
 interface ILogin {
