@@ -1,30 +1,52 @@
 "use client";
 import React, {  useState } from "react";
-//import { UserContext } from "../../context/userContext";
 import {
   Button_forms,
 } from "../ui/Buttons";
 import { Input } from "../ui/Input";
 import Swal from "sweetalert2";
+import { Income } from "@/interface/interfaceData";
+import { useIngresos } from "@/context/incomeContext";
+import { useParams } from "next/navigation";
+import { postIncome, deleteIngreso } from "@/server/fetchIncome";
 
 export default function SueldoFromDashboard() {
-  //const { user } = useContext(UserContext);
+  const {state , dispatch} = useIngresos()
+  //const [loading, setLoading] = useState(true);
   const [sueldo, setSueldo] = useState("");
   const [monto, setMonto] = useState("");
-  const [sueldos, setSueldos] = useState<
-    { tipoSueldo: string; monto: string }[]
-  >([]);
+  const [descriptIngreso, setDescriptIngrso] = useState<string>()
+  const fecha = new Date();
+
+  const { userId } = useParams();
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (sueldo && monto) {
-      setSueldos([...sueldos, { tipoSueldo: sueldo, monto }]);
+
+    if (sueldo && monto && descriptIngreso) {
+      const newIngreso: Income = {
+          income_category: sueldo, 
+          income: descriptIngreso, 
+          mount: +monto, 
+          date: fecha.toLocaleDateString(),
+      }
+      postIncome(newIngreso, userId as string)
+
+      dispatch({
+        type: "ADD_INGRESO",
+        payload:{
+          tipoIngreso: sueldo,
+          monto:monto,
+          descripcionIngreso: descriptIngreso,
+        }
+      })
+      setDescriptIngrso("")
       setSueldo("");
       setMonto("");
-    }
-  };
-
-  const handleDelete = (index: number) => {
+    };
+  }
+  const handleDelete = (index: number, income_id: string | undefined) => {
     Swal.fire({
       title: "¿Estás seguro?",
       text: "Quieres eliminar ese ingreso",
@@ -36,14 +58,20 @@ export default function SueldoFromDashboard() {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        setSueldos(sueldos.filter((_, i) => i !== index));
+        dispatch({
+          type: "DELETE_INGRESO",
+          payload: index
+        })
+        if(income_id){
+          deleteIngreso(income_id)
+        }
         Swal.fire("¡Eliminado!", "El ingreso ha sido eliminado.", "success");
       }
     });
   };
 
   // Calcular el total de las deudas
-  const totalIngreso = sueldos.reduce(
+  const totalIngresos = state.ingresos.reduce(
     (acc, item) => acc + parseFloat(item.monto),
     0
   );
@@ -86,6 +114,16 @@ export default function SueldoFromDashboard() {
 
               <div className="flex flex-col">
                 <div className="relative">
+                  <Input
+                    type="text"
+                    value={descriptIngreso}
+                    onChange={(e) => setDescriptIngrso(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col">
+                <div className="relative">
                   <span className="absolute inset-y-0 left-3 pl-3 flex items-center font-black">
                     $
                   </span>
@@ -104,29 +142,32 @@ export default function SueldoFromDashboard() {
           </form>
           <div className="mt-10">
             <h3 className="text-lg font-black text-center">
-              Total Ingresos: ${totalIngreso.toFixed(2)}
+              Total Ingresos: ${totalIngresos.toFixed(2)}
             </h3>
           </div>
-          {sueldos.length > 0 && 
+          {state.ingresos.length > 0 && 
             <div>
             <ul>
-                {sueldos.map((item, index) => (
+                {state.ingresos.map((item, index) => (
                 <li
                     key={index}
                     className="flex justify-between items-center p-4 rounded-lg mb-3 shadow w-96"
                 >
                     <div className="flex flex-col mr-20">
                     <p className="font-bold text-gray-400">
-                        {item.tipoSueldo}
+                        {item.tipoIngreso}
+                    </p>
+                    <p className="font-bold text-xs text-gray-400">
+                      {item.descripcionIngreso}
                     </p>
                     <p className="font-bold">Monto: ${item.monto}</p>
                     </div>
-                    <button
-                    className="bg-red-400 text-black font-black text-sm hover:bg-red-500/80 p-2 rounded-full h-8 w-8 flex justify-center items-center"
-                    onClick={() => handleDelete(index)}
-                    >
-                    X
-                    </button>
+                      <button
+                      className="bg-red-400 text-black font-black text-sm hover:bg-red-500/80 p-2 rounded-full h-8 w-8 flex justify-center items-center"
+                      onClick={() => handleDelete(index, item.income_id)}
+                      >
+                      X
+                      </button>
                 </li>
                 ))}
             </ul>

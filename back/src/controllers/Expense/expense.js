@@ -9,8 +9,7 @@ function convertDate(dateString) {
 const createExpense = async (req, res) => {
   try {
     const { expense_category, pay_method, expense, mount, date, user_id } = req.body;
-    console.log("expenseType:", expense_category, pay_method, expense, mount, date , user_id)
-
+  
     if (!expense_category || !pay_method || !expense || !mount || !date) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }

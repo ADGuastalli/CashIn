@@ -23,7 +23,6 @@ function FormGastosDashboard() {
   const tipoGasto = state.selectedTipoGasto || "";
   
   const { userId } = useParams();
-  console.log("userId", userId)
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

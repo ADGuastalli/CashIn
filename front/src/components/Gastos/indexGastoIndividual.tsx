@@ -25,12 +25,11 @@ export default function GastoIndividualComponet() {
   const fecha = new Date();
 
   const { userId } = useParams();
-  console.log("userId" , userId)
-  
+
   const tipoGasto = state.selectedTipoGasto || "";
 
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit =  (e: React.FormEvent) => {
     e.preventDefault();
 
     const tipoGasto = state.selectedTipoGasto || "";
@@ -38,8 +37,7 @@ export default function GastoIndividualComponet() {
     if (tipoGasto && monto && subtipoSeleccionado && tipoPago) {
    
       if(gastos){
-        const response = await postExpense(gastos, userId as string);
-        console.log(response)
+        postExpense(gastos, userId as string);
       } 
       dispatch({
         type: "ADD_GASTO",

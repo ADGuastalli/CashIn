@@ -8,6 +8,15 @@ interface Expense {
     recurrence?: boolean,
 }
 
+interface Income {
+    income_id?: string,
+    income_category: string,
+    income: string, 
+    mount: number, 
+    date?: string,
+    recurrence?: boolean
+}
 export type  {
-    Expense
+    Expense,
+    Income
 }

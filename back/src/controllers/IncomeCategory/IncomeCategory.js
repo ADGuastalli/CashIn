@@ -3,13 +3,13 @@ const { IncomeCategory } = require('../../models/index');
 // CREATE: Crear un nuevo registro en IncomeCategory
 const createIncomeCategory = async (req, res) => {
   try {
-    const { income_category, monthly_income } = req.body;
+    const { income_category } = req.body;
 
     if (income_category == null) {
       return res.status(400).json({ error: 'Falta el nombre de la categoría de ingresos' });
     }
 
-    const newIncomeCategory = await IncomeCategory.create({ income_category, monthly_income });
+    const newIncomeCategory = await IncomeCategory.create({ income_category });
     res.status(201).json(newIncomeCategory);
   } catch (error) {
     console.error('Error al crear la categoría de ingresos:', error);

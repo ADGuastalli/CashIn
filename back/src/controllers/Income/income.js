@@ -1,15 +1,44 @@
-const { Income } = require('../../models/index');
+const { Income , User , IncomeCategory, Data} = require('../../models/index');
 
+function convertDate(dateString) {
+  const [day, month, year] = dateString.split('/').map(Number);
+  return new Date(year, month - 1, day); // Los meses en JavaScript son 0-indexados
+}
 // CREATE: Crear un nuevo registro en la tabla Income
 const createIncome = async (req, res) => {
   try {
-    const { income_category_id, income, mount, date, data_id} = req.body;
+    const { income_category, income, mount, date, user_id} = req.body;
 
-    if (income_category_id == null || income == null || mount == null|| date == null || data_id  == null) {
+    if (income_category == null || income == null || mount == null|| date == null || user_id  == null) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const newIncome = await Income.create({ income_category_id, income, mount, date, data_id });
+    const formattedDate = convertDate(date);
+
+    const userdata =  await User.findOne({
+      where: {user_id},
+      include: [{
+        model: Data,
+        attributes: ['data_id']
+      }]
+    })
+
+    const data_id = userdata.Datum.data_id
+
+    const incomeType = await IncomeCategory.findOne({ where: { income_category: income_category.toLowerCase() } });
+    if (!incomeType) {
+      return res.status(400).json({ error: 'Tipo de ingreso no encontrado' });
+    }
+    const income_category_id = incomeType.income_category_id
+
+    const newIncome = await Income.create({ 
+      income_category_id,
+      income, 
+      mount, 
+      date: formattedDate, 
+      data_id
+     });
+
     res.status(201).json(newIncome);
   } catch (error) {
     console.error('Error al crear el registro:', error);
@@ -19,9 +48,31 @@ const createIncome = async (req, res) => {
 
 // READ: Obtener todos los registros de la tabla Income
 const getAllIncomes = async (req, res) => {
+  const { id } = req.params;
+  
   try {
-    const incomes = await Income.findAll();
-    res.status(200).json(incomes);
+    const incomes = await Income.findAll({
+      include: [{
+        model: Data,
+        where: { user_id: id }, // Filtrar por user_id
+      }],
+    });
+
+    const mappedIncome = await Promise.all(incomes.map(async (income) => {
+      const idCategory = income.income_category_id;
+
+      const incomeCategory = await IncomeCategory.findByPk(idCategory)
+
+      return {
+        income_id: income.income_id,
+        income_category: incomeCategory ? incomeCategory.income_category : null,
+        income: income.income, 
+        mount: income.mount, 
+        date: income.date 
+      };
+    }));
+
+    res.status(200).json(mappedIncome.length > 0 ? mappedIncome : []);
   } catch (error) {
     console.error('Error al obtener los registros:', error);
     res.status(500).json({ error: 'Error al obtener los registros' });

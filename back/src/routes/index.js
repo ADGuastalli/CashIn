@@ -103,7 +103,7 @@ router.put('/goal-categories/:id', goalCategoryController.updateGoalCategory);
 router.delete('/goal-categories/:id', goalCategoryController.deleteGoalCategory);
 
 router.post('/incomes', incomeController.createIncome);
-router.get('/incomes', incomeController.getAllIncomes);
+router.get('/incomes-by-user/:id', incomeController.getAllIncomes);
 router.get('/incomes/:id', incomeController.getIncomeById);
 router.put('/incomes/:id', incomeController.updateIncome);
 router.delete('/incomes/:id', incomeController.deleteIncome);
