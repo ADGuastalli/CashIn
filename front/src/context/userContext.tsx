@@ -54,6 +54,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       setIsAuthenticated(true);
 
       setUser(data.id);
+      setIsProfileComplete(checkProfileComplete(data.id));
       return true;
     } catch (error) {
       console.log(error);
