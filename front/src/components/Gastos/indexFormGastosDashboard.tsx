@@ -7,6 +7,10 @@ import {
 import { Input } from "../ui/Input";
 import { useGastos } from "../../context/gastosContext";
 import Swal from "sweetalert2";
+import { postExpense } from "@/server/fetchExpense";
+import { Expense } from "@/interface/interfaceData";
+import { useParams } from "next/navigation";
+import { deleteGasto } from "@/server/fetchExpense";
 
 function FormGastosDashboard() {
 
@@ -14,13 +18,23 @@ function FormGastosDashboard() {
   const [monto, setMonto] = useState<string>("");
   const [subtipoSeleccionado, setSubtipoSeleccionado] = useState<string>("");
   const [tipoPago, setTipoPago] = useState<string>("");
-
+  const [gastos,setGastos] = useState<Expense>();
+  const fecha = new Date();
+  const tipoGasto = state.selectedTipoGasto || "";
+  
+  const { userId } = useParams();
+  console.log("userId", userId)
+  
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     const tipoGasto = state.selectedTipoGasto || "";
 
     if (tipoGasto && monto && subtipoSeleccionado && tipoPago) {
+      
+      if(gastos){
+         postExpense(gastos,userId as string );
+      } 
       dispatch({
         type: "ADD_GASTO",
         payload: {
@@ -33,6 +47,13 @@ function FormGastosDashboard() {
       setMonto("");
       setSubtipoSeleccionado("");
       setTipoPago("");
+      setGastos({
+        expense_category: '',
+        expense: '',
+        mount: 0,
+        pay_method: '',
+        date: fecha.toLocaleDateString(),
+      })
     }
   };
   
@@ -66,6 +87,55 @@ function FormGastosDashboard() {
     });
   };
   
+  const handleDeleteBD = (id:string, index:number) => {
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "Quieres eliminar este gasto",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminarlo",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteGasto(id)
+        dispatch({
+          type: "DELETE_GASTO",
+          payload: index,
+        });
+        Swal.fire("¡Eliminado!", "El gasto ha sido eliminado.", "success");
+      }
+    });
+  }
+  const handleChangesetSubtipoSeleccionado = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSubtipoSeleccionado(value);
+    updateGastos(value, tipoPago, monto,tipoGasto,);
+  };
+
+  const handleChangesetmonto = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setMonto(value);
+    updateGastos(subtipoSeleccionado, tipoPago, value,tipoGasto,);
+  };
+
+  const handleChangesetTipoPago = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setTipoPago(value);
+    updateGastos(subtipoSeleccionado, value, monto,tipoGasto,);
+  };
+
+  const updateGastos = (subtipo: string, pago: string, montoValue: string,tipoGasto: string) => {
+    setGastos({
+      expense_category: tipoGasto,
+      expense: subtipo,
+      mount: parseInt(montoValue),
+      pay_method: pago,
+      date: fecha.toLocaleDateString()
+    });
+  };
+
   return (
     <div className="">
       {!state.selectedTipoGasto && (<ModalSelectGastos />)}
@@ -84,7 +154,7 @@ function FormGastosDashboard() {
                   className="bg-white focus:outline-none focus:ring focus:ring-secondary border 
              border-gray-300 rounded-lg py-4 px-4 mx-2 my-2 block w-96 appearance-none leading-normal "
                   value={subtipoSeleccionado}
-                  onChange={(e) => setSubtipoSeleccionado(e.target.value)}
+                  onChange={handleChangesetSubtipoSeleccionado}
                 >
                   <option value="">Selecciona sub Categoria</option>
                   {state.subtipos.map((subtipo, index) => (
@@ -101,7 +171,7 @@ function FormGastosDashboard() {
                 className="bg-white focus:outline-none focus:ring focus:ring-secondary border 
              border-gray-300 rounded-lg py-4 px-4 mx-2 my-2 block w-96 appearance-none leading-normal"
                 value={tipoPago}
-                onChange={(e) => setTipoPago(e.target.value)}
+                onChange={handleChangesetTipoPago}
               >
                 <option value="">Seleccione una opción</option>
                 <option value="EFECTIVO">EFECTIVO</option>
@@ -124,7 +194,7 @@ function FormGastosDashboard() {
                 <Input
                   type="number"
                   value={monto}
-                  onChange={(e) => setMonto(e.target.value)}
+                  onChange={handleChangesetmonto}
                 />
               </div>
             </div>
@@ -161,12 +231,24 @@ function FormGastosDashboard() {
                       </p>
                       <p className="font-bold mt-1">Monto: ${item.monto}</p>
                     </div>
-                    <button
-                      onClick={() => handleDelete(index)}
-                      className="bg-red-400 text-black font-black text-sm hover:bg-red-500/80 p-2 rounded-full h-8 w-8 flex justify-center items-center"
-                    >
-                      X
-                    </button>
+                    {
+                      item.expense_id? (
+                        <button
+                          onClick={() => handleDeleteBD(item.expense_id as string, index)}
+                          className="bg-red-400 text-black font-black text-sm hover:bg-red-500/80 p-2 rounded-full h-8 w-8 flex justify-center items-center"
+                        >
+                          X
+                        </button>
+
+                      ) : (
+                        <button
+                          onClick={() => handleDelete(index)}
+                          className="bg-red-400 text-black font-black text-sm hover:bg-red-500/80 p-2 rounded-full h-8 w-8 flex justify-center items-center"
+                        >
+                          X
+                        </button>
+                      )
+                    }
                   </li>
                 ))}
               </ul>
