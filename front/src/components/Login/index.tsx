@@ -13,7 +13,7 @@ import Link from "next/link";
 import LoginGoogle from "../LoginGoogle";
 
 export default function LoginComponent() {
-  const { login } = useContext(UserContext);
+  const { login, isProfileComplete } = useContext(UserContext);
   const router = useRouter();
   const [userData, setUserData] = useState<ILogin>({
     email: "",
@@ -55,7 +55,11 @@ export default function LoginComponent() {
         });
 
         setTimeout(() => {
-          router.push("/Menu");
+          if (!isProfileComplete) {
+            router.push("/Menu");
+          } else {
+            router.push("/Menu");
+          }
         }, 3000);
       } else {
         Swal.fire({

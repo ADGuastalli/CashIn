@@ -63,6 +63,9 @@ export const getUser_Id = async (id: string, token: string) => {
     birthdate: data.birthdate,
     child: data.child,
     dwelling_id: data.dwelling_id,
+    occupation_id: data.occupation_id,
+    marital_status_id: data.marital_status_id,
+    premium: data.premium,
   };
   return newData;
 };

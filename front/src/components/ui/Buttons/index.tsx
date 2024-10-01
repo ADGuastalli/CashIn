@@ -112,8 +112,8 @@ export function Button_nadvar({ children, ...props }: Props) {
 export function Button_Menu() {
   return (
     <button
-      className="font-bold rounded-xl bg-second text-white px-4 py-2 m-2 text-sm 
-      transition-transform duration-300 transform hover:scale-105 w-full sm:w-auto"
+      className="font-bold rounded-xl bg-second text-white px-6 py-1 m-2 text-xl 
+      transition-transform duration-300 transform hover:scale-105 w-auto sm:w-auto"
     >
       MENU
     </button>

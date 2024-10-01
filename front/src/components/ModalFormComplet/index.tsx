@@ -12,10 +12,10 @@ const ModalFormComplete: React.FC<PropsModal> = ({ router, user_id }) => {
         <div className="w-full">
           <div className="m-8 my-20 max-w-[400px] mx-auto">
             <div className="mb-8">
-              <h1 className="mb-4 text-3xl font-extrabold">
-                Debes dirigirte a completar el formulario
+              <h1 className="mb-4 text-3xl font-extrabold text-center">
+                ¡Actualiza tu Perfil!
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-600 text-center">
                 Esto nos ayudara a brindar respuestas mas exactas con nuestro
                 asistente de AI.
               </p>

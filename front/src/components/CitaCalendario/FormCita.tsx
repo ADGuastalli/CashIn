@@ -5,8 +5,10 @@ import { Input_profile } from "../ui/Input";
 import { Label } from "../ui/Label";
 import { Button_actions } from "../ui/Buttons";
 import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 const CreateEventForm = () => {
+  const router = useRouter();
   const [eventData, setEventData] = useState({
     summary: "",
     location: "Meet / Zoom",
@@ -92,7 +94,7 @@ const CreateEventForm = () => {
           title: "Éxito",
           text: "Evento creado exitosamente!",
         }).then(() => {
-          window.location.reload();
+          router.push("/Menu");
         });
       } else {
         Swal.fire({

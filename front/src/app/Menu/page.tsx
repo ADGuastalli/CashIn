@@ -58,7 +58,7 @@ export default function Menu() {
           <Button_Home />
         </Link>
       </div>
-      <div className="flex flex-col justify-center items-center min-h-screen px-5">
+      <div className="flex flex-col justify-center items-center min-h-screen px-5 mb-20">
         {hasNullProperties(userProfile) && (
           <ModalFormComplete router={router} user_id={userProfile?.user_id} />
         )}
@@ -72,12 +72,43 @@ export default function Menu() {
         <h1 className="lg:text-3xl md:text-2xl text-2xl text-center mt-6 mb-4">
           ¿Qué deseas hacer con nuestra app{" "}
           <span className="font-bold">
-            {userProfile?.last_name || userProfile?.email}
+            {userProfile?.user_name || userProfile?.email}
           </span>
           ?
         </h1>
+        {userProfile.premium === false && (
+          <Link href="/Membership">
+            <div className="blinking-bg flex flex-col justify-center items-center py-2 px-3 mt-5 rounded-lg">
+              <p className="text-center text-gray-500">
+                <span className="font-bold text-red-900 text-lg">
+                  ¡No eres premium!
+                </span>{" "}
+                Haz Click Aqui para acceder a todas las funcionalidades de
+                CashIN.
+              </p>
+            </div>
+          </Link>
+        )}
         <MenuIcons />
       </div>
+
+      <style jsx>{`
+        .blinking-bg {
+          animation: blink 5s infinite;
+        }
+
+        @keyframes blink {
+          0% {
+            background-color: #fca5a5;
+          }
+          50% {
+            background-color: #ffffff;
+          }
+          100% {
+            background-color: #fca5a5;
+          }
+        }
+      `}</style>
     </div>
   );
 }

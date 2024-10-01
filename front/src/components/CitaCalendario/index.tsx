@@ -8,6 +8,10 @@ import { useRouter } from "next/navigation";
 
 export default function ConcretarCita() {
   const [showPaypalButton, setShowPaypalButton] = useState(false);
+  const [paypalOrderDetails, setPaypalOrderDetails] = useState({
+    amount: 2.0, // Set the value to 2 dollars
+    description: "Solicitud de cita", // Description of the appointment
+  });
   const { isAuthenticated } = useContext(UserContext);
   const router = useRouter();
 
@@ -29,9 +33,7 @@ export default function ConcretarCita() {
   }, [isAuthenticated, router]);
 
   const handleButtonClick = () => {
-    if (isAuthenticated) {
-      setShowPaypalButton(true);
-    } else {
+    if (!isAuthenticated) {
       Swal.fire({
         title: "Acceso denegado",
         text: "Para solicitar una cita, debes estar logueado.",
@@ -44,7 +46,15 @@ export default function ConcretarCita() {
           router.push("/User/Login");
         }
       });
+      return; // Salir de la función si no está autenticado
     }
+
+    // Si el usuario está autenticado, mostrar el botón de PayPal
+    setShowPaypalButton(true);
+    setPaypalOrderDetails({
+      amount: 2.0,
+      description: "Solicitud de cita para ", // Puedes añadir detalles dinámicos aquí
+    });
   };
 
   return (
@@ -52,7 +62,14 @@ export default function ConcretarCita() {
       <Button_action onClick={handleButtonClick}>
         Solicitar una Cita
       </Button_action>
-      <div className="mt-5">{showPaypalButton && <Button_Paypal />}</div>
+      <div className="mt-5">
+        {showPaypalButton && (
+          <Button_Paypal
+            orderDetails={paypalOrderDetails}
+            paymentType="appointment"
+          />
+        )}
+      </div>
       <div className="mt-10 flex flex-col items-center justify-center mx-auto max-w-2xl">
         <p className="text-lg">
           En CASHIN, entendemos lo importante que es tomar decisiones
