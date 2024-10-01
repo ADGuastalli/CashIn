@@ -33,9 +33,7 @@ export default function ConcretarCita() {
   }, [isAuthenticated, router]);
 
   const handleButtonClick = () => {
-    if (isAuthenticated) {
-      setShowPaypalButton(true);
-    } else {
+    if (!isAuthenticated) {
       Swal.fire({
         title: "Acceso denegado",
         text: "Para solicitar una cita, debes estar logueado.",
@@ -48,7 +46,15 @@ export default function ConcretarCita() {
           router.push("/User/Login");
         }
       });
+      return; // Salir de la función si no está autenticado
     }
+
+    // Si el usuario está autenticado, mostrar el botón de PayPal
+    setShowPaypalButton(true);
+    setPaypalOrderDetails({
+      amount: 2.0,
+      description: "Solicitud de cita para ", // Puedes añadir detalles dinámicos aquí
+    });
   };
 
   return (
