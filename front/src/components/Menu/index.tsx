@@ -10,7 +10,7 @@ import ImgAhorro from "../../public/assets/svg/piggy-bank.svg";
 import ImgDiag from "../../public/assets/svg/review.svg";
 import ImgPresu from "../../public/assets/svg/budget.svg";
 import ImgUser from "../../public/assets/svg/user-circle-svgrepo-com.svg";
-import ImgChat from "../../public/assets/svg/chat.svg";
+import ImgChat from "../../public/assets/svg/chatIA.png";
 
 export default function MenuIcons() {
   const { userProfile } = useContext(UserContext);

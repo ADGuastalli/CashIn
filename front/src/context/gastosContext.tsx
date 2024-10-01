@@ -1,11 +1,16 @@
 "use client";
-import React, { createContext, useContext, useReducer, ReactNode, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  useEffect,
+  useState,
+} from "react";
 import { getUserExpenseAll } from "@/server/fetchExpense";
 
-const userId = localStorage.getItem('user');
-
 interface Gasto {
-  expense_id?: string,
+  expense_id?: string;
   tipoGasto: string;
   subtipoGasto?: string;
   monto: string;
@@ -19,7 +24,7 @@ interface GastosState {
 }
 
 type GastosAction =
-  | {type: "INIT_GASTOS"; payload: Gasto}
+  | { type: "INIT_GASTOS"; payload: Gasto }
   | { type: "ADD_GASTO"; payload: Gasto }
   | { type: "DELETE_GASTO"; payload: number }
   | {
@@ -29,12 +34,12 @@ type GastosAction =
   | { type: "CLEAN_TIPO_GASTO" };
 
 const GastosContext = createContext<
-    | {
-        state: GastosState;
-        dispatch: React.Dispatch<GastosAction>;
-      }
-    | undefined
-  >(undefined);
+  | {
+      state: GastosState;
+      dispatch: React.Dispatch<GastosAction>;
+    }
+  | undefined
+>(undefined);
 
 const gastosReducer = (
   state: GastosState,
@@ -42,8 +47,13 @@ const gastosReducer = (
 ): GastosState => {
   switch (action.type) {
     case "INIT_GASTOS":
-      const exists = state.gastos.some(g => g.monto === action.payload.monto 
-          && g.tipoGasto === action.payload.tipoGasto && g.subtipoGasto === action.payload.subtipoGasto && g.tipoPago === action.payload.tipoPago);
+      const exists = state.gastos.some(
+        (g) =>
+          g.monto === action.payload.monto &&
+          g.tipoGasto === action.payload.tipoGasto &&
+          g.subtipoGasto === action.payload.subtipoGasto &&
+          g.tipoPago === action.payload.tipoPago
+      );
       if (!exists) {
         return { ...state, gastos: [action.payload, ...state.gastos] };
       }
@@ -64,8 +74,8 @@ const gastosReducer = (
     case "CLEAN_TIPO_GASTO":
       return {
         ...state,
-        selectedTipoGasto: undefined, 
-        subtipos: []
+        selectedTipoGasto: undefined,
+        subtipos: [],
       };
     default:
       throw new Error("Acción no soportada");
@@ -81,25 +91,33 @@ export const GastosProvider: React.FC<{ children: ReactNode }> = ({
     subtipos: [],
   });
 
-  const fetchGastos = async () => {
-        try {
-          if(userId){
-            const response = await getUserExpenseAll(userId); 
-            const gastosDesdeDB = response; 
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            gastosDesdeDB.forEach((gasto: any) => {
-              dispatch({ type: "INIT_GASTOS", payload: gasto });
-            });
-          }
-        } catch (error) {
-          console.error("Error al obtener los gastos:", error);
-        }
-      };
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchGastos(); 
+    // Verificar si estamos en el navegador antes de acceder a localStorage
+    if (typeof window !== "undefined") {
+      const storedUserId = localStorage.getItem("user");
+      setUserId(storedUserId); // Guardar el userId desde localStorage
+    }
   }, []);
 
+  const fetchGastos = async () => {
+    try {
+      if (userId) {
+        const response = await getUserExpenseAll(userId);
+        const gastosDesdeDB = response;
+        gastosDesdeDB.forEach((gasto: Gasto) => {
+          dispatch({ type: "INIT_GASTOS", payload: gasto });
+        });
+      }
+    } catch (error) {
+      console.error("Error al obtener los gastos:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchGastos(); // Llama a fetchGastos cuando userId cambie
+  }, [userId]);
 
   return (
     <GastosContext.Provider value={{ state, dispatch }}>
