@@ -1,7 +1,11 @@
 "use client";
-import React, { createContext, useContext, useReducer, ReactNode } from "react";
+import React, { createContext, useContext, useReducer, ReactNode, useEffect } from "react";
+import { getUserExpenseAll } from "@/server/fetchExpense";
+
+const userId = localStorage.getItem('user');
 
 interface Gasto {
+  expense_id?: string,
   tipoGasto: string;
   subtipoGasto?: string;
   monto: string;
@@ -15,6 +19,7 @@ interface GastosState {
 }
 
 type GastosAction =
+  | {type: "INIT_GASTOS"; payload: Gasto}
   | { type: "ADD_GASTO"; payload: Gasto }
   | { type: "DELETE_GASTO"; payload: number }
   | {
@@ -36,6 +41,13 @@ const gastosReducer = (
   action: GastosAction
 ): GastosState => {
   switch (action.type) {
+    case "INIT_GASTOS":
+      const exists = state.gastos.some(g => g.monto === action.payload.monto 
+          && g.tipoGasto === action.payload.tipoGasto && g.subtipoGasto === action.payload.subtipoGasto && g.tipoPago === action.payload.tipoPago);
+      if (!exists) {
+        return { ...state, gastos: [action.payload, ...state.gastos] };
+      }
+      return state;
     case "ADD_GASTO":
       return { ...state, gastos: [...state.gastos, action.payload] };
     case "DELETE_GASTO":
@@ -68,6 +80,26 @@ export const GastosProvider: React.FC<{ children: ReactNode }> = ({
     selectedTipoGasto: undefined,
     subtipos: [],
   });
+
+  const fetchGastos = async () => {
+        try {
+          if(userId){
+            const response = await getUserExpenseAll(userId); 
+            const gastosDesdeDB = response; 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            gastosDesdeDB.forEach((gasto: any) => {
+              dispatch({ type: "INIT_GASTOS", payload: gasto });
+            });
+          }
+        } catch (error) {
+          console.error("Error al obtener los gastos:", error);
+        }
+      };
+
+  useEffect(() => {
+    fetchGastos(); 
+  }, []);
+
 
   return (
     <GastosContext.Provider value={{ state, dispatch }}>

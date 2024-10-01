@@ -8,15 +8,14 @@ import ImgAhorro from "../../public/assets/svg/piggy-bank.svg";
 import ImgDiag from "../../public/assets/svg/review.svg";
 import ImgPresu from "../../public/assets/svg/budget.svg";
 import ImgUser from "../../public/assets/svg/user-circle-svgrepo-com.svg";
-import ImgChat from "../../public/assets/svg/chatIA.png";
-import { useContext } from "react";
-import { UserContext } from "@/context/userContext";
+import ImgChat from "../../public/assets/svg/chat.svg";
 
 export default function MenuIcons() {
   const { userProfile } = useContext(UserContext);
   console.log("userProfileeeeee", userProfile);
 
   const userId = userProfile?.user_id;
+
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 text-center w-full max-w-4xl mt-10">
