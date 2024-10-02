@@ -114,10 +114,6 @@ const updateExpense = async (req, res) => {
     const { id } = req.params;
     const { expense_type_id, pay_method_id, expense, mount, date } = req.body;
 
-    if (!expense_type_id || !pay_method_id || !expense || !mount || !date) {
-      return res.status(400).json({ error: 'Faltan datos requeridos' });
-    }
-
     const existingExpense = await Expense.findByPk(id);
 
     if (!existingExpense) {
