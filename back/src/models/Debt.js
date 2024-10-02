@@ -33,6 +33,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
+    mount_cuote: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false
+    },
     date: {
       type: DataTypes.DATE,
       allowNull: false,
