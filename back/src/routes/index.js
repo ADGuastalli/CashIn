@@ -27,7 +27,11 @@ const bookController = require('../controllers/Book/book');
 const calendarControllers = require('../controllers/CalendarControllers/calendarController')
 const incomeCategoryController = require('../controllers/IncomeCategory/IncomeCategory');
 const financialLevelController = require('../controllers/FinancialLevel/financialLevel');
+<<<<<<< HEAD
 //const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesTotal')
+=======
+const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesTotal')
+>>>>>>> origin/backv3
 const calculatorInconmeExpensesMonthly = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesMonth')
 const { authenticateToken } = require('../middlewares/auth');
 const googleAuthController = require("../controllers/Auth/google");
