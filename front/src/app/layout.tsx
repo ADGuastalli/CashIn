@@ -3,6 +3,7 @@ import "./globals.css";
 import { Montserrat } from "next/font/google";
 import { UserProvider } from "@/context/userContext";
 import { GastosProvider } from "@/context/gastosContext";
+import { IngresosProvider } from "@/context/incomeContext";
 import Footer from "@/components/Footer";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -25,7 +26,11 @@ export default function RootLayout({
           <GoogleOAuthProvider
             clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID as string}
           >
-            <GastosProvider>{children}</GastosProvider>
+            <GastosProvider>
+            <IngresosProvider>
+              {children}
+            </IngresosProvider>
+            </GastosProvider>
           </GoogleOAuthProvider>
         </UserProvider>
         <Footer />

@@ -23,6 +23,7 @@ export const UserContext = createContext<IUserContext>({
   setIsAuthenticated: () => {},
   isProfileComplete: false,
   setIsProfileComplete: () => {},
+  loading: true,
 });
 
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
@@ -32,17 +33,15 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   );
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isProfileComplete, setIsProfileComplete] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
   const login = async (credentials: ILogin) => {
     try {
       const data = await postSignin(credentials);
-      console.log("data post login", data);
-
       if (!data.token) {
         throw new Error("Invalid Token");
       }
-      typeof window !== "undefined" && localStorage.clear();
 
       typeof window !== "undefined" &&
         localStorage.setItem("token", data.token);
@@ -50,8 +49,27 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         localStorage.setItem("user", JSON.stringify(data.id));
 
       setIsAuthenticated(true);
+      const profileData = await getUser_Id(data.id, data.token); // Obtener datos del perfil
 
-      setUser(data.id);
+      // Asegúrate de que profileData tenga todos los campos requeridos para IUser
+      const completeUser: IUser = {
+        user_id: profileData.user_id,
+        user_name: profileData.user_name,
+        email: profileData.email,
+        password: "", // Asigna un valor por defecto o maneja la contraseña de otra manera
+        country: profileData.country_id, // Asume que esto corresponde al país
+        city: profileData.city_id, // Asume que esto corresponde a la ciudad
+        birthdate: profileData.birthdate
+          ? new Date(profileData.birthdate)
+          : new Date(), // Proporciona un valor por defecto
+        status: true, // Asigna un valor adecuado
+        role: "user",
+      };
+
+      setUser(completeUser); // Actualiza el usuario con los datos completos
+      setUserProfile(profileData); // Actualiza el perfil del usuario
+      setIsProfileComplete(checkProfileComplete(completeUser)); // Actualiza el estado del perfil
+
       return true;
     } catch (error) {
       console.log(error);
@@ -60,7 +78,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const handleGoogleLogin = async (userData: IUser) => {
-    const token = localStorage.getItem("token");
+    const token =
+      typeof window !== "undefined" && localStorage.getItem("token");
 
     if (token) {
       console.log("userData de Google", userData);
@@ -91,8 +110,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       typeof window !== "undefined" && localStorage.setItem("token", token);
       typeof window !== "undefined" &&
         localStorage.setItem("user", JSON.stringify(completeUser.user_id)); // Guarda el usuario completo
+      await getUserDataProfile(userId, token);
     }
-
   };
 
   const register = async (user: IRegister) => {
@@ -119,8 +138,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     if (typeof token === "string") {
       const dataUser = await getUser_Id(user, token);
-      console.log("dataUser:", dataUser);
-
       setUserProfile(dataUser);
     } else {
       console.error("Token inválido. No se pudo obtener los datos del perfil.");
@@ -133,6 +150,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (token) {
       setIsAuthenticated(true);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -146,6 +164,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     } else {
       setUser(null);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -154,6 +173,25 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       typeof window !== "undefined" && localStorage.getItem("token");
     if (user) getUserDataProfile(JSON.parse(user), token as string);
   }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const userData = localStorage.getItem("user");
+
+    if (token) {
+      setIsAuthenticated(true);
+      if (userData) {
+        const parsedUser = JSON.parse(userData);
+        setUser(parsedUser);
+        setIsProfileComplete(checkProfileComplete(parsedUser));
+      }
+    } else {
+      setUser(null);
+      setIsAuthenticated(false);
+    }
+
+    setLoading(false);
+  }, [isAuthenticated]);
 
   const checkProfileComplete = (user: IUser) => {
     return !!(
@@ -180,6 +218,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         isProfileComplete,
         setIsProfileComplete,
         setIsAuthenticated,
+        loading,
       }}
     >
       {children}

@@ -1,5 +1,5 @@
 const fetch = require("node-fetch");
-
+const { User } = require("../../models/index");
 // Función para obtener el token de acceso
 async function createAccessToken() {
   const clientId =
@@ -37,7 +37,7 @@ async function createAccessToken() {
 }
 
 // Función para crear la orden de PayPal
-async function createOrder() {
+async function createOrder(amount, description) {
   try {
     const accessToken = await createAccessToken();
 
@@ -50,30 +50,25 @@ async function createOrder() {
           Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
+          intent: "CAPTURE",
           purchase_units: [
             {
               amount: {
-                currency_code: "USD",
-                value: "2.00",
+                currency_code: "USD", // Código de moneda en formato ISO 4217
+                value: amount, // Valor dinámico desde el frontend
               },
-              reference_id: "d9fsdas80740-38f0-1sdas1e8-b467-0ed5f89f71das8b", // Reemplázalo por tu propio valor de referencia
+              description: description, // Descripción de la orden
+              reference_id: "unique-ref-id", // Valor único por orden
             },
           ],
-          intent: "CAPTURE", // Asegura que es un pago inmediato
-          payment_source: {
-            paypal: {
-              experience_context: {
-                payment_method_preference: "IMMEDIATE_PAYMENT_REQUIRED",
-                payment_method_selected: "PAYPAL",
-                brand_name: "EXAMPLE INC", // Reemplaza con el nombre de tu negocio
-                locale: "en-US",
-                landing_page: "LOGIN",
-                shipping_preference: "GET_FROM_FILE",
-                user_action: "PAY_NOW",
-                return_url: "https://example.com/returnUrl", // Reemplaza con tu URL de retorno
-                cancel_url: "https://example.com/cancelUrl", // Reemplaza con tu URL de cancelación
-              },
-            },
+          application_context: {
+            brand_name: "CASHIN IA",
+            locale: "en-US",
+            landing_page: "LOGIN",
+            shipping_preference: "NO_SHIPPING",
+            user_action: "PAY_NOW",
+            return_url: "http://localhost:3000/Cita",
+            cancel_url: "http://localhost:3000/Cita",
           },
         }),
       }
@@ -123,9 +118,12 @@ async function captureOrder(orderID) {
 }
 
 // Controlador de la ruta para crear la orden de PayPal
+// Controlador de la ruta para crear la orden de PayPal
 const createPaypalOrder = async (req, res) => {
+  const { amount, description } = req.body; // Obtener amount y description desde el body
+
   try {
-    const order = await createOrder();
+    const order = await createOrder(amount, description); // Pasar los valores a createOrder
     res.json({ id: order.id });
   } catch (error) {
     console.error("Error al crear el pedido de PayPal:", error.message);
@@ -137,11 +135,25 @@ const createPaypalOrder = async (req, res) => {
 };
 
 // Controlador para capturar la orden aprobada por el cliente
+// Controlador para capturar la orden aprobada por el cliente
 const capturePaypalOrder = async (req, res) => {
-  const { orderID } = req.body;
+  const { orderID, userId } = req.body; // Asegúrate de que el ID del usuario se pase desde el frontend
 
   try {
     const captureData = await captureOrder(orderID);
+
+    if (captureData.status === "COMPLETED") {
+      const user = await User.findByPk(userId);
+      if (!user) {
+        return res.status(404).json({ error: "Usuario no encontrado" });
+      }
+
+      user.premium = true;
+      user.premium_expiration = new Date(); // Establece la fecha actual
+      user.premium_expiration.setMonth(user.premium_expiration.getMonth() + 1); /// Cambia el estado a premium
+      await user.save(); // Guarda los cambios en la base de datos
+    }
+
     res.json(captureData); // Envía los datos de la transacción capturada al frontend
   } catch (error) {
     console.error("Error al capturar el pedido de PayPal:", error.message);

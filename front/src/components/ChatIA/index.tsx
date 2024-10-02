@@ -5,13 +5,13 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import Img1 from "../../public/assets/svg/chatIA.png";
 import Img2 from "../../public/assets/svg/budget.svg";
-import Img3 from "../../public/assets/svg/dollar.svg";
+import Img3 from "../../public/assets/svg/tax.svg";
 import Img4 from "../../public/assets/svg/piggy-bank.svg";
 
 export default function ChatIALanding() {
   useEffect(() => {
     AOS.init({
-      duration: 1000,
+      duration: 500,
       once: true,
     });
   }, []);
@@ -27,8 +27,8 @@ export default function ChatIALanding() {
         </h2>
         <h4 className="text-base text-left my-5">
           En nuestra plataforma, no solo tienes acceso a asesoría financiera
-          personalizada, sino que también cuentas con el apoyo de CashinBot, un
-          asistente inteligente impulsado por inteligencia artificial. CashinBot
+          personalizada, sino que también cuentas con el apoyo de CashInBOT, un
+          asistente inteligente impulsado por inteligencia artificial. CashInBOT
           está aquí para ayudarte a tomar decisiones financieras mejor
           informadas, de manera rápida y eficiente.
         </h4>
@@ -52,19 +52,19 @@ export default function ChatIALanding() {
         data-aos="fade-up"
       >
         <h2 className="text-xl font-bold text-center">
-          ¿Cómo Funciona CashinBot?
+          ¿Cómo Funciona CashInBOT?
         </h2>
         <h4 className="text-base text-left my-5">
-          CashinBot utiliza la última tecnología en inteligencia artificial para
+          CashInBOT utiliza la última tecnología en inteligencia artificial para
           procesar tu información financiera y ofrecerte consejos prácticos en
           tiempo real. Ya sea que quieras establecer un presupuesto mensual,
           calcular el crecimiento de tus inversiones o recibir recomendaciones
-          sobre cómo reducir tus deudas, CashinBot está aquí para guiarte.
+          sobre cómo reducir tus deudas, CashInBOT está aquí para guiarte.
         </h4>
       </div>
 
       <div
-        className="flex flex-col justify-center items-center md:my-20"
+        className="flex flex-col justify-center items-center md:my-10"
         data-aos="fade-up"
       >
         <Image
@@ -77,11 +77,11 @@ export default function ChatIALanding() {
       </div>
 
       <div
-        className="bg-[#0095a919] rounded-lg flex flex-col justify-center p-5 md:my-20"
+        className="bg-[#0095a919] rounded-lg flex flex-col justify-center p-5 md:my-10"
         data-aos="fade-up"
       >
         <h2 className="text-xl font-bold text-center">
-          Ventajas de la Asesoría con CashinBot
+          Ventajas de la Asesoría con CashInBOT
         </h2>
         <ul className="text-lg text-left my-5">
           <li className="list-disc ml-5">Análisis Financiero Automático</li>
@@ -91,7 +91,7 @@ export default function ChatIALanding() {
       </div>
 
       <div
-        className="flex flex-col justify-center items-center md:my-20"
+        className="flex flex-col justify-center items-center md:my-10"
         data-aos="fade-up"
       >
         <Image
@@ -138,23 +138,23 @@ export default function ChatIALanding() {
         </h2>
         <ul className="text-lg text-left my-5">
           <li className="list-disc ml-5 mb-2 text-base">
-            ¿Cómo puede CashinBot ayudarme a mejorar mi presupuesto?
+            ¿Cómo puede CashInBOT ayudarme a mejorar mi presupuesto?
             <p className="font-light text-sm">
-              CashinBot analiza tus ingresos y gastos actuales y te sugiere un
+              CashInBOT analiza tus ingresos y gastos actuales y te sugiere un
               plan de presupuesto optimizado.
             </p>
           </li>
           <li className="list-disc ml-5 text-base">
-            ¿Es seguro compartir mi información financiera con CashinBot?
+            ¿Es seguro compartir mi información financiera con CashInBOT?
             <p className="font-light text-sm mb-2">
               Absolutamente. Toda la información es encriptada para garantizar
               la seguridad.
             </p>
           </li>
           <li className="list-disc ml-5 text-base">
-            ¿Puedo usar CashinBot en cualquier momento?
+            ¿Puedo usar CashInBOT en cualquier momento?
             <p className="font-light text-sm">
-              Sí, CashinBot está disponible 24/7 para responder tus consultas.
+              Sí, CashInBOT está disponible 24/7 para responder tus consultas.
             </p>
           </li>
         </ul>

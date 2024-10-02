@@ -63,6 +63,36 @@ export const getUser_Id = async (id: string, token: string) => {
     birthdate: data.birthdate,
     child: data.child,
     dwelling_id: data.dwelling_id,
+    occupation_id: data.occupation_id,
+    marital_status_id: data.marital_status_id,
+    premium: data.premium,
+    admin: data.admin,
   };
   return newData;
+};
+
+export const getAllUsers = async () => {
+  const response = await fetch(`${API}/users`, {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    throw new Error("Error al obtener los usuarios");
+  }
+
+  const data = await response.json();
+  return data;
+};
+
+export const deleteUser = async (id: string) => {
+  const response = await fetch(`${API}/users/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Error al eliminar el usuario");
+  }
+
+  const data = await response.json();
+  return data;
 };
