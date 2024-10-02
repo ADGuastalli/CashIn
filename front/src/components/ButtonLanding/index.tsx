@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import ImgBolsa from "../../public/assets/svg/tax.svg";
 import ImgTrans from "../../public/assets/svg/transfer.svg";
 import ImgCard from "../../public/assets/svg/surface1.svg";

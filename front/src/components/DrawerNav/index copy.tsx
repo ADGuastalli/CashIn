@@ -5,9 +5,14 @@ import imageLogo from "@/public/assets/image-removebg-preview.png";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import HomeIcon from "@mui/icons-material/Home";
 import ArticleIcon from "@mui/icons-material/Article";
-import EventIcon from "@mui/icons-material/Event";
 
-function DrawerNavAdmin({ setActiveComponent }: any) {
+interface DrawerNavAdminProps {
+  setActiveComponent: (component: string) => void; // Especifica el tipo como función que recibe un string
+}
+
+const DrawerNavAdmin: React.FC<DrawerNavAdminProps> = ({
+  setActiveComponent,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -111,6 +116,6 @@ function DrawerNavAdmin({ setActiveComponent }: any) {
       </aside>
     </div>
   );
-}
+};
 
 export default DrawerNavAdmin;

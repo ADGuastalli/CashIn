@@ -1,6 +1,16 @@
 import { API } from "@/helpers/helper";
 
-export const createCourse = async (course: any) => {
+interface Course {
+  title: string;
+  description: string;
+  topics: string;
+  duration: string;
+  level: string;
+  location: string;
+  startDate: string;
+}
+
+export const createCourse = async (course: Course) => {
   const response = await fetch(`${API}/course`, {
     method: "POST",
     headers: {
