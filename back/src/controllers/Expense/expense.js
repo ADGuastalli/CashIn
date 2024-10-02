@@ -3,13 +3,13 @@ const { Expense } = require('../../models/index');  // Importar el modelo Expens
 // CREATE: Crear un nuevo registro en la tabla Expense
 const createExpense = async (req, res) => {
   try {
-    const { expense_type_id, pay_method_id, expense, mount, date } = req.body;
+    const { expense_category_id, pay_method_id, expense, mount, date, data_id } = req.body;
 
-    if (!expense_type_id || !pay_method_id || !expense || !mount || !date) {
+    if (!expense_category_id || !pay_method_id || !expense || !mount || !date || !data_id) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const newExpense = await Expense.create({ expense_type_id, pay_method_id, expense, mount, date });
+    const newExpense = await Expense.create({ expense_category_id, pay_method_id, expense, mount, date, data_id });
     res.status(201).json(newExpense);
   } catch (error) {
     console.error('Error al crear el registro:', error);
@@ -50,10 +50,6 @@ const updateExpense = async (req, res) => {
   try {
     const { id } = req.params;
     const { expense_type_id, pay_method_id, expense, mount, date } = req.body;
-
-    if (!expense_type_id || !pay_method_id || !expense || !mount || !date) {
-      return res.status(400).json({ error: 'Faltan datos requeridos' });
-    }
 
     const existingExpense = await Expense.findByPk(id);
 

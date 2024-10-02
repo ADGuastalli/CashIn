@@ -27,7 +27,8 @@ const bookController = require('../controllers/Book/book');
 const calendarControllers = require('../controllers/CalendarControllers/calendarController')
 const incomeCategoryController = require('../controllers/IncomeCategory/IncomeCategory');
 const financialLevelController = require('../controllers/FinancialLevel/financialLevel');
-const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expenses')
+const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesTotal')
+const calculatorInconmeExpensesMonthly = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesMonth')
 const { authenticateToken } = require('../middlewares/auth');
 const googleAuthController = require("../controllers/Auth/google");
 const paypalController = require("../controllers/Paypal/paypalController");
@@ -205,6 +206,27 @@ router.post('/create-event', calendarControllers.createEvent);
 
 
 router.get('/incomesExpenses/totalincome/:id', calculatorInconmeExpenses.calculateTotalIncome)
-router.get('/incomesExpenses/calculatetotalmortgagedebt/:id', calculatorInconmeExpenses.calculateTotalMortgageDebt)
+router.get('/incomesExpenses/calculatetotalmortgagedebt/:id', calculatorInconmeExpenses.calculatePaidMortgageDebt)
+router.get('/incomesExpenses/calculatePaidPersonalLoans/:id', calculatorInconmeExpenses.calculatePaidPersonalLoans)
+router.get('/incomesExpenses/calculatePaidVehicleLoans/:id', calculatorInconmeExpenses.calculatePaidVehicleLoans)
+router.get('/incomesExpenses/calculateTotalHomeAndServicesExpenses/:id', calculatorInconmeExpenses.calculateTotalHomeAndServicesExpenses)
+router.get('/incomesExpenses/calculateTotalFoodAndPersonalCareExpenses/:id', calculatorInconmeExpenses.calculateTotalFoodAndPersonalCareExpenses)
+router.get('/incomesExpenses/calculateTotalVehicleExpenses/:id', calculatorInconmeExpenses.calculateTotalVehicleExpenses)
+router.get('/incomesExpenses/calculateTotalTransportExpenses/:id', calculatorInconmeExpenses.calculateTotalTransportExpenses)
+router.get('/incomesExpenses/calculateTotalMultipleCategoriesExpenses/:id', calculatorInconmeExpenses.calculateTotalMultipleCategoriesExpenses)
+router.get('/incomesExpenses/calculateTotalVacationAndRecreationExpenses/:id', calculatorInconmeExpenses.calculateTotalVacationAndRecreationExpenses)
+
+router.get('/incomesExpenses/totalincomeMonthly/:id', calculatorInconmeExpensesMonthly.calculateTotalIncomeMonthly)
+router.get('/incomesExpenses/calculateMonthlyMortgageExpense/:id', calculatorInconmeExpensesMonthly.calculateMonthlyMortgageExpense)
+router.get('/incomesExpenses/calculateMonthlyPersonalLoanExpense/:id', calculatorInconmeExpensesMonthly.calculateMonthlyPersonalLoanExpense)
+router.get('/incomesExpenses/calculateMonthlyVehicleLoanExpense/:id', calculatorInconmeExpensesMonthly.calculateMonthlyVehicleLoanExpense)
+router.get('/incomesExpenses/calculateMonthlyHomeAndServicesExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyHomeAndServicesExpenses)
+router.get('/incomesExpenses/calculateMonthlyFoodAndPersonalCareExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyFoodAndPersonalCareExpenses)
+router.get('/incomesExpenses/calculateMonthlyVehicleExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyVehicleExpenses)
+router.get('/incomesExpenses/calculateMonthlyTransportExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyTransportExpenses)
+router.get('/incomesExpenses/calculateMonthlyMultipleCategoriesExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyMultipleCategoriesExpenses)
+router.get('/incomesExpenses/calculateMonthlyVacationAndRecreationExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyVacationAndRecreationExpenses)
+router.get('/incomesExpenses/calculateMonthlyTithesAndSavings/:id', calculatorInconmeExpensesMonthly.calculateMonthlyTithesAndSavings)
+
 
 module.exports = router
