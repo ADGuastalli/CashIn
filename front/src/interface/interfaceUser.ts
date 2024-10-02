@@ -13,10 +13,11 @@ interface IUserProfile {
   marital_status_id?: string;
   dwelling_id: string;
   premium: boolean;
+  admin: boolean;
 }
 
 interface IUser {
-  name: string;
+  name?: string;
   email: string;
   password: string;
   country: string;
@@ -37,6 +38,7 @@ interface IUser {
   dwelling_id?: string;
   dwelling?: string;
   premium?: boolean;
+  admin?: boolean;
   child?: number;
 }
 

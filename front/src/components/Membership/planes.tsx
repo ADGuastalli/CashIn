@@ -11,14 +11,14 @@ export default function PlanesComponet() {
     amount: 5.0,
     description: "Membresia Premium",
   };
-  const { isAuthenticated } = useContext(UserContext);
+  const { isAuthenticated, userProfile } = useContext(UserContext);
   const router = useRouter();
 
   const handlePurchaseClick = () => {
     if (!isAuthenticated) {
       Swal.fire({
         title: "Acceso denegado",
-        text: "Debes estar logueado para comprar la membresía premium.",
+        text: "Debes estar logueado para suscribirte a la membresía premium.",
         icon: "warning",
         confirmButtonText: "Ir a Login",
         allowOutsideClick: false,
@@ -28,14 +28,23 @@ export default function PlanesComponet() {
           router.push("/User/Login");
         }
       });
+    } else if (userProfile.premium) {
+      // Verificar si el usuario ya es premium
+      Swal.fire({
+        title: "¡Ya eres un usuario premium!",
+        text: "No necesitas suscribirte nuevamente.",
+        icon: "info",
+        confirmButtonText: "Aceptar",
+      });
+      setShowPaypalButton(false); // Asegurarse de no mostrar el botón de PayPal
     } else {
-      setShowPaypalButton(true);
+      setShowPaypalButton(true); // Mostrar el botón de PayPal si el usuario no es premium
     }
   };
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full table-auto border-collapse">
+      <table className="min-w-full table-auto border-separate">
         <thead>
           <tr>
             <th className="border px-4 py-2">Funcionalidades</th>
@@ -53,9 +62,9 @@ export default function PlanesComponet() {
           </tr>
           <tr>
             <td className="border px-4 py-2">Consultas al Chatbot IA</td>
-            <td className="border px-4 py-2 text-center">5 (al mes)</td>
+            <td className="border px-4 py-2 text-center"> Ilimitado </td>
             <td className="border px-4 py-2 bg-yellow-100 text-lg text-center">
-              100 (al mes)
+              Ilimitado
             </td>
           </tr>
           <tr>
@@ -150,18 +159,18 @@ export default function PlanesComponet() {
             </td>
           </tr>
           <tr>
-            <td className="border px-4 py-2"></td>
-            <td className="border px-4 py-2">
+            <td className="px-4 py-2"></td>
+            <td className=" px-4 py-2">
               <button className="cursor-auto text-center font-bold h-14 w-full px-3 bg-gray-300 rounded">
                 Membresia gratuita
               </button>
             </td>
-            <td className="border px-4 py-2 bg-yellow-50">
+            <td className=" px-4 py-2">
               <button
                 onClick={handlePurchaseClick}
-                className="text-center font-bold h-14 w-full bg-yellow-200 rounded"
+                className="text-center font-bold h-14 w-full px-10 bg-yellow-200 rounded hover:scale-105 transition-transform duration-300"
               >
-                COMPRAR
+                SUSCRIBIRSE
               </button>
               {showPaypalButton && (
                 <div className="mt-5">

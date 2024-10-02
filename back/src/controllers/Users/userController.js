@@ -2,10 +2,11 @@ const {
   User,
   Country,
   City,
+  Data,
   MaritalStatus,
   Dwelling,
-  Data,
   Child,
+  Occupation,
   sequelize,
 } = require("../../models/index");
 const bcrypt = require("bcrypt");
@@ -74,6 +75,7 @@ const completeUserProfile = async (req, res) => {
     !birthdate ||
     !marital_status_id ||
     !dwelling_id ||
+    !child ||
     !occupation_id
   ) {
     return res
@@ -166,6 +168,7 @@ const completeUserProfile = async (req, res) => {
         dwelling: dwelling.dwelling,
         child: child > 0 ? child : null,
         premium: user.premium,
+        admin: user.admin,
       },
     });
   } catch (error) {
@@ -216,7 +219,42 @@ const loginUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      include: [
+        {
+          model: City,
+          attributes: ["city"], // Solo el nombre de la ciudad
+        },
+        {
+          model: Country,
+          attributes: ["country"], // Solo el nombre del país
+        },
+        {
+          model: Data,
+          attributes: [
+            "data_id",
+            "occupation_id",
+            "marital_status_id",
+            "dwelling_id",
+            // Otros atributos que quieras obtener de Data
+          ],
+          include: [
+            {
+              model: MaritalStatus,
+              attributes: ["marital_status"], // Nombre del estado civil
+            },
+            {
+              model: Occupation,
+              attributes: ["occupation"], // Nombre de la ocupación
+            },
+            {
+              model: Dwelling,
+              attributes: ["dwelling"], // Nombre de la vivienda
+            },
+          ],
+        },
+      ],
+    });
     res.status(200).json(users);
   } catch (error) {
     console.error("Error al obtener los usuarios:", error);

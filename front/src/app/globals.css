@@ -31,7 +31,7 @@ body {
 
 @layer components {
   .button-principal {
-    @apply flex justify-center w-full bg-actions  text-aux_actions 
+    @apply flex justify-center  bg-actions w-52 text-aux_actions 
          py-2 px-4 mx-2 my-2 rounded-sm font-bold;
   }
 }
@@ -44,7 +44,7 @@ body {
 
 @layer components {
   .button-inactivo {
-    @apply cursor-not-allowed flex justify-center w-full bg-[#ffed62]  text-white
+    @apply cursor-not-allowed flex justify-center w-52 bg-[#ffed62]  text-white
          py-2 px-4 mx-2 my-2 rounded-sm;
   }
 }

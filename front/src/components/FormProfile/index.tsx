@@ -33,6 +33,7 @@ function FormProfile({ DataUser }: { DataUser: IUserProfile }) {
     dwelling_id: DataUser.dwelling_id,
     child: DataUser.child || 0,
     premium: DataUser.premium || false,
+    admin: DataUser.admin || false,
   });
 
   const [hasChildren, setHasChildren] = useState<boolean>(false);
@@ -166,6 +167,8 @@ function FormProfile({ DataUser }: { DataUser: IUserProfile }) {
             confirmButtonAriaLabel: "Aceptar",
           });
         } else {
+          console.log("datos enviamos al back", formData);
+
           const response = await updateUserProfile(formData, token);
 
           if (response.ok) {
