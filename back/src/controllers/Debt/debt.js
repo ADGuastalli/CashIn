@@ -3,13 +3,13 @@ const { Debt } = require('../../models/index');  // Importar el modelo Debt
 // CREATE: Crear un nuevo registro en la tabla Debt
 const createDebt = async (req, res) => {
   try {
-    const { debt_category_id, debt, mount, date, data_id } = req.body;
+    const { debt_category_id, debt, mount, date, data_id, rate, cuote, recurrence, mount_cuote} = req.body;
 
-    if (!debt_category_id || !debt || !mount || !date || ! data_id) {
+    if (!debt_category_id || !debt || !mount || !date || ! data_id || !rate || !cuote || !recurrence || !mount_cuote) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const newDebt = await Debt.create({ debt_category_id, debt, mount, date, data_id});
+    const newDebt = await Debt.create({ debt_category_id, debt, mount, date, data_id, rate, cuote, recurrence, mount_cuote});
     res.status(201).json(newDebt);
   } catch (error) {
     console.error('Error al crear el registro:', error);
