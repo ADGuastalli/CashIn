@@ -24,7 +24,7 @@ type IngresosAction =
   | { type: "DELETE_INGRESO"; payload: number }
   | {
       type: "SELECT_TIPO_INGRESOS";
-      payload: { tipoGasto: string; subtipos: string[] };
+      payload: { tipoIncome: string; subtipos: string[] };
     }
   | { type: "CLEAN_TIPO_INGRESOS" };
 
@@ -58,7 +58,7 @@ const ingresosReducer = (
     case "SELECT_TIPO_INGRESOS":
       return {
         ...state,
-        selectedTipoIngreso: action.payload.tipoGasto,
+        selectedTipoIngreso: action.payload.tipoIncome,
         descripcionTipos: action.payload.subtipos,
       };
     case "CLEAN_TIPO_INGRESOS":

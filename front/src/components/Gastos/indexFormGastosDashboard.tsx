@@ -11,7 +11,7 @@ import { postExpense } from "@/server/fetchExpense";
 import { Expense } from "@/interface/interfaceData";
 import { useParams } from "next/navigation";
 import { deleteGasto } from "@/server/fetchExpense";
-
+import { useCategories } from "@/context/categorias&variablesContext";
 function FormGastosDashboard() {
 
   const { state, dispatch } = useGastos();
@@ -19,6 +19,7 @@ function FormGastosDashboard() {
   const [subtipoSeleccionado, setSubtipoSeleccionado] = useState<string>("");
   const [tipoPago, setTipoPago] = useState<string>("");
   const [gastos,setGastos] = useState<Expense>();
+  const { payMethod } = useCategories();
   const fecha = new Date();
   const tipoGasto = state.selectedTipoGasto || "";
   
@@ -173,15 +174,13 @@ function FormGastosDashboard() {
                 onChange={handleChangesetTipoPago}
               >
                 <option value="">Seleccione una opción</option>
-                <option value="EFECTIVO">EFECTIVO</option>
-                <option value="TARJETA DE DEBIDO">TARJETA DE DEBIDO</option>
-                <option value="TARJETA DE CREDITO">TARJETA DE CREDITO</option>
-                <option value="CREDITO">CREDITO</option>
-                <option value="CHEQUE">CHEQUE</option>
-                <option value="TRANSFERENCIA ELECTRONICA">
-                  TRANSFERENCIA ELECTRONICA
-                </option>
-                <option value="OTROS">OTROS</option>
+                {
+                  payMethod.map((pay, index)=>{
+                  return(
+                    <option value={pay} key={index}>{pay}</option>
+                  )
+                })
+               }
               </select>
             </div>
 

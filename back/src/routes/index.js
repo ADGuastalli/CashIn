@@ -27,11 +27,7 @@ const bookController = require('../controllers/Book/book');
 const calendarControllers = require('../controllers/CalendarControllers/calendarController')
 const incomeCategoryController = require('../controllers/IncomeCategory/IncomeCategory');
 const financialLevelController = require('../controllers/FinancialLevel/financialLevel');
-<<<<<<< HEAD
-//const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesTotal')
-=======
 const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesTotal')
->>>>>>> origin/backv3
 const calculatorInconmeExpensesMonthly = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesMonth')
 const { authenticateToken } = require('../middlewares/auth');
 const googleAuthController = require("../controllers/Auth/google");
@@ -70,7 +66,7 @@ router.put("/child/:id", childController.updateChild);
 router.delete("/child/:id", childController.deleteChild);
 
 router.post("/debt", debtController.createDebt);
-router.get("/debt", debtController.getAllDebts);
+router.get("/debt-by-user/:id", debtController.getAllDebts);
 router.get("/debt/:id", debtController.getDebtById);
 router.put("/debt/:id", debtController.updateDebt);
 router.delete("/debt/:id", debtController.deleteDebt);
@@ -88,7 +84,7 @@ router.put("/dwelling/:id", dwellingController.updateDwelling);
 router.delete("/dwelling/:id", dwellingController.deleteDwelling);
 
 router.post("/expense", expenseController.createExpense);
-router.get("/expense", expenseController.getAllExpenses);
+router.get("/expense-by-user/:id", expenseController.getAllExpenses);
 router.get("/expense/:id", expenseController.getExpenseById);
 router.put("/expense/:id", expenseController.updateExpense);
 router.delete("/expense/:id", expenseController.deleteExpense);
@@ -203,7 +199,7 @@ router.post(
   personalPropertyController.createPersonalProperty
 );
 router.get(
-  "/personalproperty",
+  "/personalproperty-by-user/:id",
   personalPropertyController.getAllPersonalProperties
 );
 router.get(
@@ -300,10 +296,10 @@ router.get(
   "/incomesExpenses/totalincome/:id",
   calculatorInconmeExpenses.calculateTotalIncome
 );
-router.get(
+/* router.get(
   "/incomesExpenses/calculatetotalmortgagedebt/:id",
   calculatorInconmeExpenses.calculateTotalMortgageDebt
-);
+); */
 
 router.get('/incomesExpenses/totalincome/:id', calculatorInconmeExpenses.calculateTotalIncome)
 router.get('/incomesExpenses/calculatetotalmortgagedebt/:id', calculatorInconmeExpenses.calculatePaidMortgageDebt)

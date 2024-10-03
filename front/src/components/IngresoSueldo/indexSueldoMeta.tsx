@@ -15,6 +15,8 @@ import { useIngresos } from "@/context/incomeContext";
 import { UserContext } from "@/context/userContext";
 import { useParams, useRouter } from "next/navigation";
 import { postIncome, deleteIngreso } from "@/server/fetchIncome";
+import { useCategories } from "@/context/categorias&variablesContext";
+
 
 export default function IngresoFinanzasMetaComponet() {
   const { isAuthenticated } = useContext(UserContext);
@@ -24,6 +26,8 @@ export default function IngresoFinanzasMetaComponet() {
   const [sueldo, setSueldo] = useState("");
   const [monto, setMonto] = useState("");
   const [descriptIngreso, setDescriptIngrso] = useState<string>()
+  const { income_category } = useCategories();
+
   const fecha = new Date();
 
   const { userId } = useParams();
@@ -142,24 +146,13 @@ export default function IngresoFinanzasMetaComponet() {
                   onChange={(e) => setSueldo(e.target.value)}
                 >
                   <option value="">Seleccione una opción</option>
-                  <option value="INGRESO 1">INGRESO 1</option>
-                  <option value="INGRESO 2">INGRESO 2</option>
-                  <option value="INGRESO POR INTERESES">
-                    INGRESO POR INTERESES
-                  </option>
-                  <option value="BONIFICACION POR LEY">
-                    BONIFICACION POR LEY
-                  </option>
-                  <option value="INCENTIVOS Y HORAS EXTRAS">
-                    INCENTIVOS Y HORAS EXTRAS
-                  </option>
-                  <option value="VACACIONES">VACACIONES</option>
-                  <option value="REEMBOLSOS">REEMBOLSOS</option>
-                  <option value="NEGOCIOS">NEGOCIOS</option>
-                  <option value="DIVISION DE ACCIONES">
-                    DIVISION DE ACCIONES
-                  </option>
-                  <option value="PENSION">PENSION</option>
+                  {
+                  income_category.map((income, index)=>{
+                    return(
+                      <option value={income} key={index}>{income}</option>
+                    )
+                  })
+                 }
                 </select>
               </div>
 
