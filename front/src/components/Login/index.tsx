@@ -154,10 +154,10 @@ export default function LoginComponent() {
           Ingresar
         </button>
       </div>
-      <div className="flex justify-center mt-4 w-full py-2 px-4 mx-2 my-2">
+      <div className="flex justify-center my-10">
         <LoginGoogle />
       </div>
-      <div className="flex justify-center mt-4 mb-20">
+      <div className="flex justify-center mb-20">
         <p className="text-center">
           ¿No tienes cuenta?{"  "}
           <Link href="/User/Register">

@@ -38,7 +38,7 @@ export default function LoginGoogle() {
       const { token: jwtToken, user } = data;
 
       // Save JWT in localStorage
-      localStorage.setItem("token", jwtToken);
+      typeof window !== "undefined" && localStorage.setItem("token", jwtToken);
 
       // Llama a handleGoogleLogin con los datos del usuario
       handleGoogleLogin(user); // Envía los datos del usuario al contexto

@@ -35,7 +35,7 @@ const Button_Paypal = ({
   orderDetails: { amount: number; description: string };
   paymentType: "membership" | "appointment"; // Puedes definir más tipos si es necesario
 }) => {
-  const { userProfile } = useContext(UserContext); // Get the user context
+  const { userProfile, setUserProfile } = useContext(UserContext); // Get the user context
 
   const initialOptions: ReactPayPalScriptOptions = {
     clientId:
@@ -75,14 +75,14 @@ const Button_Paypal = ({
   const onApprove = async (data: PayPalApproveData) => {
     try {
       console.log("Aprobación de PayPal, datos:", data);
-      console.log("id de cambio de mebresia", userProfile.id);
+      console.log("id de cambio de mebresia", userProfile.user_id);
 
       const response = await fetch(`${API}/my-server/capture-paypal-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           orderID: data.orderID,
-          userId: userProfile?.id,
+          userId: userProfile?.user_id,
         }),
       });
 
@@ -94,6 +94,11 @@ const Button_Paypal = ({
 
       const details = await response.json();
       console.log("Detalles de la transacción capturada:", details);
+
+      setUserProfile({
+        ...userProfile,
+        premium: true, // Asume que ahora el usuario es premium
+      });
 
       await Swal.fire({
         title: "Transacción completada",

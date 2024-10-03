@@ -1,18 +1,26 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "@/context/userContext";
 import Link from "next/link";
-import { Button_Menu } from "../ui/Buttons";
+import { Button_Menu, Button_Home } from "../ui/Buttons";
 import Logo from "../../public/assets/svg/CASHIN-03.svg";
 import Image from "next/image";
 import PlanesComponet from "./planes";
 
 export default function MembershipComponet() {
+  const { isAuthenticated } = useContext(UserContext);
   return (
     <div>
       <div className="mt-3 ml-3">
-        <Link href="/Menu">
-          <Button_Menu />
-        </Link>
+        {isAuthenticated ? (
+          <Link href="/Menu">
+            <Button_Menu />
+          </Link>
+        ) : (
+          <Link href="/">
+            <Button_Home />
+          </Link>
+        )}
       </div>
       <div className="flex flex-col justify-center items-center min-h-screen mb-20">
         <Image src={Logo} alt="Logo" width={300} height={300} />
