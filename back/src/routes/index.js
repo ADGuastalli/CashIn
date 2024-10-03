@@ -32,8 +32,8 @@ const calculatorInconmeExpensesMonthly = require('../controllers/CalculatorIncom
 const dataServiceController = require('../controllers/DataService/DataService');
 const bankController = require('../controllers/Bank/bank');
 const serviceController = require('../controllers/Service/service');
+const calculatesavingsController = require('../controllers/CalculateSavingsPlan/calculateSavingsPlan');
 const { authenticateToken } = require('../middlewares/auth');
-
 
 const googleAuthController = require("../controllers/Auth/google");
 const paypalController = require("../controllers/Paypal/paypalController");
@@ -303,7 +303,7 @@ router.get(
 );
 router.get(
   "/incomesExpenses/calculatetotalmortgagedebt/:id",
-  calculatorInconmeExpenses.calculateTotalMortgageDebt
+  calculatorInconmeExpenses.calculatePaidMortgageDebt
 );
 
 
@@ -350,6 +350,8 @@ router.get('/services/:id', serviceController.getServiceById);
 router.post('/services', serviceController.createService);
 router.put('/services/:id', serviceController.updateService);
 router.delete('/services/:id', serviceController.deleteService);
+
+router.post('/savings/simulate', calculatesavingsController.simulateSavingsPlan);
 
 module.exports = router
 
