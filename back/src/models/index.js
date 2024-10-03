@@ -28,16 +28,21 @@ const Child = require('./Child');
 const Book = require('./Book');
 const Course = require('./Course');
 const IncomeCategory = require('./IncomeCategory');
-const FinancialLevel = require('./FinancialLevel')
+const FinancialLevel = require('./FinancialLevel');
+const DataService = require('./DataService');
+const Bank = require('./Bank');
+const Service = require('./Service');
 
 // Inicializar los modelos con la instancia de sequelize
 const models = {
+    Bank: Bank(sequelize, Sequelize.DataTypes),
     Book: Book(sequelize, Sequelize.DataTypes),
     Child: Child(sequelize, Sequelize.DataTypes),
     City: City(sequelize, Sequelize.DataTypes),
     Country: Country(sequelize, Sequelize.DataTypes),
     Course: Course(sequelize, Sequelize.DataTypes),
     Data: Data(sequelize, Sequelize.DataTypes),
+    DataService: DataService(sequelize, Sequelize.DataTypes),
     Debt: Debt(sequelize, Sequelize.DataTypes),
     DebtCategory: DebtCategory(sequelize, Sequelize.DataTypes),
     Dwelling: Dwelling(sequelize, Sequelize.DataTypes),
@@ -57,6 +62,7 @@ const models = {
     PersonalPropertyType: PersonalPropertyType(sequelize, Sequelize.DataTypes),
     Saving: Saving(sequelize, Sequelize.DataTypes),
     Session: Session(sequelize, Sequelize.DataTypes),
+    Service: Service(sequelize, Sequelize.DataTypes),
     Status: Status(sequelize, Sequelize.DataTypes),
     User: User(sequelize, Sequelize.DataTypes),
 };
@@ -134,6 +140,22 @@ models.Income.belongsTo(models.IncomeCategory, { foreignKey: 'income_category_id
 // FinancialLevel -> Data (Uno a muchos)
 models.FinancialLevel.hasMany(models.Data, { foreignKey: 'financial_level_id' });
 models.Data.belongsTo(models.FinancialLevel, { foreignKey: 'financial_level_id' });
+
+// Relacionar Bank y Country (Uno a muchos)
+models.Country.hasMany(models.Bank, { foreignKey: 'country_id' });
+models.Bank.belongsTo(models.Country, { foreignKey: 'country_id' });
+
+// Relacionar DataService y Country (Uno a muchos)
+models.Country.hasMany(models.DataService, { foreignKey: 'country_id' });
+models.DataService.belongsTo(models.Country, { foreignKey: 'country_id' });
+
+// Relacionar DataService y Service (Uno a muchos)
+models.Service.hasMany(models.DataService, { foreignKey: 'service_id' });
+models.DataService.belongsTo(models.Service, { foreignKey: 'service_id' });
+
+// Relacionar DataService y Bank (Uno a muchos)
+models.Bank.hasMany(models.DataService, { foreignKey: 'bank_id' });
+models.DataService.belongsTo(models.Bank, { foreignKey: 'bank_id' });
 
 // Exportar sequelize y modelos
 module.exports = {
