@@ -138,7 +138,7 @@ export default function RegisterComponent() {
               <button
                 type="button"
                 onClick={toggleShow}
-                className="absolute right-3 top-3 text-gray-600"
+                className="absolute right-3 top-6 mr-2 text-gray-600"
               >
                 <Image
                   src={type === "password" ? eye : eyeClouse}

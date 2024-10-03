@@ -1,4 +1,6 @@
 "use client";
+import { useContext } from "react"; // Import useContext
+import { UserContext } from "../../context/userContext"; // Adjust the path as necessary
 import {
   PayPalButtons,
   PayPalScriptProvider,
@@ -25,7 +27,16 @@ interface OrderData {
   }>;
   debug_id?: string;
 }
-const Button_Paypal = () => {
+
+const Button_Paypal = ({
+  orderDetails,
+  paymentType, // Nuevo prop para el tipo de pago
+}: {
+  orderDetails: { amount: number; description: string };
+  paymentType: "membership" | "appointment"; // Puedes definir más tipos si es necesario
+}) => {
+  const { userProfile, setUserProfile } = useContext(UserContext); // Get the user context
+
   const initialOptions: ReactPayPalScriptOptions = {
     clientId:
       "AZgr39IXh57tZLM9B_aBH0CTCiLdUg51dX3fJ5pFCWJvuymlTfZNmyDLs5JuGicN8D5eBcyArph13jrr",
@@ -36,7 +47,10 @@ const Button_Paypal = () => {
       const response = await fetch(`${API}/my-server/create-paypal-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          amount: orderDetails.amount,
+          description: orderDetails.description,
+        }),
       });
 
       const orderData: OrderData = await response.json();
@@ -61,12 +75,14 @@ const Button_Paypal = () => {
   const onApprove = async (data: PayPalApproveData) => {
     try {
       console.log("Aprobación de PayPal, datos:", data);
+      console.log("id de cambio de mebresia", userProfile.user_id);
 
       const response = await fetch(`${API}/my-server/capture-paypal-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           orderID: data.orderID,
+          userId: userProfile?.user_id,
         }),
       });
 
@@ -79,7 +95,11 @@ const Button_Paypal = () => {
       const details = await response.json();
       console.log("Detalles de la transacción capturada:", details);
 
-      // Mostrar alerta de éxito y redirigir a /Calendario
+      setUserProfile({
+        ...userProfile,
+        premium: true, // Asume que ahora el usuario es premium
+      });
+
       await Swal.fire({
         title: "Transacción completada",
         text: `Transacción completada por ${details.payer.name.given_name}`,
@@ -87,16 +107,18 @@ const Button_Paypal = () => {
         confirmButtonText: "OK",
       });
 
-      // Redirigir a /Calendario después de cerrar la alerta
-      window.location.assign("/Calendario");
+      // Redireccionar según el tipo de pago
+      if (paymentType === "membership") {
+        window.location.assign("/Menu");
+      } else if (paymentType === "appointment") {
+        window.location.assign("/Calendario");
+      }
     } catch (error) {
       console.error("Error en la captura de PayPal:", error);
 
-      // Aserción de tipo para acceder a `message`
       const errorMessage =
         (error as { message?: string }).message || "Error desconocido";
 
-      // Mostrar alerta de error
       Swal.fire({
         title: "Error",
         text: `Hubo un error: ${errorMessage}`,
@@ -105,6 +127,7 @@ const Button_Paypal = () => {
       });
     }
   };
+
   const onCancel = () => {
     window.location.assign("/your-cancel-page");
   };
@@ -112,7 +135,6 @@ const Button_Paypal = () => {
   const onError = (err: PayPalError) => {
     console.error("Error de PayPal:", err);
 
-    // Mostrar alerta de error
     Swal.fire({
       title: "Error de PayPal",
       text: `Hubo un error: ${err.message || "Error desconocido"}`,

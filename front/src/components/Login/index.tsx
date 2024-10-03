@@ -13,7 +13,7 @@ import Link from "next/link";
 import LoginGoogle from "../LoginGoogle";
 
 export default function LoginComponent() {
-  const { login } = useContext(UserContext);
+  const { login, isProfileComplete } = useContext(UserContext);
   const router = useRouter();
   const [userData, setUserData] = useState<ILogin>({
     email: "",
@@ -55,7 +55,11 @@ export default function LoginComponent() {
         });
 
         setTimeout(() => {
-          router.push("/Menu");
+          if (!isProfileComplete) {
+            router.push("/Menu");
+          } else {
+            router.push("/Menu");
+          }
         }, 3000);
       } else {
         Swal.fire({
@@ -112,7 +116,7 @@ export default function LoginComponent() {
         <button
           type="button"
           onClick={() => setShowPassword((prev) => !prev)}
-          className="absolute right-3 top-6 text-gray-600"
+          className="absolute right-3 top-6 mr-2 text-gray-600"
         >
           <Image
             src={showPassword ? eye : eyeClouse}
@@ -150,13 +154,16 @@ export default function LoginComponent() {
           Ingresar
         </button>
       </div>
-      <div className="flex justify-center mt-4 w-full py-2 px-4 mx-2 my-2">
+      <div className="flex justify-center my-10">
         <LoginGoogle />
       </div>
-      <div className="flex justify-center mt-4 mb-20">
-        <Link href="/User/Register">
-          <p className="text-center mt-4">¿No tienes cuenta? Registrate</p>
-        </Link>
+      <div className="flex justify-center mb-20">
+        <p className="text-center">
+          ¿No tienes cuenta?{"  "}
+          <Link href="/User/Register">
+            <span className="font-bold">Registrate</span>
+          </Link>
+        </p>
       </div>
     </form>
   );

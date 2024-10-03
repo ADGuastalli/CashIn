@@ -1,3 +1,3 @@
-// export const API = "http://localhost:3001";
+export const API = "http://localhost:3001";
 
-export const API = "HTTP://test.back.cashinbot.com";
+//export const API = "https://test.back.cashinbot.com";

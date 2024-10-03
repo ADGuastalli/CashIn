@@ -1,7 +1,17 @@
-const { User, Country, City, MaritalStatus, Dwelling, Data, Child, sequelize } = require('../../models/index');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
+const {
+  User,
+  Country,
+  City,
+  Data,
+  MaritalStatus,
+  Dwelling,
+  Child,
+  Occupation,
+  sequelize,
+} = require("../../models/index");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const postUser = async (req, res) => {
   const { email, password } = req.body;
@@ -65,6 +75,7 @@ const completeUserProfile = async (req, res) => {
     !birthdate ||
     !marital_status_id ||
     !dwelling_id ||
+    !child ||
     !occupation_id
   ) {
     return res
@@ -156,6 +167,8 @@ const completeUserProfile = async (req, res) => {
         dwelling_id: userData.dwelling_id,
         dwelling: dwelling.dwelling,
         child: child > 0 ? child : null,
+        premium: user.premium,
+        admin: user.admin,
       },
     });
   } catch (error) {
@@ -206,7 +219,42 @@ const loginUser = async (req, res) => {
 
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll();
+    const users = await User.findAll({
+      include: [
+        {
+          model: City,
+          attributes: ["city"], // Solo el nombre de la ciudad
+        },
+        {
+          model: Country,
+          attributes: ["country"], // Solo el nombre del país
+        },
+        {
+          model: Data,
+          attributes: [
+            "data_id",
+            "occupation_id",
+            "marital_status_id",
+            "dwelling_id",
+            // Otros atributos que quieras obtener de Data
+          ],
+          include: [
+            {
+              model: MaritalStatus,
+              attributes: ["marital_status"], // Nombre del estado civil
+            },
+            {
+              model: Occupation,
+              attributes: ["occupation"], // Nombre de la ocupación
+            },
+            {
+              model: Dwelling,
+              attributes: ["dwelling"], // Nombre de la vivienda
+            },
+          ],
+        },
+      ],
+    });
     res.status(200).json(users);
   } catch (error) {
     console.error("Error al obtener los usuarios:", error);
@@ -241,6 +289,7 @@ const updateUser = async (req, res) => {
     user_name,
     email,
     password,
+    premium,
   } = req.body;
 
   try {
@@ -260,6 +309,7 @@ const updateUser = async (req, res) => {
     user.last_name = last_name || user.last_name;
     user.user_name = user_name || user.user_name;
     user.email = email || user.email;
+    user.premium = premium || user.premium;
 
     await user.save();
 
@@ -271,6 +321,7 @@ const updateUser = async (req, res) => {
       last_name: user.last_name,
       user_name: user.user_name,
       email: user.email,
+      premium: user.premium,
     });
   } catch (error) {
     console.error("Error al actualizar el usuario:", error);
@@ -297,12 +348,11 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
-    postUser,
-    loginUser,
-    completeUserProfile,
-    updateUser,
-    getAllUsers,
-    getUserById,
-    deleteUser
-
+  postUser,
+  loginUser,
+  completeUserProfile,
+  updateUser,
+  getAllUsers,
+  getUserById,
+  deleteUser,
 };
