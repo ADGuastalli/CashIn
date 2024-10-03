@@ -4,24 +4,18 @@ import Image from "next/image";
 import Logo from "../../public/assets/svg/CASHIN-03.svg";
 import MenuIcons from "@/components/Menu";
 import { UserContext } from "@/context/userContext";
-import { hasNullProperties } from "@/helpers/hasNullProperties";
 import { useRouter } from "next/navigation";
-import ModalFormComplete from "@/components/ModalFormComplet";
 import { Button_Home } from "@/components/ui/Buttons";
 import Link from "next/link";
 import Swal from "sweetalert2";
 
 export default function Menu() {
-  const { userProfile, isAuthenticated } = useContext(UserContext);
+  const { isAuthenticated, userProfile } = useContext(UserContext);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
-  // Solo ejecutar este efecto cuando el estado de autenticación esté listo
   useEffect(() => {
-    if (loading || isAuthenticated === undefined) return;
-
-    console.log("Verificando autenticación:", isAuthenticated);
-    console.log("userProfile en menu:", userProfile);
+    if (isAuthenticated === false) return;
 
     if (!isAuthenticated) {
       Swal.fire({
@@ -29,26 +23,16 @@ export default function Menu() {
         text: "Para ingresar debes estar logueado.",
         icon: "warning",
         confirmButtonText: "Ir a Login",
-        allowOutsideClick: false,
-        showCloseButton: false,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          router.push("/User/Login");
-        }
+      }).then(() => {
+        router.push("/User/Login");
       });
-    }
-  }, [loading, isAuthenticated, userProfile, router]);
-
-  // Este efecto se asegura de que el estado de carga se desactive
-  useEffect(() => {
-    if (isAuthenticated !== undefined) {
+    } else {
       setLoading(false);
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, router]);
 
-  // Mostrar un indicador de carga en lugar de devolver null
   if (loading) {
-    return <div>Cargando...</div>; // O puedes usar un spinner o algo visualmente más atractivo
+    return <div className="text-center text-5xl">Cargando...</div>;
   }
 
   return (
@@ -59,9 +43,9 @@ export default function Menu() {
         </Link>
       </div>
       <div className="flex flex-col justify-center items-center min-h-screen px-5 mb-20">
-        {hasNullProperties(userProfile) && (
-          <ModalFormComplete router={router} user_id={userProfile?.user_id} />
-        )}
+        {/* Aquí removemos la lógica de mostrar el modal */}
+
+        {/* Logo */}
         <Image
           src={Logo}
           alt="Logo"
@@ -69,6 +53,8 @@ export default function Menu() {
           height={250}
           className="mt-2"
         />
+
+        {/* Mensaje de bienvenida */}
         <h1 className="lg:text-3xl md:text-2xl text-2xl text-center mt-6 mb-4">
           ¿Qué deseas hacer con nuestra app{" "}
           <span className="font-bold">
@@ -76,22 +62,27 @@ export default function Menu() {
           </span>
           ?
         </h1>
-        {userProfile.premium === false && (
+
+        {/* Mostrar mensaje si no es premium */}
+        {userProfile?.premium === false && userProfile.admin === false && (
           <Link href="/Membership">
             <div className="blinking-bg flex flex-col justify-center items-center py-2 px-3 mt-5 rounded-lg">
               <p className="text-center text-gray-500">
                 <span className="font-bold text-red-900 text-lg">
-                  ¡No eres premium!
+                  ¡Hazte premium!
                 </span>{" "}
-                Haz Click Aqui para acceder a todas las funcionalidades de
+                Haz Click Aquí para acceder a todas las funcionalidades de
                 CashIN.
               </p>
             </div>
           </Link>
         )}
+
+        {/* MenuIcons con la lógica de verificación de perfil */}
         <MenuIcons />
       </div>
 
+      {/* Estilos para el efecto de parpadeo */}
       <style jsx>{`
         .blinking-bg {
           animation: blink 5s infinite;

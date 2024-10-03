@@ -1,0 +1,45 @@
+.carouselContainer {
+  overflow: hidden;
+  width: 100%;
+  padding: 20px 0 20px 0;
+}
+
+.carousel {
+  display: flex;
+  animation: scroll 40s linear infinite;
+}
+
+.bookItem {
+  min-width: 24.9%; /*Ensure that 4 books are visible at a time */
+  padding: 0 10px;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Large screens */
+@media (min-width: 1024px) {
+  .bookItem {
+    min-width: 25%; /* Show 4 books on large screens */
+  }
+}
+
+/* Small screens */
+@media (max-width: 768px) {
+  .bookItem {
+    min-width: 50%; /* Show 2 books on small screens */
+  }
+}
+
+/* Extra small screens (mobile) */
+@media (max-width: 480px) {
+  .bookItem {
+    min-width: 100%; /* Show 1 book on very small screens */
+  }
+}

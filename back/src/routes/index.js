@@ -1,36 +1,7 @@
-const { Router } = require("express");
-const passport = require("passport");
 
-<<<<<<< HEAD
-const userController = require("../controllers/Users/userController");
-const cityController = require("../controllers/City/cityController");
-const countryController = require("../controllers/Country/countryController");
-const childController = require("../controllers/Child/Child");
-const debtController = require("../controllers/Debt/debt");
-const debtCategoryController = require("../controllers/DebtCategory/debtCategory");
-const dwellingController = require("../controllers/Dwelling/dwelling");
-const expenseController = require("../controllers/Expense/expense");
-const expenseCategoryController = require("../controllers/ExpenseCategory/expenseCategory");
-const goalController = require("../controllers/Goal/goal");
-const goalCategoryController = require("../controllers/GoalCategory/goalCategory");
-const incomeController = require("../controllers/Income/income");
-const maritalStatusController = require("../controllers/MaritalStatus/maritalStatus");
-const modelDataController = require("../controllers/ModelData/modelData");
-const monthlyIncomeTypeController = require("../controllers/MonthlyIncomeType/monthlyIncomeType");
-const occupationController = require("../controllers/Occupation/occupation");
-const payMethodController = require("../controllers/PayMethod/payMethod");
-const personalPropertyController = require("../controllers/PersonalProperty/personalProperty");
-const personalPropertyTypeController = require("../controllers/PersonalPropertyType/personalPropertyType");
-const savingController = require("../controllers/Saving/saving");
-const statusController = require("../controllers/Status/status");
-const courseController = require("../controllers/Course/course");
-const bookController = require("../controllers/Book/book");
-const calendarControllers = require("../controllers/CalendarControllers/calendarController");
-const incomeCategoryController = require("../controllers/IncomeCategory/IncomeCategory");
-const financialLevelController = require("../controllers/FinancialLevel/financialLevel");
-const calculatorInconmeExpenses = require("../controllers/CalculatorIncome&expenses/CalculatorIncome&expenses");
-const { authenticateToken } = require("../middlewares/auth");
-=======
+const { Router } = require("express")
+
+<<<<<<<<< Temporary merge branch 1
 const userController = require('../controllers/Users/userController')
 const cityController = require('../controllers/City/cityController');
 const countryController = require('../controllers/Country/countryController')
@@ -332,9 +303,7 @@ router.get(
   calculatorInconmeExpenses.calculateTotalMortgageDebt
 );
 
-<<<<<<< HEAD
-module.exports = router;
-=======
+<<<<<<<<< Temporary merge branch 1
 router.get('/incomesExpenses/totalincome/:id', calculatorInconmeExpenses.calculateTotalIncome)
 router.get('/incomesExpenses/calculatetotalmortgagedebt/:id', calculatorInconmeExpenses.calculatePaidMortgageDebt)
 router.get('/incomesExpenses/calculatePaidPersonalLoans/:id', calculatorInconmeExpenses.calculatePaidPersonalLoans)
@@ -360,4 +329,6 @@ router.get('/incomesExpenses/calculateMonthlyTithesAndSavings/:id', calculatorIn
 
 
 module.exports = router
->>>>>>> origin/backv3
+=========
+module.exports = router;
+>>>>>>>>> Temporary merge branch 2
