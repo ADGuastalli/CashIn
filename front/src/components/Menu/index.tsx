@@ -23,7 +23,6 @@ export default function MenuIcons() {
   console.log("userProfileeeeee", userProfile);
 
   const userId = userProfile?.user_id;
-
   const handleClick = (path: string) => {
     if (hasNullProperties(userProfile)) {
       setShowModal(true); // Mostrar modal si el perfil no está completo

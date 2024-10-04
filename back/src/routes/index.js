@@ -1,9 +1,5 @@
-
-<<<<<<< HEAD
-=======
 const { Router } = require("express")
 
->>>>>>> origin/Developer
 const userController = require('../controllers/Users/userController')
 const cityController = require('../controllers/City/cityController');
 const countryController = require('../controllers/Country/countryController')
@@ -33,11 +29,6 @@ const financialLevelController = require('../controllers/FinancialLevel/financia
 const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesTotal')
 const calculatorInconmeExpensesMonthly = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesMonth')
 const { authenticateToken } = require('../middlewares/auth');
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/Developer
 const googleAuthController = require("../controllers/Auth/google");
 const paypalController = require("../controllers/Paypal/paypalController");
 
@@ -256,10 +247,14 @@ router.get("/status/:id", statusController.getStatusById);
 router.put("/status/:id", statusController.updateStatus);
 router.delete("/status/:id", statusController.deleteStatus);
 
-router.post("/book", bookController.createBook);
+router.post("/book", upload.single("imagePortada"), bookController.createBook);
 router.get("/book", bookController.getAllBooks);
 router.get("/book/:id", bookController.getBookById);
-router.put("/book/:id", bookController.updateBook);
+router.put(
+  "/book/:id",
+  upload.single("imagePortada"),
+  bookController.updateBook
+);
 router.delete("/book/:id", bookController.deleteBook);
 
 router.post("/course", courseController.createCourse);
@@ -296,9 +291,26 @@ router.post(
   paypalController.capturePaypalOrder
 );
 
-router.get("/events", calendarControllers.getEvents);
-router.post("/create-event", calendarControllers.createEvent);
 router.get("/available-slots", calendarControllers.getAvailableSlots);
+router.get("/getReservedSlot", calendarControllers.getReservedSlots);
+
+// Crear un nuevo slot (solo para admins)
+router.post("/create-slot", calendarControllers.createSlot);
+
+// Crear un nuevo evento (para usuarios comunes)
+router.post("/create-event", calendarControllers.createEvent);
+
+// Reservar un slot específico
+router.post("/reserve-slot", calendarControllers.reserveSlot);
+
+// Eliminar slots pasados no reservados
+router.delete(
+  "/delete-past-unreserved-slots",
+  calendarControllers.deletePastUnreservedSlots
+);
+
+// Eliminar un slot
+router.delete("/delete-slot", calendarControllers.deleteSlot);
 
 router.get(
   "/incomesExpenses/totalincome/:id",
@@ -309,10 +321,7 @@ router.get(
   calculatorInconmeExpenses.calculateTotalMortgageDebt
 ); */
 
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/Developer
 router.get('/incomesExpenses/totalincome/:id', calculatorInconmeExpenses.calculateTotalIncome)
 router.get('/incomesExpenses/calculatetotalmortgagedebt/:id', calculatorInconmeExpenses.calculatePaidMortgageDebt)
 router.get('/incomesExpenses/calculatePaidPersonalLoans/:id', calculatorInconmeExpenses.calculatePaidPersonalLoans)
@@ -338,7 +347,4 @@ router.get('/incomesExpenses/calculateMonthlyTithesAndSavings/:id', calculatorIn
 
 
 module.exports = router
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/Developer

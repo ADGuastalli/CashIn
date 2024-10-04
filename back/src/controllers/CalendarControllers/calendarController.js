@@ -1,17 +1,126 @@
-// controllers/calendarController.js
 const { google } = require("googleapis");
 const key = require("../../../cashin-435921-332a48bb414b.json"); // Cambia a la ruta correcta
-
-// Crear un cliente JWT con las credenciales de la cuenta de servicio
+const { Op } = require("sequelize");
+const { SlotModel } = require("../../models/index"); // Asegúrate de tener el modelo correctamente definido
+const cron = require("node-cron");
 const jwtClient = new google.auth.JWT(
   key.client_email,
   null,
   key.private_key,
   ["https://www.googleapis.com/auth/calendar"],
-  "cashin@cashin-435921.iam.gserviceaccount.com" // Cambia al email de Persona1
+  "cashin@cashin-435921.iam.gserviceaccount.com"
 );
 
-// Obtener eventos del calendario
+// Función para crear un evento (para usuarios comunes)
+const createEvent = async (req, res) => {
+  const { summary, startDateTime, endDateTime } = req.body;
+
+  try {
+    // Autoriza el cliente JWT para acceder al calendario
+    await jwtClient.authorize();
+    const calendar = google.calendar("v3");
+    const calendarId = "gonza.cay@gmail.com";
+
+    const event = {
+      summary: summary,
+      start: {
+        dateTime: new Date(startDateTime).toISOString(),
+        timeZone: "America/Argentina/Buenos_Aires",
+      },
+      end: {
+        dateTime: new Date(endDateTime).toISOString(),
+        timeZone: "America/Argentina/Buenos_Aires",
+      },
+    };
+
+    // Crea el evento en Google Calendar
+    await calendar.events.insert({
+      auth: jwtClient,
+      calendarId: calendarId,
+      resource: event,
+    });
+
+    // Aquí debes buscar el slot correspondiente al evento
+    const slot = await SlotModel.findOne({
+      where: {
+        start_time: {
+          [Op.lt]: endDateTime,
+        },
+        end_time: {
+          [Op.gt]: startDateTime,
+        },
+        reserved: false, // Solo busca slots que no están reservados
+      },
+    });
+
+    // Si se encuentra un slot, actualiza su estado a reservado
+    if (slot) {
+      slot.reserved = true; // Cambia el estado a reservado
+      await slot.save(); // Guarda los cambios en la base de datos
+    } else {
+      return res
+        .status(404)
+        .json({ message: "No se encontró un slot disponible para el evento." });
+    }
+
+    res.status(201).json({ message: "Evento creado exitosamente", event });
+  } catch (error) {
+    console.error("Error al crear el evento:", error);
+    res.status(500).json({ message: "Error al crear el evento", error });
+  }
+};
+
+// Función para crear un slot (solo para admins)
+const createSlot = async (req, res) => {
+  const { startTime, endTime } = req.body;
+
+  const now = new Date();
+  const start = new Date(startTime);
+  const end = new Date(endTime);
+  if (start <= now) {
+    return res
+      .status(400)
+      .json({ message: "El slot debe ser para una fecha futura." });
+  }
+
+  try {
+    await jwtClient.authorize();
+    const calendar = google.calendar("v3");
+    const calendarId = "gonza.cay@gmail.com";
+
+    const event = {
+      summary: "Slot disponible",
+      start: {
+        dateTime: start.toISOString(),
+        timeZone: "America/Argentina/Buenos_Aires",
+      },
+      end: {
+        dateTime: end.toISOString(),
+        timeZone: "America/Argentina/Buenos_Aires",
+      },
+    };
+
+    await calendar.events.insert({
+      auth: jwtClient,
+      calendarId: calendarId,
+      resource: event,
+    });
+
+    const newSlot = await SlotModel.create({
+      start_time: start,
+      end_time: end,
+    });
+
+    res
+      .status(201)
+      .json({ message: "Slot creado exitosamente", slot: newSlot });
+  } catch (error) {
+    console.error("Error al crear el slot:", error);
+    res.status(500).json({ message: "Error al crear el slot", error });
+  }
+};
+
+// Función para obtener eventos del calendario
 const getEvents = async (req, res) => {
   try {
     await jwtClient.authorize();
@@ -40,164 +149,128 @@ const getEvents = async (req, res) => {
   }
 };
 
-// Obtener slots disponibles para la próxima semana
-// Obtener slots disponibles para la próxima semana a partir del siguiente día
-// Obtener slots disponibles para la próxima semana a partir del siguiente día
+// Función para obtener slots disponibles de la base de datos
 const getAvailableSlots = async (req, res) => {
+  const now = new Date();
+
   try {
-    await jwtClient.authorize();
-
-    const calendar = google.calendar("v3");
-    const calendarId = "gonza.cay@gmail.com"; // ID del calendario
-
-    // Definir el rango de fechas para una semana a partir del siguiente día (lunes a viernes)
-    const now = new Date();
-    const startOfNextDay = new Date(now);
-    startOfNextDay.setDate(now.getDate() + 1); // Día siguiente
-
-    // Definir el final de la semana (7 días después del día siguiente)
-    const endOfNextWeek = new Date(startOfNextDay);
-    endOfNextWeek.setDate(startOfNextDay.getDate() + 7); // Una semana
-
-    const response = await calendar.events.list({
-      auth: jwtClient,
-      calendarId: calendarId,
-      timeMin: startOfNextDay.toISOString(), // Comenzar a partir del día siguiente
-      timeMax: endOfNextWeek.toISOString(), // Terminar una semana después
-      singleEvents: true,
-      orderBy: "startTime",
+    const availableSlots = await SlotModel.findAll({
+      where: {
+        start_time: { [Op.gt]: now }, // Solo slots futuros
+        reserved: false, // Solo no reservados
+      },
+      order: [["start_time", "ASC"]], // Ordenar por fecha de inicio
     });
 
-    const events = response.data.items;
-
-    // Crear un array con los slots disponibles
-    const timeSlots = generateTimeSlots(startOfNextDay, endOfNextWeek);
-
-    // Rellenar los slots ocupados
-    events.forEach((event) => {
-      const start = new Date(event.start.dateTime);
-      const end = new Date(event.end.dateTime);
-
-      // Filtrar los slots que se superponen con los eventos ya existentes
-      for (let i = 0; i < timeSlots.length; i++) {
-        const slotStart = new Date(timeSlots[i].start);
-        const slotEnd = new Date(timeSlots[i].end);
-
-        // Eliminar el slot si está dentro del rango ocupado por un evento
-        if (
-          (slotStart >= start && slotStart < end) || // Slot empieza dentro del evento
-          (slotEnd > start && slotEnd <= end) || // Slot termina dentro del evento
-          (slotStart <= start && slotEnd >= end) // Evento cubre todo el slot
-        ) {
-          timeSlots.splice(i, 1);
-          i--; // Ajustar índice después de eliminar
-        }
-      }
-    });
-
-    res.status(200).json(timeSlots);
+    res.status(200).json(availableSlots);
   } catch (error) {
-    console.error("Error al obtener slots disponibles:", error);
-    res.status(500).send("Error al obtener los slots disponibles.");
+    res
+      .status(500)
+      .json({ message: "Error al obtener los slots disponibles", error });
   }
 };
 
-// Genera los slots de tiempo entre una fecha de inicio y una fecha de fin, excluyendo sábados y domingos
-const generateTimeSlots = (startDate, endDate) => {
-  const slots = [];
-  const startHour = 10; // 10 am
-  const endHour = 18; // 6 pm
+const getReservedSlots = async (req, res) => {
+  const now = new Date();
 
-  for (
-    let day = new Date(startDate);
-    day <= endDate;
-    day.setDate(day.getDate() + 1)
-  ) {
-    const dayOfWeek = day.getDay();
-
-    // Saltar los sábados (6) y domingos (0)
-    if (dayOfWeek === 0 || dayOfWeek === 6) {
-      continue;
-    }
-
-    for (let hour = startHour; hour < endHour; hour++) {
-      for (let minute = 0; minute < 60; minute += 60) {
-        // Cada 1 hora
-        slots.push({
-          start: new Date(day.setHours(hour, minute, 0)).toISOString(),
-          end: new Date(day.setHours(hour, minute + 60, 0)).toISOString(), // Aumentado en 60 minutos
-        });
-      }
-    }
-  }
-  return slots;
-};
-
-// Crear un evento en el calendario
-const createEvent = async (req, res) => {
   try {
-    await jwtClient.authorize();
-
-    const calendar = google.calendar("v3");
-    const calendarId = "gonza.cay@gmail.com"; // ID del calendario
-
-    const {
-      summary,
-      location,
-      description,
-      startDateTime,
-      endDateTime,
-      timeZone = "America/Argentina/Buenos_Aires",
-    } = req.body;
-
-    const startDateTimeWithTZ = new Date(startDateTime).toISOString();
-    const endDateTimeWithTZ = new Date(endDateTime).toISOString();
-
-    const event = {
-      summary: summary || "Evento sin título",
-      location: location || "Ubicación no especificada",
-      description: description || "",
-      start: {
-        dateTime: startDateTimeWithTZ,
-        timeZone: timeZone,
+    const availableSlots = await SlotModel.findAll({
+      where: {
+        start_time: { [Op.gt]: now }, // Solo slots futuros
+        reserved: true, // Solo no reservados
       },
-      end: {
-        dateTime: endDateTimeWithTZ,
-        timeZone: timeZone,
-      },
-      reminders: {
-        useDefault: false,
-        overrides: [
-          { method: "email", minutes: 24 * 60 },
-          { method: "popup", minutes: 10 },
-        ],
-      },
-    };
+      order: [["start_time", "ASC"]], // Ordenar por fecha de inicio
+    });
 
-    const response = await calendar.events.insert({
-      auth: jwtClient,
-      calendarId: calendarId,
-      resource: event,
+    res.status(200).json(availableSlots);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error al obtener los slots disponibles", error });
+  }
+};
+
+// Función para reservar un slot
+const reserveSlot = async (req, res) => {
+  const { slotId } = req.body;
+
+  try {
+    const slot = await SlotModel.findOne({ where: { id: slotId } });
+
+    if (!slot) {
+      return res.status(404).json({ message: "Slot no encontrado." });
+    }
+
+    if (slot.reserved) {
+      return res.status(400).json({ message: "El slot ya está reservado." });
+    }
+
+    slot.reserved = true;
+    await slot.save();
+
+    res.status(200).json({ message: "Slot reservado exitosamente." });
+  } catch (error) {
+    res.status(500).json({ message: "Error al reservar el slot", error });
+  }
+};
+
+// Función para eliminar slots pasados no reservados
+const deletePastUnreservedSlots = async (req, res) => {
+  const now = new Date();
+
+  try {
+    const result = await SlotModel.destroy({
+      where: {
+        end_time: { [Op.lt]: now }, // Menor que la fecha actual
+        reserved: false, // No reservados
+      },
     });
 
     res.status(200).json({
-      message: "Evento creado exitosamente",
-      event: response.data,
+      message: `Se eliminaron ${result} slots no reservados que ya pasaron.`,
     });
   } catch (error) {
-    console.error(
-      "Error al crear el evento:",
-      error.response ? error.response.data : error
-    );
-    res.status(500).json({
-      message: "Error al crear el evento.",
-      error: error.response ? error.response.data : error.message,
-    });
+    res
+      .status(500)
+      .json({ message: "Error al eliminar slots no reservados", error });
   }
 };
 
+// Tarea programada con node-cron para eliminar automáticamente slots pasados no reservados
+cron.schedule("0 0 * * *", () => {
+  deletePastUnreservedSlots();
+});
+
+// Función para eliminar un slot
+const deleteSlot = async (req, res) => {
+  const { slotId } = req.body;
+  console.log(slotId);
+
+  try {
+    const result = await SlotModel.destroy({
+      where: { slot_id: slotId }, // Usa id que es la clave primaria en tu modelo
+    });
+
+    if (result === 0) {
+      return res.status(404).json({ message: "Slot no encontrado." });
+    }
+
+    res.status(200).json({ message: "Slot eliminado exitosamente." });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({ message: "Error al eliminar el slot", error });
+  }
+};
+
+// Exportar las funciones del controlador para usarlas en las rutas
 module.exports = {
-  getEvents,
   createEvent,
+  createSlot,
+  getEvents,
   getAvailableSlots,
+  reserveSlot,
+  deletePastUnreservedSlots,
+  deleteSlot,
+  getReservedSlots,
 };
