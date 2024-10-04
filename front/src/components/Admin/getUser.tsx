@@ -47,6 +47,7 @@ export interface IUserProfile extends IUserData {
   child?: string; // Información sobre hijos (opcional)
   Country?: ICountry; // Agregar Country
   City?: ICity; // Agregar City
+  created_at: string;
 }
 
 export default function Usuarios() {
@@ -55,6 +56,8 @@ export default function Usuarios() {
   const [error, setError] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState<IUserProfile | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortColumn, setSortColumn] = useState<keyof IUserProfile | null>(null); // Nueva columna de orden
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
 
   // Función para obtener los usuarios
   React.useEffect(() => {
@@ -110,6 +113,29 @@ export default function Usuarios() {
     });
   };
 
+  const handleSort = (column: keyof IUserProfile) => {
+    const newDirection = sortDirection === "asc" ? "desc" : "asc";
+    const sortedUsers = [...users].sort((a, b) => {
+      const aValue = a[column];
+      const bValue = b[column];
+
+      if (typeof aValue === "string" && typeof bValue === "string") {
+        return newDirection === "asc"
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      } else if (typeof aValue === "boolean" && typeof bValue === "boolean") {
+        return newDirection === "asc" ? +aValue - +bValue : +bValue - +aValue;
+      } else if (typeof aValue === "number" && typeof bValue === "number") {
+        return newDirection === "asc" ? aValue - bValue : bValue - aValue;
+      } else {
+        return 0;
+      }
+    });
+    setSortDirection(newDirection);
+    setSortColumn(column);
+    setUsers(sortedUsers);
+  };
+
   if (loading) {
     return <p>Cargando usuarios...</p>;
   }
@@ -124,10 +150,45 @@ export default function Usuarios() {
       <table className="min-w-full bg-white border border-gray-200">
         <thead>
           <tr>
-            <th className="py-2 px-4 border-b">Email</th>
-            <th className="py-2 px-4 border-b">Apellido</th>
-            <th className="py-2 px-4 border-b">Nombre</th>
-            <th className="py-2 px-4 border-b">¿Premium?</th>
+            <th
+              className="py-2 px-4 border-b cursor-pointer"
+              onClick={() => handleSort("user_id")}
+            >
+              ID{" "}
+              {sortColumn === "user_id" &&
+                (sortDirection === "asc" ? "▲" : "▼")}
+            </th>
+            <th
+              className="py-2 px-4 border-b cursor-pointer"
+              onClick={() => handleSort("email")}
+            >
+              Email{" "}
+              {sortColumn === "email" && (sortDirection === "asc" ? "▲" : "▼")}
+            </th>
+            <th
+              className="py-2 px-4 border-b cursor-pointer"
+              onClick={() => handleSort("last_name")}
+            >
+              Apellido{" "}
+              {sortColumn === "last_name" &&
+                (sortDirection === "asc" ? "▲" : "▼")}
+            </th>
+            <th
+              className="py-2 px-4 border-b cursor-pointer"
+              onClick={() => handleSort("user_name")}
+            >
+              Nombre{" "}
+              {sortColumn === "user_name" &&
+                (sortDirection === "asc" ? "▲" : "▼")}
+            </th>
+            <th
+              className="py-2 px-4 border-b cursor-pointer"
+              onClick={() => handleSort("premium")}
+            >
+              ¿Premium?{" "}
+              {sortColumn === "premium" &&
+                (sortDirection === "asc" ? "▲" : "▼")}
+            </th>
             <th className="py-2 px-4 border-b">Eliminar</th>
             <th className="py-2 px-4 border-b">Detalle</th>
           </tr>
@@ -136,6 +197,9 @@ export default function Usuarios() {
           {users.length > 0 ? (
             users.map((user) => (
               <tr key={user.user_id} className="border-t">
+                <td className="py-2 px-4 border-b text-center">
+                  {user.user_id}
+                </td>
                 <td className="py-2 px-4 border-b text-center">{user.email}</td>
                 <td className="py-2 px-4 border-b text-center">
                   {user.last_name}
@@ -215,6 +279,8 @@ export default function Usuarios() {
             <p>Premium: {selectedUser.premium ? "Sí" : "No"}</p>
             <p>Admin: {selectedUser.admin ? "Sí" : "No"}</p>
             <p>Hijos: {selectedUser.child || "No especificado"}</p>
+            <p>Fecha de alta en el sistema: {selectedUser.created_at}</p>
+
             <button
               className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
               onClick={closeModal}

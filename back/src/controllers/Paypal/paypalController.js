@@ -2,10 +2,9 @@ const fetch = require("node-fetch");
 const { User } = require("../../models/index");
 // Función para obtener el token de acceso
 async function createAccessToken() {
-  const clientId =
-    "AZgr39IXh57tZLM9B_aBH0CTCiLdUg51dX3fJ5pFCWJvuymlTfZNmyDLs5JuGicN8D5eBcyArph13jrr"; // Reemplaza con tu Client ID
-  const clientSecret =
-    "EIyCXCFhOuvQhJWNTNZ9NC749TH0ssbifMAb7G2vzK2hif45FWRlVRGbIBpyCden0u_ryII6pIJpawhf"; // Reemplaza con tu Client Secret
+  const clientId = process.env.CLIENT_PAYPAL;
+
+  const clientSecret = process.env.CLIENT_SECRET_PAYPAL;
 
   try {
     const response = await fetch(
@@ -61,15 +60,6 @@ async function createOrder(amount, description) {
               reference_id: "unique-ref-id", // Valor único por orden
             },
           ],
-          application_context: {
-            brand_name: "CASHIN IA",
-            locale: "en-US",
-            landing_page: "LOGIN",
-            shipping_preference: "NO_SHIPPING",
-            user_action: "PAY_NOW",
-            return_url: "http://localhost:3000/Cita",
-            cancel_url: "http://localhost:3000/Cita",
-          },
         }),
       }
     );

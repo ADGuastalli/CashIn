@@ -24,6 +24,7 @@ const savingController = require("../controllers/Saving/saving");
 const statusController = require("../controllers/Status/status");
 const courseController = require("../controllers/Course/course");
 const bookController = require("../controllers/Book/book");
+const { upload } = require("../controllers/Book/book");
 const calendarControllers = require("../controllers/CalendarControllers/calendarController");
 const incomeCategoryController = require("../controllers/IncomeCategory/IncomeCategory");
 const financialLevelController = require("../controllers/FinancialLevel/financialLevel");
@@ -247,10 +248,14 @@ router.get("/status/:id", statusController.getStatusById);
 router.put("/status/:id", statusController.updateStatus);
 router.delete("/status/:id", statusController.deleteStatus);
 
-router.post("/book", bookController.createBook);
+router.post("/book", upload.single("imagePortada"), bookController.createBook);
 router.get("/book", bookController.getAllBooks);
 router.get("/book/:id", bookController.getBookById);
-router.put("/book/:id", bookController.updateBook);
+router.put(
+  "/book/:id",
+  upload.single("imagePortada"),
+  bookController.updateBook
+);
 router.delete("/book/:id", bookController.deleteBook);
 
 router.post("/course", courseController.createCourse);
@@ -287,9 +292,26 @@ router.post(
   paypalController.capturePaypalOrder
 );
 
-router.get("/events", calendarControllers.getEvents);
-router.post("/create-event", calendarControllers.createEvent);
 router.get("/available-slots", calendarControllers.getAvailableSlots);
+router.get("/getReservedSlot", calendarControllers.getReservedSlots);
+
+// Crear un nuevo slot (solo para admins)
+router.post("/create-slot", calendarControllers.createSlot);
+
+// Crear un nuevo evento (para usuarios comunes)
+router.post("/create-event", calendarControllers.createEvent);
+
+// Reservar un slot específico
+router.post("/reserve-slot", calendarControllers.reserveSlot);
+
+// Eliminar slots pasados no reservados
+router.delete(
+  "/delete-past-unreserved-slots",
+  calendarControllers.deletePastUnreservedSlots
+);
+
+// Eliminar un slot
+router.delete("/delete-slot", calendarControllers.deleteSlot);
 
 router.get(
   "/incomesExpenses/totalincome/:id",
