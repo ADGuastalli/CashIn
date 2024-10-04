@@ -1,4 +1,5 @@
 const { Income , User , IncomeCategory, Data} = require('../../models/index');
+const { Op } = require('sequelize')
 
 function convertDate(dateString) {
   const [day, month, year] = dateString.split('/').map(Number);
@@ -50,29 +51,48 @@ const createIncome = async (req, res) => {
 const getAllIncomes = async (req, res) => {
   const { id } = req.params;
   
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1; 
+  const currentYear = currentDate.getFullYear();
+
   try {
-    const incomes = await Income.findAll({
-      include: [{
-        model: Data,
-        where: { user_id: id }, // Filtrar por user_id
-      }],
+    const userWithIncome = await User.findOne({
+      where: { user_id: id },  
+      include: {
+        model: Data,           
+        include: {
+          model: Income,       
+          where: {
+            date: {
+              [Op.gte]: new Date(`${currentYear}-${currentMonth}-01`), 
+              [Op.lt]: new Date(currentYear, currentMonth, 1) 
+            }
+          }
+        }
+      }
     });
+    if (!userWithIncome) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
 
-    const mappedIncome = await Promise.all(incomes.map(async (income) => {
-      const idCategory = income.income_category_id;
-
-      const incomeCategory = await IncomeCategory.findByPk(idCategory)
-
-      return {
-        income_id: income.income_id,
-        income_category: incomeCategory ? incomeCategory.income_category : null,
-        income: income.income, 
-        mount: income.mount, 
-        date: income.date 
-      };
-    }));
-
-    res.status(200).json(mappedIncome.length > 0 ? mappedIncome : []);
+    if (userWithIncome.Datum !== null && userWithIncome.Datum.Income !== null){
+      const incomes = userWithIncome.Datum.Income;
+      const mappedIncome = await Promise.all(incomes.map(async (income) => {
+        const idCategory = income.income_category_id;
+  
+        const incomeCategory = await IncomeCategory.findByPk(idCategory)
+  
+        return {
+          income_id: income.income_id,
+          income_category: incomeCategory ? incomeCategory.income_category : null,
+          income: income.income, 
+          mount: income.mount, 
+          date: income.date 
+        };
+      }));
+  
+      res.status(200).json(mappedIncome.length > 0 ? mappedIncome : []);
+    }
   } catch (error) {
     console.error('Error al obtener los registros:', error);
     res.status(500).json({ error: 'Error al obtener los registros' });

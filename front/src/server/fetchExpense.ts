@@ -35,7 +35,6 @@ export const getUserExpenseAll = async (id: string) => {
       method: "GET",
     });
     const data = await response.json();
-    console.log("data::", data);
 
     const newData = data.map ((item: Expense )=> ({
       expense_id: item.expense_id,
@@ -54,5 +53,18 @@ export const deleteGasto =  async (id: string) => {
   });
   const data = await response.json();
 
+
   return data;
 };
+
+export const getExpense_categoryAll = async () => {
+  const response = await fetch(`${API}/expense-types`, {
+    method: "GET",
+  });
+  const data = await response.json();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const newData = data.map((item: any) => item.expense_category);
+
+  return newData
+}

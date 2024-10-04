@@ -1,4 +1,3 @@
-
 const { Router } = require("express")
 
 const userController = require('../controllers/Users/userController')
@@ -34,7 +33,6 @@ const bankController = require('../controllers/Bank/bank');
 const serviceController = require('../controllers/Service/service');
 const calculatesavingsController = require('../controllers/CalculateSavingsPlan/calculateSavingsPlan');
 const { authenticateToken } = require('../middlewares/auth');
-
 const googleAuthController = require("../controllers/Auth/google");
 const paypalController = require("../controllers/Paypal/paypalController");
 
@@ -71,7 +69,7 @@ router.put("/child/:id", childController.updateChild);
 router.delete("/child/:id", childController.deleteChild);
 
 router.post("/debt", debtController.createDebt);
-router.get("/debt", debtController.getAllDebts);
+router.get("/debt-by-user/:id", debtController.getAllDebts);
 router.get("/debt/:id", debtController.getDebtById);
 router.put("/debt/:id", debtController.updateDebt);
 router.delete("/debt/:id", debtController.deleteDebt);
@@ -89,7 +87,7 @@ router.put("/dwelling/:id", dwellingController.updateDwelling);
 router.delete("/dwelling/:id", dwellingController.deleteDwelling);
 
 router.post("/expense", expenseController.createExpense);
-router.get("/expense", expenseController.getAllExpenses);
+router.get("/expense-by-user/:id", expenseController.getAllExpenses);
 router.get("/expense/:id", expenseController.getExpenseById);
 router.put("/expense/:id", expenseController.updateExpense);
 router.delete("/expense/:id", expenseController.deleteExpense);
@@ -204,7 +202,7 @@ router.post(
   personalPropertyController.createPersonalProperty
 );
 router.get(
-  "/personalproperty",
+  "/personalproperty-by-user/:id",
   personalPropertyController.getAllPersonalProperties
 );
 router.get(
@@ -253,10 +251,14 @@ router.get("/status/:id", statusController.getStatusById);
 router.put("/status/:id", statusController.updateStatus);
 router.delete("/status/:id", statusController.deleteStatus);
 
-router.post("/book", bookController.createBook);
+router.post("/book", upload.single("imagePortada"), bookController.createBook);
 router.get("/book", bookController.getAllBooks);
 router.get("/book/:id", bookController.getBookById);
-router.put("/book/:id", bookController.updateBook);
+router.put(
+  "/book/:id",
+  upload.single("imagePortada"),
+  bookController.updateBook
+);
 router.delete("/book/:id", bookController.deleteBook);
 
 router.post("/course", courseController.createCourse);
@@ -293,18 +295,39 @@ router.post(
   paypalController.capturePaypalOrder
 );
 
-router.get("/events", calendarControllers.getEvents);
-router.post("/create-event", calendarControllers.createEvent);
 router.get("/available-slots", calendarControllers.getAvailableSlots);
+router.get("/getReservedSlot", calendarControllers.getReservedSlots);
+
+// Crear un nuevo slot (solo para admins)
+router.post("/create-slot", calendarControllers.createSlot);
+
+// Crear un nuevo evento (para usuarios comunes)
+router.post("/create-event", calendarControllers.createEvent);
+
+// Reservar un slot específico
+router.post("/reserve-slot", calendarControllers.reserveSlot);
+
+// Eliminar slots pasados no reservados
+router.delete(
+  "/delete-past-unreserved-slots",
+  calendarControllers.deletePastUnreservedSlots
+);
+
+// Eliminar un slot
+router.delete("/delete-slot", calendarControllers.deleteSlot);
 
 router.get(
   "/incomesExpenses/totalincome/:id",
   calculatorInconmeExpenses.calculateTotalIncome
 );
-router.get(
+/* router.get(
   "/incomesExpenses/calculatetotalmortgagedebt/:id",
+
   calculatorInconmeExpenses.calculatePaidMortgageDebt
 );
+  calculatorInconmeExpenses.calculateTotalMortgageDebt
+); */
+
 
 
 router.get('/incomesExpenses/totalincome/:id', calculatorInconmeExpenses.calculateTotalIncome)

@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../config/database');
+const Sequelize = require("sequelize");
+const sequelize = require("../config/database");
 
 // Importar los modelos
 const City = require('./City');
@@ -32,6 +32,7 @@ const FinancialLevel = require('./FinancialLevel');
 const DataService = require('./DataService');
 const Bank = require('./Bank');
 const Service = require('./Service');
+const SlotModel = require("./Slot");
 
 // Inicializar los modelos con la instancia de sequelize
 const models = {
@@ -65,81 +66,100 @@ const models = {
     Service: Service(sequelize, Sequelize.DataTypes),
     Status: Status(sequelize, Sequelize.DataTypes),
     User: User(sequelize, Sequelize.DataTypes),
+    SlotModel: SlotModel(sequelize, Sequelize.DataTypes),
 };
 
 // Definir relaciones entre modelos
 
 // Country -> City (Uno a muchos)
-models.Country.hasMany(models.City, { foreignKey: 'country_id' });
-models.City.belongsTo(models.Country, { foreignKey: 'country_id' });
+models.Country.hasMany(models.City, { foreignKey: "country_id" });
+models.City.belongsTo(models.Country, { foreignKey: "country_id" });
 
 // User -> Country / User -> City (Uno a muchos)
-models.Country.hasMany(models.User, { foreignKey: 'country_id' });
-models.User.belongsTo(models.Country, { foreignKey: 'country_id' });
+models.Country.hasMany(models.User, { foreignKey: "country_id" });
+models.User.belongsTo(models.Country, { foreignKey: "country_id" });
 
-models.City.hasMany(models.User, { foreignKey: 'city_id' });
-models.User.belongsTo(models.City, { foreignKey: 'city_id' });
+models.City.hasMany(models.User, { foreignKey: "city_id" });
+models.User.belongsTo(models.City, { foreignKey: "city_id" });
 
 // User -> Data (Uno a uno)
-models.User.hasOne(models.Data, { foreignKey: 'user_id' });
-models.Data.belongsTo(models.User, { foreignKey: 'user_id' });
+models.User.hasOne(models.Data, { foreignKey: "user_id" });
+models.Data.belongsTo(models.User, { foreignKey: "user_id" });
 
 // User -> Session (Uno a uno)
-models.User.hasOne(models.Session, { foreignKey: 'user_id' });
-models.Session.belongsTo(models.User, { foreignKey: 'user_id' });
+models.User.hasOne(models.Session, { foreignKey: "user_id" });
+models.Session.belongsTo(models.User, { foreignKey: "user_id" });
 
 // Data -> Occupation / MaritalStatus / Dwelling (Uno a muchos)
-models.Occupation.hasMany(models.Data, { foreignKey: 'occupation_id' });
-models.Data.belongsTo(models.Occupation, { foreignKey: 'occupation_id' });
+models.Occupation.hasMany(models.Data, { foreignKey: "occupation_id" });
+models.Data.belongsTo(models.Occupation, { foreignKey: "occupation_id" });
 
-models.MaritalStatus.hasMany(models.Data, { foreignKey: 'marital_status_id' });
-models.Data.belongsTo(models.MaritalStatus, { foreignKey: 'marital_status_id' });
+models.MaritalStatus.hasMany(models.Data, { foreignKey: "marital_status_id" });
+models.Data.belongsTo(models.MaritalStatus, {
+  foreignKey: "marital_status_id",
+});
 
-models.Dwelling.hasMany(models.Data, { foreignKey: 'dwelling_id' });
-models.Data.belongsTo(models.Dwelling, { foreignKey: 'dwelling_id' });
+models.Dwelling.hasMany(models.Data, { foreignKey: "dwelling_id" });
+models.Data.belongsTo(models.Dwelling, { foreignKey: "dwelling_id" });
 
 // Data -> Saving / Expense / Debt / Goal / Income / PersonalProperty (Uno a muchos)
-models.Data.hasMany(models.Saving, { foreignKey: 'data_id' });
-models.Saving.belongsTo(models.Data, { foreignKey: 'data_id' });
+models.Data.hasMany(models.Saving, { foreignKey: "data_id" });
+models.Saving.belongsTo(models.Data, { foreignKey: "data_id" });
 
-models.Data.hasMany(models.Expense, { foreignKey: 'data_id' });
-models.Expense.belongsTo(models.Data, { foreignKey: 'data_id' });
+models.Data.hasMany(models.Expense, { foreignKey: "data_id" });
+models.Expense.belongsTo(models.Data, { foreignKey: "data_id" });
 
-models.Data.hasMany(models.Debt, { foreignKey: 'data_id' });
-models.Debt.belongsTo(models.Data, { foreignKey: 'data_id' });
+models.Data.hasMany(models.Debt, { foreignKey: "data_id" });
+models.Debt.belongsTo(models.Data, { foreignKey: "data_id" });
 
-models.Data.hasMany(models.Goal, { foreignKey: 'data_id' });
-models.Goal.belongsTo(models.Data, { foreignKey: 'data_id' });
+models.Data.hasMany(models.Goal, { foreignKey: "data_id" });
+models.Goal.belongsTo(models.Data, { foreignKey: "data_id" });
 
-models.Data.hasMany(models.Income, { foreignKey: 'data_id' });
-models.Income.belongsTo(models.Data, { foreignKey: 'data_id' });
+models.Data.hasMany(models.Income, { foreignKey: "data_id" });
+models.Income.belongsTo(models.Data, { foreignKey: "data_id" });
 
-models.Data.hasMany(models.PersonalProperty, { foreignKey: 'data_id' });
-models.PersonalProperty.belongsTo(models.Data, { foreignKey: 'data_id' });
+models.Data.hasMany(models.PersonalProperty, { foreignKey: "data_id" });
+models.PersonalProperty.belongsTo(models.Data, { foreignKey: "data_id" });
 
 // Expense -> ExpenseCategory (Uno a muchos)
-models.ExpenseCategory.hasMany(models.Expense, { foreignKey: 'expense_category_id' });
-models.Expense.belongsTo(models.ExpenseCategory, { foreignKey: 'expense_category_id' });
+models.ExpenseCategory.hasMany(models.Expense, {
+  foreignKey: "expense_category_id",
+});
+models.Expense.belongsTo(models.ExpenseCategory, {
+  foreignKey: "expense_category_id",
+});
 
 // Debt -> DebtCategory (Uno a muchos)
-models.DebtCategory.hasMany(models.Debt, { foreignKey: 'debt_category_id' });
-models.Debt.belongsTo(models.DebtCategory, { foreignKey: 'debt_category_id' });
+models.DebtCategory.hasMany(models.Debt, { foreignKey: "debt_category_id" });
+models.Debt.belongsTo(models.DebtCategory, { foreignKey: "debt_category_id" });
 
 // Goal -> GoalCategory (Uno a muchos)
-models.GoalCategory.hasMany(models.Goal, { foreignKey: 'goal_category_id' });
-models.Goal.belongsTo(models.GoalCategory, { foreignKey: 'goal_category_id' });
+models.GoalCategory.hasMany(models.Goal, { foreignKey: "goal_category_id" });
+models.Goal.belongsTo(models.GoalCategory, { foreignKey: "goal_category_id" });
 
 // PersonalProperty -> PersonalPropertyType (Uno a muchos)
-models.PersonalPropertyType.hasMany(models.PersonalProperty, { foreignKey: 'personal_property_category_id' });
-models.PersonalProperty.belongsTo(models.PersonalPropertyType, { foreignKey: 'personal_property_category_id' });
+models.PersonalPropertyType.hasMany(models.PersonalProperty, {
+  foreignKey: "personal_property_category_id",
+});
+models.PersonalProperty.belongsTo(models.PersonalPropertyType, {
+  foreignKey: "personal_property_category_id",
+});
 
 // Dentro de tu archivo de relaciones entre modelos
-models.IncomeCategory.hasMany(models.Income, { foreignKey: 'income_category_id' });
-models.Income.belongsTo(models.IncomeCategory, { foreignKey: 'income_category_id' });
+models.IncomeCategory.hasMany(models.Income, {
+  foreignKey: "income_category_id",
+});
+models.Income.belongsTo(models.IncomeCategory, {
+  foreignKey: "income_category_id",
+});
 
 // FinancialLevel -> Data (Uno a muchos)
-models.FinancialLevel.hasMany(models.Data, { foreignKey: 'financial_level_id' });
-models.Data.belongsTo(models.FinancialLevel, { foreignKey: 'financial_level_id' });
+models.FinancialLevel.hasMany(models.Data, {
+  foreignKey: "financial_level_id",
+});
+models.Data.belongsTo(models.FinancialLevel, {
+  foreignKey: "financial_level_id",
+});
 
 // Relacionar Bank y Country (Uno a muchos)
 models.Country.hasMany(models.Bank, { foreignKey: 'country_id' });
@@ -159,6 +179,6 @@ models.DataService.belongsTo(models.Bank, { foreignKey: 'bank_id' });
 
 // Exportar sequelize y modelos
 module.exports = {
-    sequelize,
-    ...models
+  sequelize,
+  ...models,
 };

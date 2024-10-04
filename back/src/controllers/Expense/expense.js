@@ -1,4 +1,5 @@
 const { Expense , ExpenseCategory, PayMethod, User , Data} = require('../../models/index');  // Importar el modelo Expense
+const { Op } = require('sequelize')
 
 function convertDate(dateString) {
   const [day, month, year] = dateString.split('/').map(Number);
@@ -8,6 +9,46 @@ function convertDate(dateString) {
 // CREATE: Crear un nuevo registro en la tabla Expense
 const createExpense = async (req, res) => {
   try {
+<<<<<<< HEAD
+    const { expense_category, pay_method, expense, mount, date, user_id } = req.body;
+  
+    if (!expense_category || !pay_method || !expense || !mount || !date) {
+      return res.status(400).json({ error: 'Faltan datos requeridos' });
+    }
+
+    const formattedDate = convertDate(date);
+
+    const userdata =  await User.findOne({
+      where: {user_id},
+      include: [{
+        model: Data,
+        attributes: ['data_id']
+      }]
+    })
+
+    const data_id = userdata.Datum.data_id
+
+    const expenseType = await ExpenseCategory.findOne({ where: { expense_category: expense_category.toLowerCase() } });
+    if (!expenseType) {
+      return res.status(400).json({ error: 'Tipo de gasto no encontrado' });
+    }
+
+    const payMethod = await PayMethod.findOne({ where: { pay_method: pay_method.toLowerCase() } });
+
+    if (!payMethod) {
+      return res.status(400).json({ error: 'Método de pago no encontrado' });
+    }
+    const expense_category_id = expenseType.expense_category_id
+    const pay_method_id = payMethod.pay_method_id
+
+    const newExpense = await Expense.create({ 
+      expense_category_id,
+      pay_method_id, 
+      expense, mount, 
+      date: formattedDate, 
+      data_id });
+      
+=======
     const { expense_category_id, pay_method_id, expense, mount, date, data_id } = req.body;
 
     if (!expense_category_id || !pay_method_id || !expense || !mount || !date || !data_id) {
@@ -16,6 +57,7 @@ const createExpense = async (req, res) => {
 
     const newExpense = await Expense.create({ expense_category_id, pay_method_id, expense, mount, date, data_id });
 
+>>>>>>> origin/Developer
     res.status(201).json(newExpense);
   } catch (error) {
     console.error('Error al crear el registro:', error);
@@ -27,34 +69,54 @@ const createExpense = async (req, res) => {
 const getAllExpenses = async (req, res) => {
   const { id } = req.params;
 
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1; 
+  const currentYear = currentDate.getFullYear();
+
   try {
-    const expenses = await Expense.findAll({
-      include: [{
-        model: Data,
-        where: { user_id: id }, // Filtrar por user_id
-      }],
+    const userWithExpenses = await User.findOne({
+      where: { user_id: id },  
+      include: {
+        model: Data,           
+        include: {
+          model: Expense,       
+          where: {
+            date: {
+              [Op.gte]: new Date(`${currentYear}-${currentMonth}-01`), 
+              [Op.lt]: new Date(currentYear, currentMonth, 1) 
+            }
+          }
+        }
+      }
     });
-    const mappedExpense = await Promise.all(expenses.map(async (expense) => {
-      const idCategory = expense.expense_category_id;
-      const idPay = expense.pay_method_id;
+    if (!userWithExpenses) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+    
+    if (userWithExpenses.Datum !== null && userWithExpenses.Datum.Expense !== null) {
+      const expenses = userWithExpenses.Datum.Expense;
+      const mappedExpense = await Promise.all(expenses.map(async (expense) => {
+        const idCategory = expense.expense_category_id;
+        const idPay = expense.pay_method_id;
+  
+        // Obtener los datos de ExpenseCategory y PayMethod
+        const [expenseCategory, paymethod] = await Promise.all([
+          ExpenseCategory.findByPk(idCategory),
+          PayMethod.findByPk(idPay)
+        ]);
+  
+        return {
+          expense_id: expense.expense_id,
+          expense_category: expenseCategory ? expenseCategory.expense_category : null,
+          pay_method: paymethod ? paymethod.pay_method : null,
+          expense: expense.expense, 
+          mount: expense.mount, 
+          date: expense.date 
+        };
+      }));
+      res.status(200).json(mappedExpense);
+    }
 
-      // Obtener los datos de ExpenseCategory y PayMethod
-      const [expenseCategory, paymethod] = await Promise.all([
-        ExpenseCategory.findByPk(idCategory),
-        PayMethod.findByPk(idPay)
-      ]);
-
-      return {
-        expense_id: expense.expense_id,
-        expense_category: expenseCategory ? expenseCategory.expense_category : null,
-        pay_method: paymethod ? paymethod.pay_method : null,
-        expense: expense.expense, 
-        mount: expense.mount, 
-        date: expense.date 
-      };
-    }));
-
-    res.status(200).json(mappedExpense);
   } catch (error) {
     console.error('Error al obtener los registros:', error);
     res.status(500).json({ error: 'Error al obtener los registros' });

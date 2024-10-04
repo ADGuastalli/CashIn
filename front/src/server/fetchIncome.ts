@@ -52,3 +52,15 @@ export const deleteIngreso =  async (id: string) => {
 
   return data;
 };
+
+export const getIncomes_categoryAll = async () => {
+  const response = await fetch(`${API}/income-categories`, {
+    method: "GET",
+  });
+  const data = await response.json();
+  console.log("categories incomes",data)
+  
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const newData = data.map((item: any) => item.income_category);
+  return newData
+}
