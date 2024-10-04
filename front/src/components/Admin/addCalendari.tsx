@@ -64,6 +64,8 @@ const AdminAvailabilityForm = () => {
   const handleAddSlot = async () => {
     const { startTime, endTime } = newSlot;
 
+    console.log(newSlot);
+
     if (startTime && endTime) {
       try {
         const response = await fetch(`${API}/create-slot`, {

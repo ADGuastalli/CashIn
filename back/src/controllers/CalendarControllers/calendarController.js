@@ -72,22 +72,46 @@ const createEvent = async (req, res) => {
 
 // Función para crear un slot (solo para admins)
 const createSlot = async (req, res) => {
-  const { startTime, endTime } = req.body;
+  const { start_time, end_time } = req.body;
 
+  console.log("Datos recibidos para crear slot:", start_time, end_time);
+
+  // Validar que los valores existan y sean correctos
+  if (!start_time || !end_time) {
+    return res.status(400).json({
+      message: "Por favor, proporciona las fechas y horas de inicio y fin.",
+    });
+  }
+
+  // Convertir las fechas a objetos Date
+  const start = new Date(start_time);
+  const end = new Date(end_time);
   const now = new Date();
-  const start = new Date(startTime);
-  const end = new Date(endTime);
+
+  // Validar que las fechas sean futuras y válidas
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+    return res.status(400).json({ message: "Fecha inválida proporcionada." });
+  }
+
   if (start <= now) {
-    return res
-      .status(400)
-      .json({ message: "El slot debe ser para una fecha futura." });
+    return res.status(400).json({
+      message: "El slot debe ser para una fecha futura.",
+    });
+  }
+
+  if (start >= end) {
+    return res.status(400).json({
+      message: "La fecha de inicio debe ser anterior a la fecha de fin.",
+    });
   }
 
   try {
+    // Autoriza el cliente JWT para acceder a Google Calendar
     await jwtClient.authorize();
     const calendar = google.calendar("v3");
-    const calendarId = "gonza.cay@gmail.com";
+    const calendarId = "gonza.cay@gmail.com"; // Reemplaza con el ID de tu calendario
 
+    // Crear el evento en Google Calendar
     const event = {
       summary: "Slot disponible",
       start: {
@@ -106,17 +130,23 @@ const createSlot = async (req, res) => {
       resource: event,
     });
 
+    // Crear el slot en la base de datos
     const newSlot = await SlotModel.create({
       start_time: start,
       end_time: end,
+      reserved: false, // Por defecto, el slot no está reservado
     });
 
-    res
-      .status(201)
-      .json({ message: "Slot creado exitosamente", slot: newSlot });
+    res.status(201).json({
+      message: "Slot creado exitosamente",
+      slot: newSlot,
+    });
   } catch (error) {
     console.error("Error al crear el slot:", error);
-    res.status(500).json({ message: "Error al crear el slot", error });
+    res.status(500).json({
+      message: "Error al crear el slot",
+      error: error.message,
+    });
   }
 };
 
