@@ -28,6 +28,10 @@ const incomeCategoryController = require('../controllers/IncomeCategory/IncomeCa
 const financialLevelController = require('../controllers/FinancialLevel/financialLevel');
 const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesTotal')
 const calculatorInconmeExpensesMonthly = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesMonth')
+const dataServiceController = require('../controllers/DataService/DataService');
+const bankController = require('../controllers/Bank/bank');
+const serviceController = require('../controllers/Service/service');
+const calculatesavingsController = require('../controllers/CalculateSavingsPlan/calculateSavingsPlan');
 const { authenticateToken } = require('../middlewares/auth');
 const googleAuthController = require("../controllers/Auth/google");
 const paypalController = require("../controllers/Paypal/paypalController");
@@ -318,8 +322,12 @@ router.get(
 );
 /* router.get(
   "/incomesExpenses/calculatetotalmortgagedebt/:id",
+
+  calculatorInconmeExpenses.calculatePaidMortgageDebt
+);
   calculatorInconmeExpenses.calculateTotalMortgageDebt
 ); */
+
 
 
 router.get('/incomesExpenses/totalincome/:id', calculatorInconmeExpenses.calculateTotalIncome)
@@ -344,7 +352,29 @@ router.get('/incomesExpenses/calculateMonthlyTransportExpenses/:id', calculatorI
 router.get('/incomesExpenses/calculateMonthlyMultipleCategoriesExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyMultipleCategoriesExpenses)
 router.get('/incomesExpenses/calculateMonthlyVacationAndRecreationExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyVacationAndRecreationExpenses)
 router.get('/incomesExpenses/calculateMonthlyTithesAndSavings/:id', calculatorInconmeExpensesMonthly.calculateMonthlyTithesAndSavings)
+router.get('/incomesExpenses/calculateMonthlyMiscellaneousExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyMiscellaneousExpenses)
+router.get('/incomesExpenses/calculateMonthlyTotalExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyTotalExpenses)
+router.get('/incomesExpenses/calculateNetIncomeMonthly/:id', calculatorInconmeExpensesMonthly.calculateNetIncomeMonthly)
 
+router.get('/data-services', dataServiceController.getAllDataServices);
+router.get('/data-services/:id', dataServiceController.getDataServiceById);
+router.post('/data-services', dataServiceController.createDataService);
+router.put('/data-services/:id', dataServiceController.updateDataService);
+router.delete('/data-services/:id', dataServiceController.deleteDataService);
+
+router.get('/banks', bankController.getAllBanks);
+router.get('/banks/:id', bankController.getBankById);
+router.post('/banks', bankController.createBank);
+router.put('/banks/:id', bankController.updateBank);
+router.delete('/banks/:id', bankController.deleteBank);
+
+router.get('/services', serviceController.getAllServices);
+router.get('/services/:id', serviceController.getServiceById);
+router.post('/services', serviceController.createService);
+router.put('/services/:id', serviceController.updateService);
+router.delete('/services/:id', serviceController.deleteService);
+
+router.post('/savings/simulate', calculatesavingsController.simulateSavingsPlan);
 
 module.exports = router
 

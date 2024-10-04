@@ -2,65 +2,71 @@ const Sequelize = require("sequelize");
 const sequelize = require("../config/database");
 
 // Importar los modelos
-const City = require("./City");
-const Country = require("./Country");
-const Session = require("./Session");
-const User = require("./User");
-const Data = require("./Data");
-const Status = require("./Status");
-const Saving = require("./Saving");
-const Expense = require("./Expense");
-const Debt = require("./Debt");
-const MonthlyIncomeType = require("./MonthlyIncomeType");
-const Goal = require("./Goal");
-const GoalCategory = require("./GoalCategory");
-const Income = require("./Income");
-const PersonalProperty = require("./PersonalProperty");
-const DebtCategory = require("./DebtCategory");
-const ExpenseCategory = require("./ExpenseCategory");
-const PersonalPropertyType = require("./PersonalPropertyType");
-const PayMethod = require("./PayMethod");
-const ModelData = require("./ModelData");
-const Occupation = require("./Occupation");
-const MaritalStatus = require("./MaritalStatus");
-const Dwelling = require("./Dwelling");
-const Child = require("./Child");
-const Book = require("./Book");
-const Course = require("./Course");
-const IncomeCategory = require("./IncomeCategory");
-const FinancialLevel = require("./FinancialLevel");
+const City = require('./City');
+const Country = require('./Country');
+const Session = require('./Session');
+const User = require('./User');
+const Data = require('./Data');
+const Status = require('./Status');
+const Saving = require('./Saving');
+const Expense = require('./Expense');
+const Debt = require('./Debt');
+const MonthlyIncomeType = require('./MonthlyIncomeType');
+const Goal = require('./Goal');
+const GoalCategory = require('./GoalCategory');
+const Income = require('./Income');
+const PersonalProperty = require('./PersonalProperty');
+const DebtCategory = require('./DebtCategory');
+const ExpenseCategory = require('./ExpenseCategory');
+const PersonalPropertyType = require('./PersonalPropertyType');
+const PayMethod = require('./PayMethod');
+const ModelData = require('./ModelData');
+const Occupation = require('./Occupation');
+const MaritalStatus = require('./MaritalStatus');
+const Dwelling = require('./Dwelling');
+const Child = require('./Child');
+const Book = require('./Book');
+const Course = require('./Course');
+const IncomeCategory = require('./IncomeCategory');
+const FinancialLevel = require('./FinancialLevel');
+const DataService = require('./DataService');
+const Bank = require('./Bank');
+const Service = require('./Service');
 const SlotModel = require("./Slot");
 
 // Inicializar los modelos con la instancia de sequelize
 const models = {
-  Book: Book(sequelize, Sequelize.DataTypes),
-  Child: Child(sequelize, Sequelize.DataTypes),
-  City: City(sequelize, Sequelize.DataTypes),
-  Country: Country(sequelize, Sequelize.DataTypes),
-  Course: Course(sequelize, Sequelize.DataTypes),
-  Data: Data(sequelize, Sequelize.DataTypes),
-  Debt: Debt(sequelize, Sequelize.DataTypes),
-  DebtCategory: DebtCategory(sequelize, Sequelize.DataTypes),
-  Dwelling: Dwelling(sequelize, Sequelize.DataTypes),
-  Expense: Expense(sequelize, Sequelize.DataTypes),
-  ExpenseCategory: ExpenseCategory(sequelize, Sequelize.DataTypes),
-  FinancialLevel: FinancialLevel(sequelize, Sequelize.DataTypes),
-  Goal: Goal(sequelize, Sequelize.DataTypes),
-  GoalCategory: GoalCategory(sequelize, Sequelize.DataTypes),
-  Income: Income(sequelize, Sequelize.DataTypes),
-  IncomeCategory: IncomeCategory(sequelize, Sequelize.DataTypes),
-  MaritalStatus: MaritalStatus(sequelize, Sequelize.DataTypes),
-  ModelData: ModelData(sequelize, Sequelize.DataTypes),
-  MonthlyIncomeType: MonthlyIncomeType(sequelize, Sequelize.DataTypes),
-  Occupation: Occupation(sequelize, Sequelize.DataTypes),
-  PayMethod: PayMethod(sequelize, Sequelize.DataTypes),
-  PersonalProperty: PersonalProperty(sequelize, Sequelize.DataTypes),
-  PersonalPropertyType: PersonalPropertyType(sequelize, Sequelize.DataTypes),
-  Saving: Saving(sequelize, Sequelize.DataTypes),
-  Session: Session(sequelize, Sequelize.DataTypes),
-  Status: Status(sequelize, Sequelize.DataTypes),
-  User: User(sequelize, Sequelize.DataTypes),
-  SlotModel: SlotModel(sequelize, Sequelize.DataTypes),
+    Bank: Bank(sequelize, Sequelize.DataTypes),
+    Book: Book(sequelize, Sequelize.DataTypes),
+    Child: Child(sequelize, Sequelize.DataTypes),
+    City: City(sequelize, Sequelize.DataTypes),
+    Country: Country(sequelize, Sequelize.DataTypes),
+    Course: Course(sequelize, Sequelize.DataTypes),
+    Data: Data(sequelize, Sequelize.DataTypes),
+    DataService: DataService(sequelize, Sequelize.DataTypes),
+    Debt: Debt(sequelize, Sequelize.DataTypes),
+    DebtCategory: DebtCategory(sequelize, Sequelize.DataTypes),
+    Dwelling: Dwelling(sequelize, Sequelize.DataTypes),
+    Expense: Expense(sequelize, Sequelize.DataTypes),
+    ExpenseCategory: ExpenseCategory(sequelize, Sequelize.DataTypes),
+    FinancialLevel: FinancialLevel(sequelize, Sequelize.DataTypes),
+    Goal: Goal(sequelize, Sequelize.DataTypes),
+    GoalCategory: GoalCategory(sequelize, Sequelize.DataTypes),
+    Income: Income(sequelize, Sequelize.DataTypes),
+    IncomeCategory:  IncomeCategory(sequelize, Sequelize.DataTypes),
+    MaritalStatus: MaritalStatus(sequelize, Sequelize.DataTypes),
+    ModelData: ModelData(sequelize, Sequelize.DataTypes),
+    MonthlyIncomeType: MonthlyIncomeType(sequelize, Sequelize.DataTypes),
+    Occupation: Occupation(sequelize, Sequelize.DataTypes),
+    PayMethod: PayMethod(sequelize, Sequelize.DataTypes),
+    PersonalProperty: PersonalProperty(sequelize, Sequelize.DataTypes),
+    PersonalPropertyType: PersonalPropertyType(sequelize, Sequelize.DataTypes),
+    Saving: Saving(sequelize, Sequelize.DataTypes),
+    Session: Session(sequelize, Sequelize.DataTypes),
+    Service: Service(sequelize, Sequelize.DataTypes),
+    Status: Status(sequelize, Sequelize.DataTypes),
+    User: User(sequelize, Sequelize.DataTypes),
+    SlotModel: SlotModel(sequelize, Sequelize.DataTypes),
 };
 
 // Definir relaciones entre modelos
@@ -154,6 +160,22 @@ models.FinancialLevel.hasMany(models.Data, {
 models.Data.belongsTo(models.FinancialLevel, {
   foreignKey: "financial_level_id",
 });
+
+// Relacionar Bank y Country (Uno a muchos)
+models.Country.hasMany(models.Bank, { foreignKey: 'country_id' });
+models.Bank.belongsTo(models.Country, { foreignKey: 'country_id' });
+
+// Relacionar DataService y Country (Uno a muchos)
+models.Country.hasMany(models.DataService, { foreignKey: 'country_id' });
+models.DataService.belongsTo(models.Country, { foreignKey: 'country_id' });
+
+// Relacionar DataService y Service (Uno a muchos)
+models.Service.hasMany(models.DataService, { foreignKey: 'service_id' });
+models.DataService.belongsTo(models.Service, { foreignKey: 'service_id' });
+
+// Relacionar DataService y Bank (Uno a muchos)
+models.Bank.hasMany(models.DataService, { foreignKey: 'bank_id' });
+models.DataService.belongsTo(models.Bank, { foreignKey: 'bank_id' });
 
 // Exportar sequelize y modelos
 module.exports = {

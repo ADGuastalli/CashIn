@@ -653,6 +653,227 @@ const calculateMonthlyTithesAndSavings = async (req, res) => {
   }
 };
 
+const calculateMonthlyMiscellaneousExpenses = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        // Obtener el mes y año actual
+        const currentDate = new Date();
+        const currentMonth = currentDate.getMonth() + 1; // Los meses en JavaScript van de 0 (enero) a 11 (diciembre), por lo que sumamos 1
+        const currentYear = currentDate.getFullYear();
+
+        // Buscar al usuario con sus gastos filtrados por la categoría "Misceláneos"
+        const userWithExpenses = await User.findOne({
+            where: { user_id: userId },
+            include: {
+                model: Data,
+                include: {
+                    model: Expense,
+                    include: {
+                        model: ExpenseCategory,
+                        where: {
+                            expense_category: {
+                                [Op.iLike]: 'Miscelaneos' // Filtrar por la categoría "Misceláneos"
+                            }
+                        },
+                        attributes: [] // No necesitas seleccionar ningún atributo de ExpenseCategory
+                    },
+                    attributes: ['mount', 'date'], // Seleccionar los campos de monto y fecha de los gastos
+                    where: {
+                        date: {
+                            [Op.gte]: new Date(`${currentYear}-${currentMonth}-01`), // Desde el primer día del mes actual
+                            [Op.lt]: new Date(currentYear, currentMonth, 1) // Hasta el primer día del mes siguiente
+                        }
+                    }
+                }
+            }
+        });
+
+        if (!userWithExpenses) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+
+        // Acceder a los gastos relacionados con "Misceláneos"
+        const expenses = userWithExpenses?.Datum?.Expenses || [];
+
+        // Si el usuario no tiene gastos en esta categoría
+        if (expenses.length === 0) {
+            return res.status(200).json({ message: 'No posee gastos en Misceláneos' });
+        }
+
+        // Sumar los montos de los gastos solo del mes actual
+        const monthlyMiscellaneousExpenses = expenses.reduce((total, expense) => {
+            return total + parseFloat(expense.mount); // Convertir el monto a número y acumular
+        }, 0);
+
+        // Devolver el total de gastos de Misceláneos del mes actual con dos decimales
+        return res.status(200).json({ monthlyMiscellaneousExpenses: monthlyMiscellaneousExpenses.toFixed(2) });
+    } catch (error) {
+        console.error('Error al calcular los gastos de Misceláneos: ', error);
+        return res.status(500).json({ message: 'Error al calcular los gastos de Misceláneos' });
+    }
+};
+
+const calculateMonthlyTotalExpenses = async (req, res) => {
+  try {
+      const userId = req.params.id;
+
+      // Obtener el mes y año actual
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth() + 1; // Los meses en JavaScript van de 0 (enero) a 11 (diciembre), por lo que sumamos 1
+      const currentYear = currentDate.getFullYear();
+
+      // Buscar al usuario con todos sus gastos del mes actual
+      const userWithExpensesAndDebts = await User.findOne({
+          where: { user_id: userId },
+          include: [
+              {
+                  model: Data,
+                  include: {
+                      model: Expense,
+                      attributes: ['mount', 'date'], // Seleccionar los campos de monto y fecha
+                      where: {
+                          date: {
+                              [Op.gte]: new Date(`${currentYear}-${currentMonth}-01`), // Desde el primer día del mes actual
+                              [Op.lt]: new Date(currentYear, currentMonth, 1) // Hasta el primer día del mes siguiente
+                          }
+                      }
+                  }
+              },
+              {
+                  model: Data,
+                  include: {
+                      model: Debt,
+                      attributes: ['mount_cuote'], // Solo necesitamos el monto de la cuota
+                  }
+              }
+          ]
+      });
+
+      if (!userWithExpensesAndDebts) {
+          return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+
+      // Acceder a todos los gastos del usuario
+      const expenses = userWithExpensesAndDebts?.Datum?.Expenses || [];
+
+      // Si el usuario no tiene gastos
+      if (expenses.length === 0) {
+          return res.status(200).json({ message: 'No posee gastos en el mes actual' });
+      }
+
+      // Sumar los montos de todos los gastos del mes actual
+      const monthlyTotalExpenses = expenses.reduce((total, expense) => {
+          return total + parseFloat(expense.mount); // Convertir el monto a número y acumular
+      }, 0);
+
+      // Acceder a todas las deudas del usuario
+      const debts = userWithExpensesAndDebts?.Datum?.Debts || [];
+
+      // Sumar los montos de todas las deudas
+      const totalDebtMounts = debts.reduce((total, debt) => {
+          return total + parseFloat(debt.mount_cuote); // Convertir el monto a número y acumular
+      }, 0);
+
+      // Sumar los gastos y las deudas
+      const totalMonthlyExpensesAndDebts = monthlyTotalExpenses + totalDebtMounts;
+
+      // Devolver el total de todos los gastos y deudas del mes actual con dos decimales
+      return res.status(200).json({ totalMonthlyExpensesAndDebts: totalMonthlyExpensesAndDebts.toFixed(2) });
+  } catch (error) {
+      console.error('Error al calcular los gastos totales del mes: ', error);
+      return res.status(500).json({ message: 'Error al calcular los gastos totales del mes' });
+  }
+};
+
+const calculateNetIncomeMonthly = async (req, res) => {
+  try {
+      const userId = req.params.id;
+
+      // Obtener el mes y año actual
+      const currentDate = new Date();
+      const currentMonth = currentDate.getMonth() + 1; // Los meses en JavaScript van de 0 (enero) a 11 (diciembre), por lo que sumamos 1
+      const currentYear = currentDate.getFullYear();
+
+      // Busca al usuario por su ID e incluye la relación con la tabla Data e Income
+      const userWithIncome = await User.findOne({
+          where: { user_id: userId },
+          include: {
+              model: Data,
+              include: {
+                  model: Income,
+                  where: {
+                      date: {
+                          [Op.gte]: new Date(`${currentYear}-${currentMonth}-01`), // Desde el primer día del mes actual
+                          [Op.lt]: new Date(currentYear, currentMonth, 1) // Hasta el primer día del mes siguiente
+                      }
+                  },
+                  attributes: ['mount'] // Selecciona solo la columna de ingresos
+              }
+          }
+      });
+
+      if (!userWithIncome) {
+          return res.status(404).json({ message: 'Usuario no encontrado' });
+      }
+
+      // Calcular el total de ingresos
+      const totalIncome = (userWithIncome.Datum && userWithIncome.Datum.Incomes || []).reduce((total, income) => {
+          return total + parseFloat(income.mount); // Convertir 'mount' a número y sumar al total
+      }, 0);
+
+      // Ahora, llama a la función que calcula los gastos totales
+      const userWithExpensesAndDebts = await User.findOne({
+          where: { user_id: userId },
+          include: [
+              {
+                  model: Data,
+                  include: {
+                      model: Expense,
+                      attributes: ['mount', 'date'], // Seleccionar los campos de monto y fecha
+                      where: {
+                          date: {
+                              [Op.gte]: new Date(`${currentYear}-${currentMonth}-01`), // Desde el primer día del mes actual
+                              [Op.lt]: new Date(currentYear, currentMonth, 1) // Hasta el primer día del mes siguiente
+                          }
+                      }
+                  }
+              },
+              {
+                  model: Data,
+                  include: {
+                      model: Debt,
+                      attributes: ['mount_cuote'], // Solo necesitamos el monto de la cuota
+                  }
+              }
+          ]
+      });
+
+      // Calcular los gastos totales
+      const expenses = userWithExpensesAndDebts?.Datum?.Expenses || [];
+      const monthlyTotalExpenses = expenses.reduce((total, expense) => {
+          return total + parseFloat(expense.mount); // Convertir el monto a número y acumular
+      }, 0);
+
+      const debts = userWithExpensesAndDebts?.Datum?.Debts || [];
+      const totalDebtMounts = debts.reduce((total, debt) => {
+          return total + parseFloat(debt.mount_cuote); // Convertir el monto a número y acumular
+      }, 0);
+
+      // Sumar los gastos y las deudas
+      const totalMonthlyExpensesAndDebts = monthlyTotalExpenses + totalDebtMounts;
+
+      // Calcular el ingreso neto
+      const netIncome = totalIncome - totalMonthlyExpensesAndDebts;
+
+      // Devuelve el ingreso neto con dos decimales
+      return res.status(200).json({ netIncome: netIncome.toFixed(2) });
+  } catch (error) {
+      console.error('Error al calcular el ingreso neto: ', error);
+      return res.status(500).json({ message: 'Error al calcular el ingreso neto' });
+  }
+};
+
 module.exports = {
   calculateTotalIncomeMonthly,
   calculateMonthlyMortgageExpense,
@@ -664,5 +885,8 @@ module.exports = {
   calculateMonthlyTransportExpenses,
   calculateMonthlyMultipleCategoriesExpenses,
   calculateMonthlyVacationAndRecreationExpenses,
-  calculateMonthlyTithesAndSavings
+  calculateMonthlyTithesAndSavings,
+  calculateMonthlyMiscellaneousExpenses,
+  calculateMonthlyTotalExpenses,
+  calculateNetIncomeMonthly
 }

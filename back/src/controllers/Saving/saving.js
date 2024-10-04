@@ -3,16 +3,17 @@ const { Saving } = require('../../models/index');
 // CREATE: Crear un nuevo registro en la tabla Saving
 const createSaving = async (req, res) => {
   try {
-    const { saving, mount, date } = req.body;
+    const { saving, mount, date, data_id } = req.body;
 
-    if (saving == null || mount == null || date == null) {
-      return res.status(400).json({ error: 'Todos los campos (saving, mount, date) son requeridos' });
+    if (saving == null || mount == null || date == null || data_id == null) {
+      return res.status(400).json({ error: 'Todos los campos (saving, mount, date, data_id) son requeridos' });
     }
 
     const newSaving = await Saving.create({
       saving,
       mount,
-      date
+      date,
+      data_id 
     });
     res.status(201).json(newSaving);
   } catch (error) {
