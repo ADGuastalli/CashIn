@@ -1,11 +1,17 @@
 "use client";
-import React, { createContext, useContext, useReducer, ReactNode, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  useEffect,
+} from "react";
 import { getUserPersonalPropertyAll } from "@/server/fetchBien";
 
-const userId = localStorage.getItem('user');
+const userId = typeof window !== "undefined" && localStorage.getItem("user");
 
 interface PersonalProperty {
-  personal_property_id?: string,
+  personal_property_id?: string;
   personal_property_type: string;
   personal_property?: string;
   mount: string;
@@ -17,17 +23,17 @@ interface PersonalPropertyState {
 }
 
 type PersonalPropertyAction =
-  | {type: "INIT_BIEN"; payload: PersonalProperty}
+  | { type: "INIT_BIEN"; payload: PersonalProperty }
   | { type: "ADD_BIEN"; payload: PersonalProperty }
-  | { type: "DELETE_BIEN"; payload: number }
+  | { type: "DELETE_BIEN"; payload: number };
 
 const PersonalPropertyContext = createContext<
-    | {
-        state: PersonalPropertyState;
-        dispatch: React.Dispatch<PersonalPropertyAction>;
-      }
-    | undefined
-  >(undefined);
+  | {
+      state: PersonalPropertyState;
+      dispatch: React.Dispatch<PersonalPropertyAction>;
+    }
+  | undefined
+>(undefined);
 
 const PersonalPropertyReducer = (
   state: PersonalPropertyState,
@@ -35,8 +41,12 @@ const PersonalPropertyReducer = (
 ): PersonalPropertyState => {
   switch (action.type) {
     case "INIT_BIEN":
-      const exists = state.bienes.some(i => i.mount === action.payload.mount 
-          && i.personal_property_type === action.payload.personal_property_type && i.personal_property === action.payload.personal_property );
+      const exists = state.bienes.some(
+        (i) =>
+          i.mount === action.payload.mount &&
+          i.personal_property_type === action.payload.personal_property_type &&
+          i.personal_property === action.payload.personal_property
+      );
       if (!exists) {
         return { ...state, bienes: [action.payload, ...state.bienes] };
       }
@@ -62,9 +72,9 @@ export const PersonalPropertyProvider: React.FC<{ children: ReactNode }> = ({
 
   const fetchIngresos = async () => {
     try {
-      if(userId){
-        const response = await getUserPersonalPropertyAll(userId); 
-        const BienesDesdeDB = response; 
+      if (userId) {
+        const response = await getUserPersonalPropertyAll(userId);
+        const BienesDesdeDB = response;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         BienesDesdeDB.forEach((bien: any) => {
           dispatch({ type: "INIT_BIEN", payload: bien });
@@ -75,10 +85,9 @@ export const PersonalPropertyProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-    useEffect(() => {
-    fetchIngresos(); 
-    }, []);
-
+  useEffect(() => {
+    fetchIngresos();
+  }, []);
 
   return (
     <PersonalPropertyContext.Provider value={{ state, dispatch }}>

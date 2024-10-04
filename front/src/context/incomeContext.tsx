@@ -1,11 +1,17 @@
 "use client";
-import React, { createContext, useContext, useReducer, ReactNode, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  useEffect,
+} from "react";
 import { getUserIncomeAll } from "@/server/fetchIncome";
 
-const userId = localStorage.getItem('user');
+const userId = typeof window !== "undefined" && localStorage.getItem("user");
 
 interface Ingreso {
-  income_id?: string,
+  income_id?: string;
   tipoIngreso: string;
   descripcionIngreso?: string;
   monto: string;
@@ -19,7 +25,7 @@ interface IngresosState {
 }
 
 type IngresosAction =
-  | {type: "INIT_INGRESOS"; payload: Ingreso}
+  | { type: "INIT_INGRESOS"; payload: Ingreso }
   | { type: "ADD_INGRESO"; payload: Ingreso }
   | { type: "DELETE_INGRESO"; payload: number }
   | {
@@ -29,12 +35,12 @@ type IngresosAction =
   | { type: "CLEAN_TIPO_INGRESOS" };
 
 const IngresosContext = createContext<
-    | {
-        state: IngresosState;
-        dispatch: React.Dispatch<IngresosAction>;
-      }
-    | undefined
-  >(undefined);
+  | {
+      state: IngresosState;
+      dispatch: React.Dispatch<IngresosAction>;
+    }
+  | undefined
+>(undefined);
 
 const ingresosReducer = (
   state: IngresosState,
@@ -42,8 +48,13 @@ const ingresosReducer = (
 ): IngresosState => {
   switch (action.type) {
     case "INIT_INGRESOS":
-      const exists = state.ingresos.some(i => i.monto === action.payload.monto 
-          && i.tipoIngreso === action.payload.tipoIngreso && i.descripcionIngreso === action.payload.descripcionIngreso && i.descripcionIngreso === action.payload.descripcionIngreso);
+      const exists = state.ingresos.some(
+        (i) =>
+          i.monto === action.payload.monto &&
+          i.tipoIngreso === action.payload.tipoIngreso &&
+          i.descripcionIngreso === action.payload.descripcionIngreso &&
+          i.descripcionIngreso === action.payload.descripcionIngreso
+      );
       if (!exists) {
         return { ...state, ingresos: [action.payload, ...state.ingresos] };
       }
@@ -64,8 +75,8 @@ const ingresosReducer = (
     case "CLEAN_TIPO_INGRESOS":
       return {
         ...state,
-        selectedTipoIngreso: undefined, 
-        descripcionTipos: []
+        selectedTipoIngreso: undefined,
+        descripcionTipos: [],
       };
     default:
       throw new Error("Acción no soportada");
@@ -83,9 +94,9 @@ export const IngresosProvider: React.FC<{ children: ReactNode }> = ({
 
   const fetchIngresos = async () => {
     try {
-      if(userId){
-        const response = await getUserIncomeAll(userId); 
-        const IngresosDesdeDB = response; 
+      if (userId) {
+        const response = await getUserIncomeAll(userId);
+        const IngresosDesdeDB = response;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         IngresosDesdeDB.forEach((ingreso: any) => {
           dispatch({ type: "INIT_INGRESOS", payload: ingreso });
@@ -96,10 +107,9 @@ export const IngresosProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-    useEffect(() => {
-    fetchIngresos(); 
-    }, []);
-
+  useEffect(() => {
+    fetchIngresos();
+  }, []);
 
   return (
     <IngresosContext.Provider value={{ state, dispatch }}>

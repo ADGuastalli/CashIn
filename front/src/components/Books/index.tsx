@@ -84,8 +84,8 @@ const BooksComponent: React.FC = () => {
       ) : (
         <div className={styles.carouselContainer}>
           <div className={styles.carousel}>
-            {libros.map((libro) => (
-              <div key={libro.bookId} className={styles.bookItem}>
+            {libros.map((libro, index) => (
+              <div key={`${libro.bookId}-${index}`} className={styles.bookItem}>
                 <Card
                   sx={{ maxWidth: { xs: "100%", md: 350 } }}
                   className="hover:scale-105 transition-transform duration-300 bg-[#0095a919]"

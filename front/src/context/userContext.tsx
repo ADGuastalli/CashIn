@@ -175,8 +175,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const userData = localStorage.getItem("user");
+    const token =
+      typeof window !== "undefined" && localStorage.getItem("token");
+    const userData =
+      typeof window !== "undefined" && localStorage.getItem("user");
 
     if (token) {
       setIsAuthenticated(true);
