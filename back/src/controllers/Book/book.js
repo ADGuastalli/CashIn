@@ -126,5 +126,5 @@ module.exports = {
   getBookById,
   updateBook,
   deleteBook,
-  upload, // Exportar el middleware de multer
+  upload,
 };
