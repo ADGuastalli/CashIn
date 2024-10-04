@@ -1,15 +1,46 @@
-const { Debt } = require('../../models/index');  // Importar el modelo Debt
+const { Debt, DebtCategory, Data, User } = require('../../models/index');  // Importar el modelo Debt
 
+function convertDate(dateString) {
+  const [day, month, year] = dateString.split('/').map(Number);
+  return new Date(year, month - 1, day); 
+}
 // CREATE: Crear un nuevo registro en la tabla Debt
 const createDebt = async (req, res) => {
   try {
-    const { debt_category_id, debt, mount, date, data_id } = req.body;
+    const { debt_category, debt, mount, date, user_id, rate, cuote, recurrence, mount_cuote} = req.body;
 
-    if (!debt_category_id || !debt || !mount || !date || ! data_id) {
+    if (!debt_category || !debt || !mount || !date || ! user_id ) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const newDebt = await Debt.create({ debt_category_id, debt, mount, date, data_id});
+    const formattedDate = convertDate(date);
+
+    const userdata =  await User.findOne({
+      where: {user_id},
+      include: [{
+        model: Data,
+        attributes: ['data_id']
+      }]
+    })
+    const data_id = userdata.Datum.data_id
+
+    const debtType = await DebtCategory.findOne({ where: { debt: debt_category.toLowerCase() } });
+    if (!debtType) {
+      return res.status(400).json({ error: 'Tipo de ingreso no encontrado' });
+    }
+    const debt_category_id = debtType.debt_category_id
+
+    const newDebt = await Debt.create({ 
+      debt_category_id, 
+      debt, 
+      mount, 
+      date: formattedDate, 
+      data_id, 
+      rate: rate ? rate : 0, 
+      cuote: cuote ? cuote : 0, 
+      recurrence: recurrence ? recurrence : false, 
+      mount_cuote: mount_cuote ? mount_cuote : 0,
+    });
     res.status(201).json(newDebt);
   } catch (error) {
     console.error('Error al crear el registro:', error);
@@ -19,9 +50,53 @@ const createDebt = async (req, res) => {
 
 // READ: Obtener todos los registros de la tabla Debt
 const getAllDebts = async (req, res) => {
+  const { id } = req.params;
+
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1; 
+  const currentYear = currentDate.getFullYear();
+
   try {
-    const debts = await Debt.findAll();
-    res.status(200).json(debts);
+    const userWithDebt = await User.findOne({
+      where: { user_id: id },  
+      include: {
+        model: Data,           
+        include: {
+          model: Debt,       
+          where: {
+            date: {
+              [Op.gte]: new Date(`${currentYear}-${currentMonth}-01`), 
+              [Op.lt]: new Date(currentYear, currentMonth, 1) 
+            }
+          }
+        }
+      }
+    });
+    if (!userWithDebt) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+    
+    if (userWithDebt.Datum !== null && userWithDebt.Datum.Debt !== null) {
+      const debts = userWithDebt.Datum.Expense;
+      const mappedDebts = await Promise.all(debts.map(async (expense) => {
+        const idCategory = debts.debt_category_id;
+  
+        // Obtener los datos de ExpenseCategory y PayMethod
+        const debtCategory = await DebtCategory.findByPk(idCategory)
+          
+        return {
+          debt_id: item.debt_id,
+          debt_category: debtCategory ? debtCategory : null,
+          debt: item.debt,
+          mount: item.mount,
+          rate: item.rate,
+          mount_cuote: item.mount_cuote,
+          date: item.date
+        };
+      }));
+      res.status(200).json(mappedDebts);
+    }
+
   } catch (error) {
     console.error('Error al obtener los registros:', error);
     res.status(500).json({ error: 'Error al obtener los registros' });

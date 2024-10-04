@@ -51,39 +51,39 @@ export default function Navbar() {
             alt="Logo"
             width={100}
             height={100}
-            className="my-5 w-[80%] sm:w-[100px]"
+            className="my-5 w-[80%] sm:w-[150px]"
           />
         </Link>
 
         {/* Menu Items for Large Screens */}
         <div className="flex-grow hidden lg:flex justify-center space-x-8">
           <Link href="/Menu" onClick={handleMenuClick}>
-            <Button_nadvar className="text-sm font-bold lg:text-base">
+            <Button_nadvar className="text-sm font-bold lg:text-xl">
               CashInBOT
             </Button_nadvar>
           </Link>
           <Link href="#Producto" onClick={handleMenuClick}>
-            <Button_nadvar className="text-sm font-bold lg:text-base">
+            <Button_nadvar className="text-sm font-bold lg:text-xl">
               PRODUCTOS
             </Button_nadvar>
           </Link>
           <Link href="#Educacion" onClick={handleMenuClick}>
-            <Button_nadvar className="text-sm font-bold lg:text-base">
+            <Button_nadvar className="text-sm font-bold lg:text-xl">
               EDUCACION
             </Button_nadvar>
           </Link>
           <Link href="/Construccion" onClick={handleMenuClick}>
-            <Button_nadvar className="text-sm font-bold lg:text-base">
+            <Button_nadvar className="text-sm font-bold lg:text-xl">
               MERCADO FINANCIERO
             </Button_nadvar>
           </Link>
           <Link href="/Membership" onClick={handleMenuClick}>
-            <Button_nadvar className="text-sm font-bold lg:text-base">
+            <Button_nadvar className="text-sm font-bold lg:text-xl">
               MEMBRESIAS
             </Button_nadvar>
           </Link>
           <Link href="/Contacto" onClick={handleMenuClick}>
-            <Button_nadvar className="text-sm font-bold lg:text-base">
+            <Button_nadvar className="text-sm font-bold lg:text-xl">
               CONTACTO
             </Button_nadvar>
           </Link>

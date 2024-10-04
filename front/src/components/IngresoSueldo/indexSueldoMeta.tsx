@@ -10,18 +10,27 @@ import Link from "next/link";
 import Image from "next/image";
 import { Input } from "../ui/Input";
 import Swal from "sweetalert2";
+import { Income } from "@/interface/interfaceData";
+import { useIngresos } from "@/context/incomeContext";
 import { UserContext } from "@/context/userContext";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { postIncome, deleteIngreso } from "@/server/fetchIncome";
+import { useCategories } from "@/context/categorias&variablesContext";
+
 
 export default function IngresoFinanzasMetaComponet() {
   const { isAuthenticated } = useContext(UserContext);
   const router = useRouter();
+  const {state , dispatch} = useIngresos()
   const [loading, setLoading] = useState(true);
   const [sueldo, setSueldo] = useState("");
   const [monto, setMonto] = useState("");
-  const [sueldos, setSueldos] = useState<
-    { tipoSueldo: string; monto: string }[]
-  >([]);
+  const [descriptIngreso, setDescriptIngrso] = useState<string>()
+  const { income_category } = useCategories();
+
+  const fecha = new Date();
+
+  const { userId } = useParams();
 
   useEffect(() => {
     if (isAuthenticated !== undefined) {
@@ -50,14 +59,31 @@ export default function IngresoFinanzasMetaComponet() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (sueldo && monto) {
-      setSueldos([...sueldos, { tipoSueldo: sueldo, monto }]);
+
+    if (sueldo && monto && descriptIngreso) {
+      const newIngreso: Income = {
+          income_category: sueldo, 
+          income: descriptIngreso, 
+          mount: +monto, 
+          date: fecha.toLocaleDateString(),
+      }
+      postIncome(newIngreso, userId as string)
+
+      dispatch({
+        type: "ADD_INGRESO",
+        payload:{
+          tipoIngreso: sueldo,
+          monto:monto,
+          descripcionIngreso: descriptIngreso,
+        }
+      })
+      setDescriptIngrso("")
       setSueldo("");
       setMonto("");
     }
   };
 
-  const handleDelete = (index: number) => {
+  const handleDelete = (index: number, income_id: string | undefined) => {
     Swal.fire({
       title: "¿Estás seguro?",
       text: "Quieres eliminar ese ingreso",
@@ -69,14 +95,20 @@ export default function IngresoFinanzasMetaComponet() {
       cancelButtonText: "Cancelar",
     }).then((result) => {
       if (result.isConfirmed) {
-        setSueldos(sueldos.filter((_, i) => i !== index));
+        dispatch({
+          type: "DELETE_INGRESO",
+          payload: index
+        })
+        if(income_id){
+          deleteIngreso(income_id)
+        }
         Swal.fire("¡Eliminado!", "El ingreso ha sido eliminado.", "success");
       }
     });
   };
 
   // Calcular el total de las deudas
-  const totalDeuda = sueldos.reduce(
+  const totalDeuda = state.ingresos.reduce(
     (acc, item) => acc + parseFloat(item.monto),
     0
   );
@@ -114,25 +146,24 @@ export default function IngresoFinanzasMetaComponet() {
                   onChange={(e) => setSueldo(e.target.value)}
                 >
                   <option value="">Seleccione una opción</option>
-                  <option value="INGRESO 1">INGRESO 1</option>
-                  <option value="INGRESO 2">INGRESO 2</option>
-                  <option value="INGRESO POR INTERESES">
-                    INGRESO POR INTERESES
-                  </option>
-                  <option value="BONIFICACION POR LEY">
-                    BONIFICACION POR LEY
-                  </option>
-                  <option value="INCENTIVOS Y HORAS EXTRAS">
-                    INCENTIVOS Y HORAS EXTRAS
-                  </option>
-                  <option value="VACACIONES">VACACIONES</option>
-                  <option value="REEMBOLSOS">REEMBOLSOS</option>
-                  <option value="NEGOCIOS">NEGOCIOS</option>
-                  <option value="DIVISION DE ACCIONES">
-                    DIVISION DE ACCIONES
-                  </option>
-                  <option value="PENSION">PENSION</option>
+                  {
+                  income_category.map((income, index)=>{
+                    return(
+                      <option value={income} key={index}>{income}</option>
+                    )
+                  })
+                 }
                 </select>
+              </div>
+
+              <div className="flex flex-col">
+                <div className="relative">
+                  <Input
+                    type="text"
+                    value={descriptIngreso}
+                    onChange={(e) => setDescriptIngrso(e.target.value)}
+                  />
+                </div>
               </div>
 
               <div className="flex flex-col">
@@ -159,7 +190,7 @@ export default function IngresoFinanzasMetaComponet() {
             </h3>
           </div>
 
-          {sueldos.length > 0 && (
+          {state.ingresos.length > 0 && (
             <div className="grid grid-cols-3 grid-rows-1 gap-40">
               <div className="flex flex-col items-center">
                 <Link href="/Menu/Ahorrar">
@@ -185,20 +216,23 @@ export default function IngresoFinanzasMetaComponet() {
 
               <div>
                 <ul>
-                  {sueldos.map((item, index) => (
+                  {state.ingresos.map((item, index) => (
                     <li
                       key={index}
                       className="flex justify-between items-center p-4 rounded-lg mb-3 shadow w-96"
                     >
                       <div className="flex flex-col mr-20">
                         <p className="font-bold text-gray-400">
-                          {item.tipoSueldo}
+                          {item.tipoIngreso}
+                        </p>
+                        <p className="font-bold text-xs text-gray-400">
+                          {item.descripcionIngreso}
                         </p>
                         <p className="font-bold">Monto: ${item.monto}</p>
                       </div>
                       <button
                         className="bg-red-400 text-black font-black text-sm hover:bg-red-500/80 p-2 rounded-full h-8 w-8 flex justify-center items-center"
-                        onClick={() => handleDelete(index)}
+                        onClick={() => handleDelete(index, item.income_id)}
                       >
                         X
                       </button>

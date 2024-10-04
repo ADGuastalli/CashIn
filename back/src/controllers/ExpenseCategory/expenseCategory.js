@@ -49,11 +49,7 @@ const getAllExpenseCategorys = async (req, res) => {
   const updateExpenseCategory = async (req, res) => {
     try {
       const { id } = req.params;
-      const { expense_Category } = req.body;
-  
-      if (!expense_Category) {
-        return res.status(400).json({ error: 'Faltan datos requeridos' });
-      }
+      const { expense_category } = req.body;
   
       const existingExpenseCategory = await ExpenseCategory.findByPk(id);
   
@@ -61,7 +57,7 @@ const getAllExpenseCategorys = async (req, res) => {
         return res.status(404).json({ error: 'Registro no encontrado' });
       }
   
-      await existingExpenseCategory.update({ expense_Category });
+      await existingExpenseCategory.update({ expense_category });
       res.status(200).json(existingExpenseCategory);
     } catch (error) {
       console.error('Error al actualizar el registro:', error);

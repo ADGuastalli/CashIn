@@ -1,6 +1,6 @@
 "use client";
-import { useContext } from "react"; // Import useContext
-import { UserContext } from "../../context/userContext"; // Adjust the path as necessary
+import { useContext } from "react";
+import { UserContext } from "../../context/userContext"; // Ajusta el path según sea necesario
 import {
   PayPalButtons,
   PayPalScriptProvider,
@@ -13,7 +13,6 @@ interface PayPalApproveData {
   orderID: string;
 }
 
-// Define the shape of the error object from PayPal
 interface PayPalError {
   message?: string;
   name?: string;
@@ -28,18 +27,22 @@ interface OrderData {
   debug_id?: string;
 }
 
+interface PayPalActions {
+  redirect(url: string): void;
+}
+
 const Button_Paypal = ({
   orderDetails,
-  paymentType, // Nuevo prop para el tipo de pago
+  paymentType,
 }: {
   orderDetails: { amount: number; description: string };
-  paymentType: "membership" | "appointment"; // Puedes definir más tipos si es necesario
+  paymentType: "membership" | "appointment";
 }) => {
-  const { userProfile } = useContext(UserContext); // Get the user context
+  const { userProfile, setUserProfile } = useContext(UserContext);
+  console.log("perfil", userProfile);
 
   const initialOptions: ReactPayPalScriptOptions = {
-    clientId:
-      "AZgr39IXh57tZLM9B_aBH0CTCiLdUg51dX3fJ5pFCWJvuymlTfZNmyDLs5JuGicN8D5eBcyArph13jrr",
+    clientId: process.env.NEXT_PUBLIC_PAYPAL_ID as string,
   };
 
   const createOrder = async () => {
@@ -63,8 +66,8 @@ const Button_Paypal = ({
 
         throw new Error(errorMessage);
       }
-      console.log("Respuesta del back", orderData);
 
+      console.log("Respuesta del backend", orderData);
       return orderData.id;
     } catch (error) {
       console.error(error);
@@ -72,17 +75,17 @@ const Button_Paypal = ({
     }
   };
 
-  const onApprove = async (data: PayPalApproveData) => {
+  const onApprove = async (data: PayPalApproveData, actions: PayPalActions) => {
     try {
       console.log("Aprobación de PayPal, datos:", data);
-      console.log("id de cambio de mebresia", userProfile.id);
+      console.log("userid", userProfile.user_id);
 
       const response = await fetch(`${API}/my-server/capture-paypal-order`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           orderID: data.orderID,
-          userId: userProfile?.id,
+          userId: userProfile?.user_id,
         }),
       });
 
@@ -95,18 +98,16 @@ const Button_Paypal = ({
       const details = await response.json();
       console.log("Detalles de la transacción capturada:", details);
 
-      await Swal.fire({
-        title: "Transacción completada",
-        text: `Transacción completada por ${details.payer.name.given_name}`,
-        icon: "success",
-        confirmButtonText: "OK",
+      // Actualizar el estado del usuario a premium
+      setUserProfile({
+        ...userProfile,
+        premium: true,
       });
 
-      // Redireccionar según el tipo de pago
       if (paymentType === "membership") {
-        window.location.assign("/Menu");
+        return actions.redirect("http://localhost:3000/Menu");
       } else if (paymentType === "appointment") {
-        window.location.assign("/Calendario");
+        return actions.redirect("http://localhost:3000/Calendario");
       }
     } catch (error) {
       console.error("Error en la captura de PayPal:", error);
@@ -123,8 +124,18 @@ const Button_Paypal = ({
     }
   };
 
-  const onCancel = () => {
-    window.location.assign("/your-cancel-page");
+  const onCancel = (data: object, actions: Record<string, unknown>) => {
+    Swal.fire({
+      title: "Transacción cancelada",
+      text: "Has cancelado la transacción",
+      icon: "info",
+      confirmButtonText: "OK",
+    });
+    if (actions.redirect && typeof actions.redirect === "function") {
+      return actions.redirect("/Menu");
+    } else {
+      console.error('La propiedad "redirect" no existe en el objeto "actions"');
+    }
   };
 
   const onError = (err: PayPalError) => {

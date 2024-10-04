@@ -11,7 +11,7 @@ import Img4 from "../../public/assets/svg/piggy-bank.svg";
 export default function ChatIALanding() {
   useEffect(() => {
     AOS.init({
-      duration: 1000,
+      duration: 500,
       once: true,
     });
   }, []);
@@ -64,7 +64,7 @@ export default function ChatIALanding() {
       </div>
 
       <div
-        className="flex flex-col justify-center items-center md:my-20"
+        className="flex flex-col justify-center items-center md:my-10"
         data-aos="fade-up"
       >
         <Image
@@ -77,7 +77,7 @@ export default function ChatIALanding() {
       </div>
 
       <div
-        className="bg-[#0095a919] rounded-lg flex flex-col justify-center p-5 md:my-20"
+        className="bg-[#0095a919] rounded-lg flex flex-col justify-center p-5 md:my-10"
         data-aos="fade-up"
       >
         <h2 className="text-xl font-bold text-center">
@@ -91,7 +91,7 @@ export default function ChatIALanding() {
       </div>
 
       <div
-        className="flex flex-col justify-center items-center md:my-20"
+        className="flex flex-col justify-center items-center md:my-10"
         data-aos="fade-up"
       >
         <Image
