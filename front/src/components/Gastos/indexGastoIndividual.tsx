@@ -15,6 +15,7 @@ import { postExpense } from "@/server/fetchExpense";
 import { Expense } from "@/interface/interfaceData";
 import { useParams } from "next/navigation";
 import { deleteGasto } from "@/server/fetchExpense";
+import { useCategories } from "@/context/categorias&variablesContext";
 
 export default function GastoIndividualComponet() {
   const { state, dispatch } = useGastos();
@@ -22,15 +23,15 @@ export default function GastoIndividualComponet() {
   const [subtipoSeleccionado, setSubtipoSeleccionado] = useState<string>("");
   const [tipoPago, setTipoPago] = useState<string>("");
   const [gastos,setGastos] = useState<Expense>();
+  const { payMethod } = useCategories();
   const fecha = new Date();
 
   const { userId } = useParams();
-  console.log("userId" , userId)
-  
+
   const tipoGasto = state.selectedTipoGasto || "";
 
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit =  (e: React.FormEvent) => {
     e.preventDefault();
 
     const tipoGasto = state.selectedTipoGasto || "";
@@ -38,8 +39,7 @@ export default function GastoIndividualComponet() {
     if (tipoGasto && monto && subtipoSeleccionado && tipoPago) {
    
       if(gastos){
-        const response = await postExpense(gastos, userId as string);
-        console.log(response)
+        postExpense(gastos, userId as string);
       } 
       dispatch({
         type: "ADD_GASTO",
@@ -198,15 +198,13 @@ export default function GastoIndividualComponet() {
                 onChange={handleChangesetTipoPago}
               >
                 <option value="">Seleccione una opción</option>
-                <option value="EFECTIVO">EFECTIVO</option>
-                <option value="TARJETA DE DEBIDO">TARJETA DE DEBIDO</option>
-                <option value="TARJETA DE CREDITO">TARJETA DE CREDITO</option>
-                <option value="CREDITO">CREDITO</option>
-                <option value="CHEQUE">CHEQUE</option>
-                <option value="TRANSFERENCIA ELECTRONICA">
-                  TRANSFERENCIA ELECTRONICA
-                </option>
-                <option value="OTROS">OTROS</option>
+                {
+                  payMethod.map((pay, index)=>{
+                  return(
+                    <option value={pay} key={index}>{pay}</option>
+                  )
+                })
+               }
               </select>
             </div>
 
