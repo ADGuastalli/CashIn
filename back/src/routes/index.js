@@ -1,35 +1,34 @@
-const { Router } = require("express");
-const passport = require("passport");
+const { Router } = require("express")
 
-const userController = require("../controllers/Users/userController");
-const cityController = require("../controllers/City/cityController");
-const countryController = require("../controllers/Country/countryController");
-const childController = require("../controllers/Child/Child");
-const debtController = require("../controllers/Debt/debt");
-const debtCategoryController = require("../controllers/DebtCategory/debtCategory");
-const dwellingController = require("../controllers/Dwelling/dwelling");
-const expenseController = require("../controllers/Expense/expense");
-const expenseCategoryController = require("../controllers/ExpenseCategory/expenseCategory");
-const goalController = require("../controllers/Goal/goal");
-const goalCategoryController = require("../controllers/GoalCategory/goalCategory");
-const incomeController = require("../controllers/Income/income");
-const maritalStatusController = require("../controllers/MaritalStatus/maritalStatus");
-const modelDataController = require("../controllers/ModelData/modelData");
-const monthlyIncomeTypeController = require("../controllers/MonthlyIncomeType/monthlyIncomeType");
-const occupationController = require("../controllers/Occupation/occupation");
-const payMethodController = require("../controllers/PayMethod/payMethod");
-const personalPropertyController = require("../controllers/PersonalProperty/personalProperty");
-const personalPropertyTypeController = require("../controllers/PersonalPropertyType/personalPropertyType");
-const savingController = require("../controllers/Saving/saving");
-const statusController = require("../controllers/Status/status");
-const courseController = require("../controllers/Course/course");
-const bookController = require("../controllers/Book/book");
-const { upload } = require("../controllers/Book/book");
-const calendarControllers = require("../controllers/CalendarControllers/calendarController");
-const incomeCategoryController = require("../controllers/IncomeCategory/IncomeCategory");
-const financialLevelController = require("../controllers/FinancialLevel/financialLevel");
-const calculatorInconmeExpenses = require("../controllers/CalculatorIncome&expenses/CalculatorIncome&expenses");
-const { authenticateToken } = require("../middlewares/auth");
+const userController = require('../controllers/Users/userController')
+const cityController = require('../controllers/City/cityController');
+const countryController = require('../controllers/Country/countryController')
+const childController = require('../controllers/Child/Child')
+const debtController = require('../controllers/Debt/debt');
+const debtCategoryController = require('../controllers/DebtCategory/debtCategory');
+const dwellingController = require('../controllers/Dwelling/dwelling');
+const expenseController = require('../controllers/Expense/expense');
+const expenseCategoryController = require('../controllers/ExpenseCategory/expenseCategory');
+const goalController = require('../controllers/Goal/goal');
+const goalCategoryController = require('../controllers/GoalCategory/goalCategory');
+const incomeController = require('../controllers/Income/income');
+const maritalStatusController = require('../controllers/MaritalStatus/maritalStatus');
+const modelDataController = require('../controllers/ModelData/modelData');
+const monthlyIncomeTypeController = require('../controllers/MonthlyIncomeType/monthlyIncomeType');
+const occupationController = require('../controllers/Occupation/occupation');
+const payMethodController = require('../controllers/PayMethod/payMethod');
+const personalPropertyController = require('../controllers/PersonalProperty/personalProperty');
+const personalPropertyTypeController = require('../controllers/PersonalPropertyType/personalPropertyType');
+const savingController = require('../controllers/Saving/saving');
+const statusController = require('../controllers/Status/status');
+const courseController = require('../controllers/Course/course');
+const bookController = require('../controllers/Book/book');
+const calendarControllers = require('../controllers/CalendarControllers/calendarController')
+const incomeCategoryController = require('../controllers/IncomeCategory/IncomeCategory');
+const financialLevelController = require('../controllers/FinancialLevel/financialLevel');
+const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesTotal')
+const calculatorInconmeExpensesMonthly = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesMonth')
+const { authenticateToken } = require('../middlewares/auth');
 const googleAuthController = require("../controllers/Auth/google");
 const paypalController = require("../controllers/Paypal/paypalController");
 
@@ -66,7 +65,7 @@ router.put("/child/:id", childController.updateChild);
 router.delete("/child/:id", childController.deleteChild);
 
 router.post("/debt", debtController.createDebt);
-router.get("/debt", debtController.getAllDebts);
+router.get("/debt-by-user/:id", debtController.getAllDebts);
 router.get("/debt/:id", debtController.getDebtById);
 router.put("/debt/:id", debtController.updateDebt);
 router.delete("/debt/:id", debtController.deleteDebt);
@@ -84,7 +83,7 @@ router.put("/dwelling/:id", dwellingController.updateDwelling);
 router.delete("/dwelling/:id", dwellingController.deleteDwelling);
 
 router.post("/expense", expenseController.createExpense);
-router.get("/expense", expenseController.getAllExpenses);
+router.get("/expense-by-user/:id", expenseController.getAllExpenses);
 router.get("/expense/:id", expenseController.getExpenseById);
 router.put("/expense/:id", expenseController.updateExpense);
 router.delete("/expense/:id", expenseController.deleteExpense);
@@ -110,6 +109,12 @@ router.get("/goals/:id", goalController.getGoalById);
 router.put("/goals/:id", goalController.updateGoal);
 router.delete("/goals/:id", goalController.deleteGoal);
 
+router.post('/incomes', incomeController.createIncome);
+router.get('/incomes-by-user/:id', incomeController.getAllIncomes);
+router.get('/incomes/:id', incomeController.getIncomeById);
+router.put('/incomes/:id', incomeController.updateIncome);
+router.delete('/incomes/:id', incomeController.deleteIncome);
+
 router.post("/goal-categories", goalCategoryController.createGoalCategory);
 router.get("/goal-categories", goalCategoryController.getAllGoalCategories);
 router.get("/goal-categories/:id", goalCategoryController.getGoalCategoryById);
@@ -118,12 +123,6 @@ router.delete(
   "/goal-categories/:id",
   goalCategoryController.deleteGoalCategory
 );
-
-router.post("/incomes", incomeController.createIncome);
-router.get("/incomes", incomeController.getAllIncomes);
-router.get("/incomes/:id", incomeController.getIncomeById);
-router.put("/incomes/:id", incomeController.updateIncome);
-router.delete("/incomes/:id", incomeController.deleteIncome);
 
 router.post(
   "/income-categories",
@@ -199,7 +198,7 @@ router.post(
   personalPropertyController.createPersonalProperty
 );
 router.get(
-  "/personalproperty",
+  "/personalproperty-by-user/:id",
   personalPropertyController.getAllPersonalProperties
 );
 router.get(
@@ -317,9 +316,35 @@ router.get(
   "/incomesExpenses/totalincome/:id",
   calculatorInconmeExpenses.calculateTotalIncome
 );
-router.get(
+/* router.get(
   "/incomesExpenses/calculatetotalmortgagedebt/:id",
   calculatorInconmeExpenses.calculateTotalMortgageDebt
-);
+); */
 
-module.exports = router;
+
+router.get('/incomesExpenses/totalincome/:id', calculatorInconmeExpenses.calculateTotalIncome)
+router.get('/incomesExpenses/calculatetotalmortgagedebt/:id', calculatorInconmeExpenses.calculatePaidMortgageDebt)
+router.get('/incomesExpenses/calculatePaidPersonalLoans/:id', calculatorInconmeExpenses.calculatePaidPersonalLoans)
+router.get('/incomesExpenses/calculatePaidVehicleLoans/:id', calculatorInconmeExpenses.calculatePaidVehicleLoans)
+router.get('/incomesExpenses/calculateTotalHomeAndServicesExpenses/:id', calculatorInconmeExpenses.calculateTotalHomeAndServicesExpenses)
+router.get('/incomesExpenses/calculateTotalFoodAndPersonalCareExpenses/:id', calculatorInconmeExpenses.calculateTotalFoodAndPersonalCareExpenses)
+router.get('/incomesExpenses/calculateTotalVehicleExpenses/:id', calculatorInconmeExpenses.calculateTotalVehicleExpenses)
+router.get('/incomesExpenses/calculateTotalTransportExpenses/:id', calculatorInconmeExpenses.calculateTotalTransportExpenses)
+router.get('/incomesExpenses/calculateTotalMultipleCategoriesExpenses/:id', calculatorInconmeExpenses.calculateTotalMultipleCategoriesExpenses)
+router.get('/incomesExpenses/calculateTotalVacationAndRecreationExpenses/:id', calculatorInconmeExpenses.calculateTotalVacationAndRecreationExpenses)
+
+router.get('/incomesExpenses/totalincomeMonthly/:id', calculatorInconmeExpensesMonthly.calculateTotalIncomeMonthly)
+router.get('/incomesExpenses/calculateMonthlyMortgageExpense/:id', calculatorInconmeExpensesMonthly.calculateMonthlyMortgageExpense)
+router.get('/incomesExpenses/calculateMonthlyPersonalLoanExpense/:id', calculatorInconmeExpensesMonthly.calculateMonthlyPersonalLoanExpense)
+router.get('/incomesExpenses/calculateMonthlyVehicleLoanExpense/:id', calculatorInconmeExpensesMonthly.calculateMonthlyVehicleLoanExpense)
+router.get('/incomesExpenses/calculateMonthlyHomeAndServicesExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyHomeAndServicesExpenses)
+router.get('/incomesExpenses/calculateMonthlyFoodAndPersonalCareExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyFoodAndPersonalCareExpenses)
+router.get('/incomesExpenses/calculateMonthlyVehicleExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyVehicleExpenses)
+router.get('/incomesExpenses/calculateMonthlyTransportExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyTransportExpenses)
+router.get('/incomesExpenses/calculateMonthlyMultipleCategoriesExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyMultipleCategoriesExpenses)
+router.get('/incomesExpenses/calculateMonthlyVacationAndRecreationExpenses/:id', calculatorInconmeExpensesMonthly.calculateMonthlyVacationAndRecreationExpenses)
+router.get('/incomesExpenses/calculateMonthlyTithesAndSavings/:id', calculatorInconmeExpensesMonthly.calculateMonthlyTithesAndSavings)
+
+
+module.exports = router
+
