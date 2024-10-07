@@ -47,7 +47,7 @@ const CreateCourse: React.FC = () => {
     const courseData = {
       title,
       description,
-      topics, // Se envía como string
+      topics,
       duration,
       level,
       location,
@@ -68,6 +68,13 @@ const CreateCourse: React.FC = () => {
           title: "Éxito",
           text: "Curso creado exitosamente!",
         });
+
+        // Actualiza el estado de cursos con el nuevo curso
+        setCursos((prevCursos) => [
+          ...prevCursos,
+          { ...courseData, courseId: result.courseId, startDate }, // Asegúrate de incluir el courseId devuelto
+        ]);
+
         // Limpia los campos del formulario
         setTitle("");
         setDescription("");
@@ -76,7 +83,6 @@ const CreateCourse: React.FC = () => {
         setLevel("");
         setLocation("");
         setStartDate("");
-        fetchCourses(); // Refresca la lista de cursos
       }
     } catch (error) {
       Swal.fire({

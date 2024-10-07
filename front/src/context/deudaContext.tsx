@@ -1,11 +1,17 @@
 "use client";
-import React, { createContext, useContext, useReducer, ReactNode, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  ReactNode,
+  useEffect,
+} from "react";
 import { getUserDeudasAll } from "@/server/fetchDebt";
 
-const userId = localStorage.getItem('user');
+const userId = typeof window !== "undefined" && localStorage.getItem("user");
 
 interface Deuda {
-  debt_id?: string,
+  debt_id?: string;
   tipoDeuda: string;
   descripcionDeuda?: string;
   monto: string;
@@ -20,26 +26,27 @@ interface DeudaState {
 }
 
 type DeudaAction =
-  | {type: "INIT_DEUDA"; payload: Deuda}
+  | { type: "INIT_DEUDA"; payload: Deuda }
   | { type: "ADD_DEUDA"; payload: Deuda }
-  | { type: "DELETE_DEUDA"; payload: number }
+  | { type: "DELETE_DEUDA"; payload: number };
 
 const DeudaContext = createContext<
-    | {
-        state: DeudaState;
-        dispatch: React.Dispatch<DeudaAction>;
-      }
-    | undefined
-  >(undefined);
+  | {
+      state: DeudaState;
+      dispatch: React.Dispatch<DeudaAction>;
+    }
+  | undefined
+>(undefined);
 
-const DeudaReducer = (
-  state: DeudaState,
-  action: DeudaAction
-): DeudaState => {
+const DeudaReducer = (state: DeudaState, action: DeudaAction): DeudaState => {
   switch (action.type) {
     case "INIT_DEUDA":
-      const exists = state.deudas.some(i => i.monto === action.payload.monto 
-          && i.tipoDeuda === action.payload.tipoDeuda && i.descripcionDeuda === action.payload.descripcionDeuda);
+      const exists = state.deudas.some(
+        (i) =>
+          i.monto === action.payload.monto &&
+          i.tipoDeuda === action.payload.tipoDeuda &&
+          i.descripcionDeuda === action.payload.descripcionDeuda
+      );
       if (!exists) {
         return { ...state, deudas: [action.payload, ...state.deudas] };
       }
@@ -65,9 +72,9 @@ export const DeudaProvider: React.FC<{ children: ReactNode }> = ({
 
   const fetchIngresos = async () => {
     try {
-      if(userId){
-        const response = await getUserDeudasAll(userId); 
-        const DeudasDesdeDB = response; 
+      if (userId) {
+        const response = await getUserDeudasAll(userId);
+        const DeudasDesdeDB = response;
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         DeudasDesdeDB.forEach((deuda: any) => {
           dispatch({ type: "INIT_DEUDA", payload: deuda });
@@ -78,10 +85,9 @@ export const DeudaProvider: React.FC<{ children: ReactNode }> = ({
     }
   };
 
-    useEffect(() => {
-    fetchIngresos(); 
-    }, []);
-
+  useEffect(() => {
+    fetchIngresos();
+  }, []);
 
   return (
     <DeudaContext.Provider value={{ state, dispatch }}>

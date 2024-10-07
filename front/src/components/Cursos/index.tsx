@@ -64,8 +64,7 @@ const CursosComponet: React.FC = () => {
         {cursos.length === 0 ? (
           <div className="col-span-1 md:col-span-2 lg:col-span-3 bg-gray-200 p-5 rounded-lg text-center">
             <h3 className="text-xl font-bold">
-              ¡Estate Atento! Proximamente podras encontrar los cursos
-              disponibles.
+              Proximamente podras encontrar los cursos disponibles.
             </h3>
           </div>
         ) : (

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import ImgBolsa from "../../public/assets/svg/tax.svg";
 import ImgTrans from "../../public/assets/svg/transfer.svg";
 import ImgCard from "../../public/assets/svg/surface1.svg";
@@ -9,7 +9,7 @@ import ImgPresu from "../../public/assets/svg/budget.svg";
 import ImgChat from "../../public/assets/svg/chatIA.png";
 import Image from "next/image";
 import Modal from "@mui/material/Modal";
-import AOS from "aos";
+
 import "aos/dist/aos.css";
 import { Box, Typography } from "@mui/material";
 
@@ -56,15 +56,8 @@ export const ButtonLanding = () => {
   const handleOpen7 = () => setOpen7(true);
   const handleClose7 = () => setOpen7(false);
 
-  useEffect(() => {
-    AOS.init({
-      duration: 500, // Duración de la animación (1000ms = 1s)
-      once: true, // La animación solo sucede una vez al hacer scroll hacia abajo
-    });
-  }, []);
-
   return (
-    <div className="flex flex-wrap justify-center gap-8" data-aos="fade-up">
+    <div className="flex flex-wrap justify-center gap-8">
       <div className="flex flex-col items-center">
         <div
           className="cursor-pointer flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500"
@@ -99,8 +92,9 @@ export const ButtonLanding = () => {
             className="text-center"
             sx={{ mt: 2 }}
           >
-            Descubre estrategias efectivas para gestionar y saldar tus deudas.
-            Al{" "}
+            Este botón te llevará a una herramienta que te ayudará a organizar y
+            planificar la forma de pagar tus deudas de manera eficiente, usando
+            estrategias como el método bola de nieve. Al{" "}
             <a href="/User/Login" className="font-bold">
               iniciar sesión
             </a>
@@ -144,8 +138,9 @@ export const ButtonLanding = () => {
             className="text-center"
             sx={{ mt: 2 }}
           >
-            Aprende a monitorear y limitar tus gastos diarios para mantener un
-            equilibrio financiero.
+            Tendrás acceso a un sistema que te permitirá registrar y monitorear
+            todos tus gastos, para que puedas mantener un control estricto de
+            tus finanzas.
             <a href="/User/Login" className="font-bold">
               Inicia sesión
             </a>{" "}
@@ -184,7 +179,9 @@ export const ButtonLanding = () => {
             className="text-center"
             sx={{ mt: 2 }}
           >
-            Establece objetivos financieros alcanzables y planifica tus ahorros.
+            Este apartado te permite establecer y seguir el progreso de tus
+            metas financieras, como la compra de un automóvil, una casa o
+            electrodomésticos, con un plan detallado de ahorro y financiamiento.
             Al{" "}
             <a href="/User/Login" className="font-bold">
               registrarte
@@ -224,8 +221,9 @@ export const ButtonLanding = () => {
             className="text-center"
             sx={{ mt: 2 }}
           >
-            Encuentra métodos prácticos para aumentar tus ahorros y alcanzar tus
-            metas.{" "}
+            Este botón te ayudará a configurar un plan de ahorro personalizado,
+            ajustado a tus metas y capacidades, para que puedas alcanzar tus
+            objetivos a corto y largo plazo.{" "}
             <a href="/User/Login" className="font-bold">
               Inicia sesión
             </a>{" "}
@@ -269,7 +267,9 @@ export const ButtonLanding = () => {
             className="text-center"
             sx={{ mt: 2 }}
           >
-            Realiza un análisis exhaustivo de tu situación financiera actual. Al{" "}
+            Aquí podrás obtener un diagnóstico detallado de tu situación
+            financiera, evaluando tus ingresos, deudas, y activos para
+            identificar áreas de mejora y recomendaciones específicas. Al{" "}
             <a href="/User/Login" className="font-bold">
               registrarte
             </a>
@@ -286,7 +286,7 @@ export const ButtonLanding = () => {
         >
           <Image src={ImgPresu} alt="Presupuesto" width={60} height={60} />
         </div>
-        <p className="mt-2 text-lg font-bold">Balance de Mis Finanzas</p>
+        <p className="mt-2 text-lg font-bold">Presupuesto</p>
       </div>
       <Modal
         open={open6}
@@ -301,15 +301,16 @@ export const ButtonLanding = () => {
             component="h2"
             className="font-bold text-[#0095a9] text-center"
           >
-            Poder sacar un balance de mis finanzas
+            Presupuesto
           </Typography>
           <Typography
             id="modal-modal-description6"
             className="text-center"
             sx={{ mt: 2 }}
           >
-            Genera un balance financiero que te permita conocer tu situación
-            actual. Al{" "}
+            : Accede a una herramienta completa para crear y gestionar tu
+            presupuesto personal o familiar, controlando ingresos y gastos para
+            optimizar tu economía. Al{" "}
             <a href="/User/Login" className="font-bold">
               iniciar sesión
             </a>
@@ -353,8 +354,9 @@ export const ButtonLanding = () => {
             className="text-center"
             sx={{ mt: 2 }}
           >
-            Interactúa con nuestro asistente virtual para resolver tus dudas
-            financieras. Al{" "}
+            Tu asistente financiero personal con inteligencia artificial, para
+            recibir consejos y orientación sobre cómo mejorar tu salud
+            financiera.. Al{" "}
             <a href="/User/Login" className="font-bold">
               registrarte
             </a>
