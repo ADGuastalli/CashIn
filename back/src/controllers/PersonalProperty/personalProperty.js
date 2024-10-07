@@ -1,19 +1,43 @@
-const { PersonalProperty } = require('../../models/index');
+const { PersonalProperty, Data, PersonalPropertyType, User } = require('../../models/index');
 
+function convertDate(dateString) {
+  const [day, month, year] = dateString.split('/').map(Number);
+  return new Date(year, month - 1, day); // Los meses en JavaScript son 0-indexados
+}
 // CREATE: Crear un nuevo registro en la tabla PersonalProperty
 const createPersonalProperty = async (req, res) => {
   try {
-    const { personal_property_type_id, personal_property, mount, date } = req.body;
+    const { personal_property_type, personal_property, mount, date, user_id } = req.body;
 
     if (!personal_property_type_id || !personal_property || !mount || !date) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
+    const formattedDate = convertDate(date);
+
+    const userdata =  await User.findOne({
+      where: {user_id},
+      include: [{
+        model: Data,
+        attributes: ['data_id']
+      }]
+    })
+
+    const data_id = userdata.Datum.data_id
+
+    const personalProperty = await PersonalPropertyType.findOne({ where: { personal_property_type: personal_property_type.toLowerCase() } });
+    if (!personalProperty) {
+      return res.status(400).json({ error: 'Tipo de bien no encontrado' });
+    }
+    const personal_property_type_id = personalProperty.personal_property_type_id
+
+
     const newPersonalProperty = await PersonalProperty.create({
       personal_property_type_id,
       personal_property,
       mount,
-      date
+      date:formattedDate,
+      data_id
     });
     res.status(201).json(newPersonalProperty);
   } catch (error) {
@@ -24,9 +48,50 @@ const createPersonalProperty = async (req, res) => {
 
 // READ: Obtener todos los registros de la tabla PersonalProperty
 const getAllPersonalProperties = async (req, res) => {
+  const { id } = req.params;
+  
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth() + 1; 
+  const currentYear = currentDate.getFullYear();
+
   try {
-    const personalProperties = await PersonalProperty.findAll();
-    res.status(200).json(personalProperties);
+    const userWithPersonalProperty = await User.findOne({
+      where: { user_id: id },  
+      include: {
+        model: Data,           
+        include: {
+          model: PersonalProperty,       
+          where: {
+            date: {
+              [Op.gte]: new Date(`${currentYear}-${currentMonth}-01`), 
+              [Op.lt]: new Date(currentYear, currentMonth, 1) 
+            }
+          }
+        }
+      }
+    });
+    if (!userWithPersonalProperty) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    if (userWithPersonalProperty.Datum !== null && userWithPersonalProperty.Datum.Income !== null){
+      const personalProperty = userWithPersonalProperty.Datum.PersonalProperty;
+      const mappedProperty = await Promise.all(personalProperty.map(async (property) => {
+        const idPersonalPropertyCategory = property.personal_property_category_id;
+  
+        const personalPropertyCategory = await PersonalPropertyType.findByPk(idPersonalPropertyCategory)
+  
+        return {
+          personal_property_id: property.personal_property_id,
+          personal_property_type: personalPropertyCategory ? personalPropertyCategory.personal_property_type : null,
+          personal_property: property.personal_property, 
+          mount: property.mount, 
+          date: property.date 
+        };
+      }));
+  
+      res.status(200).json(mappedProperty);
+    }
   } catch (error) {
     console.error('Error al obtener los registros:', error);
     res.status(500).json({ error: 'Error al obtener los registros' });

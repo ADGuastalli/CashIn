@@ -5,6 +5,7 @@ import imageLogo from "@/public/assets/image-removebg-preview.png";
 import QueryStatsIcon from "@mui/icons-material/QueryStats";
 import HomeIcon from "@mui/icons-material/Home";
 import ArticleIcon from "@mui/icons-material/Article";
+import Info from "@mui/icons-material/Info";
 
 interface DrawerNavAdminProps {
   setActiveComponent: (component: string) => void; // Especifica el tipo como función que recibe un string
@@ -61,7 +62,7 @@ const DrawerNavAdmin: React.FC<DrawerNavAdminProps> = ({
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
               >
                 <HomeIcon />
-                <span className="mx-2 text-sm font-medium">Inicio</span>
+                <span className="mx-2 text-sm font-medium">Salir</span>
               </a>
             </div>
             <div className="space-y-3 ">
@@ -109,6 +110,28 @@ const DrawerNavAdmin: React.FC<DrawerNavAdminProps> = ({
                 <span className="mx-2 text-sm font-medium">
                   Mercado Financiero
                 </span>
+              </a>
+
+              <a
+                href="#"
+                onClick={() => setActiveComponent("calendario")}
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+              >
+                <ArticleIcon />
+                <span className="mx-2 text-sm font-medium">Calendario</span>
+              </a>
+            </div>
+            <div className="space-y-3 ">
+              <label className="px-3 text-xs text-gray-500 uppercase">
+                Informacion
+              </label>
+              <a
+                href="#"
+                onClick={() => setActiveComponent("info")}
+                className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
+              >
+                <Info />
+                <span className="mx-2 text-sm font-medium">Admin</span>
               </a>
             </div>
           </nav>

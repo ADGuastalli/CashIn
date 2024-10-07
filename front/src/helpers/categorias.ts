@@ -6,6 +6,7 @@ import ImgEdu from "@/public/assets/svg/gastos/books-stack-of-three.svg";
 import ImgDona from "@/public/assets/svg/gastos/business-and-finance.svg";
 import ImgSalud from "@/public/assets/svg/high-five.svg";
 import ImgPres from "@/public/assets/svg/gastos/loan.svg";
+
 export const categorias = [
     {
       tipo: "Servicios y Hogar",

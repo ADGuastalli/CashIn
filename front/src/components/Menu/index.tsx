@@ -23,7 +23,6 @@ export default function MenuIcons() {
   console.log("userProfileeeeee", userProfile);
 
   const userId = userProfile?.user_id;
-
   const handleClick = (path: string) => {
     if (hasNullProperties(userProfile)) {
       setShowModal(true); // Mostrar modal si el perfil no está completo
@@ -51,7 +50,7 @@ export default function MenuIcons() {
           className="flex flex-col items-center"
           onClick={() => handleClick("/Menu/PagarMisDeudas")}
         >
-          <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
+          <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500 cursor-pointer">
             <Image
               src={ImgBolsa}
               alt="Poder pagar mis deudas"
@@ -66,7 +65,7 @@ export default function MenuIcons() {
           className="flex flex-col items-center"
           onClick={() => handleClick("/Menu/ControlarMisGastos")}
         >
-          <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
+          <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500 cursor-pointer">
             <Image
               src={ImgTrans}
               alt="Controlar Mis gastos"
@@ -83,7 +82,7 @@ export default function MenuIcons() {
             handleClick("https://chatgpt.com/g/g-R6OiPvkkm-cashinbot")
           }
         >
-          <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
+          <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500 cursor-pointer">
             <Image src={ImgChat} alt="Chat" width={90} height={90} />
           </div>
           <p className="mt-2 text-lg font-bold">CashInBOT</p>
@@ -93,7 +92,7 @@ export default function MenuIcons() {
           className="flex flex-col items-center"
           onClick={() => handleClick(`/User/${userId}/presupuesto`)}
         >
-          <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
+          <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500 cursor-pointer">
             <Image src={ImgUser} alt="Mi perfil" width={60} height={60} />
           </div>
           <p className="mt-2 text-lg font-bold">Mi perfil</p>
@@ -115,7 +114,7 @@ export default function MenuIcons() {
             className="flex flex-col items-center"
             onClick={() => handleClick("/Menu/Metas")}
           >
-            <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
+            <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500 cursor-pointer">
               <Image src={ImgCard} alt="Lograr metas" width={60} height={60} />
             </div>
 
@@ -144,7 +143,7 @@ export default function MenuIcons() {
             className="flex flex-col items-center"
             onClick={() => handleClick("/Menu/Ahorrar")}
           >
-            <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
+            <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500 cursor-pointer">
               <Image src={ImgAhorro} alt="Ahorrar" width={60} height={60} />
             </div>
 
@@ -165,7 +164,7 @@ export default function MenuIcons() {
             className="flex flex-col items-center"
             onClick={() => handleClick("#")}
           >
-            <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
+            <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500 cursor-pointer">
               <Image src={ImgPresu} alt="Presupuesto" width={60} height={60} />
             </div>
 
@@ -189,7 +188,7 @@ export default function MenuIcons() {
             className="flex flex-col items-center"
             onClick={() => handleClick("/Menu/Diagnostico")}
           >
-            <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
+            <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-40 h-40 transition-all duration-500 cursor-pointer">
               <Image src={ImgDiag} alt="Diagnostico" width={60} height={60} />
             </div>
 
@@ -203,7 +202,7 @@ export default function MenuIcons() {
       {userProfile.admin === true ? (
         <div className="flex flex-col items-center">
           <Link href="/Menu/Admin">
-            <div className="flex flex-col items-center justify-center p-4 bg-yellow-200 hover:bg-yellow-300 rounded-lg shadow-md w-40 h-40 transition-all duration-500">
+            <div className="flex flex-col items-center justify-center p-4 bg-yellow-200 hover:bg-yellow-300 rounded-lg shadow-md w-40 h-40 transition-all duration-500 cursor-pointer">
               <Image src={ImagAdmin} alt="Admin" width={60} height={60} />
             </div>
           </Link>

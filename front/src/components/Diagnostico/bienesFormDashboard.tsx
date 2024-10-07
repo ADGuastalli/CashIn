@@ -2,24 +2,49 @@ import React, { useState } from 'react'
 import { Input } from '../ui/Input';
 import { Button_forms } from '../ui/Buttons';
 import Swal from 'sweetalert2';
-
+import { useCategories } from '@/context/categorias&variablesContext';
+import { usePersonalProperty } from '@/context/personalPropertyContext';
+import { postBien , deleteBien } from '@/server/fetchBien';
+import { PersonalProperty } from '@/interface/interfaceData';
+import { useParams } from 'next/navigation';
+import { descripcionBienes } from '@/helpers/validaDescripciones';
 function BienesFormDashboard() {
     const [bien, setBien] = useState("");
     const [montoBien, setMontoBien] = useState("");
-    const [bienes, setBienes] = useState<{ tipoBien: string; monto: string }[]>(
-      []
-    );
+    const [biencategory, setBiencategory] = useState("");
 
+    const { state, dispatch} = usePersonalProperty();
+    const { personalProperty } = useCategories();
+    const fecha = new Date();
+    const { userId } = useParams();
     const handleSubmitBienes = (e: React.FormEvent) => {
         e.preventDefault();
-        if (bien && montoBien) {
-          setBienes([...bienes, { tipoBien: bien, monto: montoBien }]);
+
+        if (bien && montoBien && biencategory) {
+
+            const bienes:PersonalProperty = {
+                personal_property_type: biencategory,
+                personal_property: bien,
+                mount: parseInt(montoBien),
+                date: fecha.toLocaleDateString()
+            } 
+            postBien(bienes , userId as string)
+            dispatch({
+                type: "ADD_BIEN",
+                payload:{
+                    personal_property_type: biencategory,
+                    personal_property: bien,
+                    mount: montoBien,
+                    date: fecha.toLocaleDateString()
+                }
+            })
+          setBiencategory("")  
           setBien("");
           setMontoBien("");
         }
       };
 
-    const handleDeleteBienes = (index: number) => {
+    const handleDeleteBienes = (index: number, personal_property_id: string | undefined) => {
     Swal.fire({
         title: "¿Estás seguro?",
         text: "Quieres eliminar el bien",
@@ -31,15 +56,21 @@ function BienesFormDashboard() {
         cancelButtonText: "Cancelar",
     }).then((result) => {
         if (result.isConfirmed) {
-        setBienes(bienes.filter((_, i) => i !== index));
+            if(personal_property_id){
+                deleteBien(personal_property_id)
+            }
+            dispatch({
+                type:"DELETE_BIEN",
+                payload: index
+            })
         Swal.fire("¡Eliminado!", "El bien ha sido eliminado.", "success");
         }
     });
     };
     
     
-    const totalBienes = bienes.reduce(
-    (acc, item) => acc + parseFloat(item.monto),
+    const totalBienes = state.bienes.reduce(
+    (acc, item) => acc + parseFloat(item.mount),
     0
     );
 
@@ -49,6 +80,46 @@ function BienesFormDashboard() {
         onSubmit={handleSubmitBienes}
         className="flex flex-col justify-center items-center mt-5"
         >
+            <div className="flex flex-col mt-5">
+            <label className="text-lg font-bold">Tipo de Bien</label>
+            <select
+            className="bg-white focus:outline-none focus:ring focus:ring-secondary border border-gray-300 rounded-lg py-4 px-4 mx-2 my-2 block w-96"
+            value={biencategory}
+            onChange={(e) => setBiencategory(e.target.value)}
+            >
+                <option value="">Seleccione una opción</option>
+            {
+                personalProperty?.map((bien,index)=>{
+                    return(
+                    <option value={bien} key={index}>{bien}</option>
+                    )
+                })
+            }
+            </select>
+          </div>
+          <div className="flex flex-col mt-5">
+            <label className="text-lg font-bold">Tipo de Bien</label>
+            <select
+            className="bg-white focus:outline-none focus:ring focus:ring-secondary border border-gray-300 rounded-lg py-4 px-4 mx-2 my-2 block w-96"
+            value={bien}
+            onChange={(e) => setBien(e.target.value)}
+            >
+                <option value="">Seleccione una opción</option>
+                {
+                    descripcionBienes.map((item, index) => {
+                        if (item.categoria === biencategory) {
+                        return item.subCategorias.map((subCategoria, subIndex) => (
+                            <option value={subCategoria} key={`${index}-${subIndex}`}>
+                            {subCategoria}
+                            </option>
+                        ));
+                        }
+                        return null; 
+                    })
+                }
+            </select>
+          </div>
+          
         <div className="flex flex-col mt-5">
             <label className="text-lg font-bold">Bienes</label>
             <Input
@@ -82,20 +153,20 @@ function BienesFormDashboard() {
         </h3>
         </div>
 
-        {bienes.length > 0 && (
+        {state.bienes.length > 0 && (
         <ul className="mt-5">
-            {bienes.map((item, index) => (
+            {state.bienes.map((item, index) => (
             <li
                 key={index}
                 className="flex justify-between items-center p-4 rounded-lg mb-3 shadow w-96"
             >
                 <div>
-                <p className="font-bold text-gray-400">{item.tipoBien}</p>
-                <p className="font-bold">Monto: ${item.monto}</p>
+                <p className="font-bold text-gray-400">{item.personal_property}</p>
+                <p className="font-bold">Monto: ${item.mount}</p>
                 </div>
                 <button
                 className="bg-red-400 text-black font-black text-sm hover:bg-red-500/80 p-2 rounded-full h-8 w-8"
-                onClick={() => handleDeleteBienes(index)} // Asegúrate de eliminar el bien correcto
+                onClick={() => handleDeleteBienes(index,item.personal_property_id)} // Asegúrate de eliminar el bien correcto
                 >
                 X
                 </button>
