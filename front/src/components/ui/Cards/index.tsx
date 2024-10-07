@@ -23,7 +23,7 @@ function Card_presupuesto({option,money}:divProps) {
         progreso: <FlagIcon/>
     }
   return (
-    <div className='flex ml-2'>
+    <div className='flex md:ml-2 '>
         <Item_rounded color={option}>
             {option && iconMap[option]}
         </Item_rounded>

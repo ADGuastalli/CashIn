@@ -34,8 +34,8 @@ export const getUserMetaAll = async (id: string) => {
       method: "GET",
     });
     const data = await response.json();
-
-    const newData = data.map ((item: Meta )=> ({
+    
+    const newData = data?.map ((item: Meta )=> ({
         goal_id: item.goal_id,
         goal: item.goal,
         mount: item.mount,

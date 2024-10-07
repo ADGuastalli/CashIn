@@ -10,5 +10,5 @@ export function calculaTiempoPredeterminado (monto:number , ingreso: number , po
         MesesAconsegados = monto / valorPorcentage;
     }
     
-    return MesesAconsegados
+    return Math.round(MesesAconsegados)
 }

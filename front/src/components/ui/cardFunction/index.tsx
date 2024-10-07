@@ -20,7 +20,7 @@ const CardFunction: React.FC<PropsFunctions> = ({imagen , text, setForm , visibl
   }
   return (
     <div className="flex flex-col items-center  my-2 " onClick={handleVisible}>
-      <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-12 h-12 transition-all duration-500">
+      <div className="flex flex-col items-center justify-center p-4 hover:bg-[#0095A9]/15 rounded-lg shadow-md w-16 h-16 transition-all duration-500">
         <Image
           src={imagen}
           alt="Poder pagar mis deudas"

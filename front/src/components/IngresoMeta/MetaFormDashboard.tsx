@@ -23,6 +23,7 @@ export default function MetaFromDashboard({setModalVisible,userId}: propsMetas) 
   const [porcentageAhorro,setProcentageAhorro] = useState("");
   const [aceptarPredeterminados, setAceptarPredeterminados] = useState(false);
   const [tiempoRecomendado, setTiempoRecomendado] = useState(0)
+  const fecha = new Date();
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +32,9 @@ export default function MetaFromDashboard({setModalVisible,userId}: propsMetas) 
         goal: Valor, 
         mount: monto, 
         time_months: tiempoEstimado, 
-        percentage: porcentageAhorro };
+        percentage: porcentageAhorro,
+        date: fecha.toLocaleDateString(),
+      };
 
         postMeta(newMeta,userId)
         
@@ -50,8 +53,9 @@ export default function MetaFromDashboard({setModalVisible,userId}: propsMetas) 
   },[monto,totalIncomes,porcentageAhorro])
 
   const aplicaParametros = () => {
+    setProcentageAhorro('10');
+    SetTiempoEstimado(tiempoRecomendado.toString());
     setAceptarPredeterminados(true);
-
   }
 
   const cancelarForm = () => {
@@ -64,10 +68,10 @@ export default function MetaFromDashboard({setModalVisible,userId}: propsMetas) 
 
   return (
    <div className="fixed md:pl-64 z-50 inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-    <form onSubmit={handleSubmit}>
-            <div className="flex flex-col justify-center items-center mt-5">
+    <form onSubmit={handleSubmit} className="flex flex-col justify-center items-center p-4 bg-white md:p-6 md:m-8 rounded-lg shadow-lg w-full max-w-lg h-auto md:max-w-4xl">
+            <div className="">
               <div className="flex flex-col mt-5">
-                <label className="text-lg font-bold">Nombre de la memta / articulo o bien</label>
+                <label className="text-lg font-bold">Nombre de la meta / articulo o bien</label>
                 <div className="relative">
                   <Input
                     type="text"
@@ -100,7 +104,7 @@ export default function MetaFromDashboard({setModalVisible,userId}: propsMetas) 
                     onChange={(e) => SetTiempoEstimado(e.target.value)}
                   />
                 </div>
-                {(!aceptarPredeterminados && porcentageAhorro != '') && (<p>Te recomendamos un tiempo de {tiempoRecomendado}</p>) }
+                {(!aceptarPredeterminados && porcentageAhorro != '') && (<p className="text-red-400">Te recomendamos un tiempo de {tiempoRecomendado}</p>) }
 
               </div>
 
@@ -116,23 +120,22 @@ export default function MetaFromDashboard({setModalVisible,userId}: propsMetas) 
                     onChange={(e) => setProcentageAhorro(e.target.value)}
                   />
                 </div>
-                {!aceptarPredeterminados && (<p>Te recomendamos un 10% de tus ingresos</p>) }
+                {!aceptarPredeterminados && (<p className="text-red-400">Te recomendamos un 10% de tus ingresos</p>) }
               </div>
               {
-                (porcentageAhorro != '10' && aceptarPredeterminados) && (
-                    <div className="">
-                      <div>
-                        <span>aler</span>
+                (porcentageAhorro != '' && !aceptarPredeterminados && tiempoEstimado != '') && (
+                    <div className="bg-red-400 flex justify-between items-center text-white my-2 p-4 w-full">
+                      <div className='flex justify-center mr-2'>
                         <p>¿Deseas aplicar los parametros que te recomendamos?</p>
                       </div>
-                      <button onClick={aplicaParametros}>Aplicar</button>
+                      <button onClick={aplicaParametros} className="bg-white rounded-lg text-red-400 m-1 p-2">Aplicar</button>
                     </div>)
               }
-              <div className="flex flex-col mt-10">
+              <div className="flex w-[90wv]">
+              <div className="flex flex-col w-full">
                 <Button_forms onClick={cancelarForm}>CANCELAR</Button_forms>
-              </div>
-              <div className="flex flex-col mt-10">
                 <Button_action type="submit" >ACEPTAR</Button_action>
+              </div>
               </div>
             </div>
           </form>

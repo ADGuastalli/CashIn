@@ -29,7 +29,7 @@ function MisMetas({visible}: {visible:boolean}) {
     <div  className='flex flex-col  w-screen h-auto px-4 py-4 mt-6 md:pl-72 md:mr-4 bg-white shadow-md'>
         <div className='flex items-center'>
             <Card_presupuesto option='progreso'/>
-            <h2 className='ml-4'>Mis Metas</h2>
+            <h2 className='ml-4 font-bold text-2xl'>Mis Metas</h2>
         </div>        
         
         {
@@ -38,12 +38,12 @@ function MisMetas({visible}: {visible:boolean}) {
         {
             visible && (
                 <>
-                    { !misMetas ? (<>
-                        <div className='flex w-full justify-around items-center'>
+                    { misMetas.length == 0 ? (<>
+                        <div className='flex w-full flex-col items-center sm:'>
+                        <p>todavia no tienes metas agregadas</p>
                         <p>Es importante que añadas por lo menos una meta.</p>
                         <div>
                             {/* imagen cerdo */}
-                            <p>todavia no tienes metas agregadas</p>
                             <Button_action onClick={()=>setModalVisible(true)}>Agregar meta</Button_action>
                         </div>
                         </div>

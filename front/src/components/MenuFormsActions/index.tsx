@@ -14,7 +14,7 @@ interface MenuFormsActionsProps {
 const MenuFormsActions: React.FC<MenuFormsActionsProps> = ({ visible, totalGastos, totalAhorros, totalIngresos }) => {
   return (
     <div className='flex flex-col  w-screen h-auto  py-4 mt-6 md:pl-72  bg-white shadow-md'>
-        <div className='flex justify-around w-full h-auto'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-items-center w-full h-auto'>
           <Card_presupuesto option='ahorro' money={totalGastos}/>  
           <Card_presupuesto option='ingresos' money={totalIngresos}/>  
           <Card_presupuesto option='gastos' money={totalAhorros}/>  
