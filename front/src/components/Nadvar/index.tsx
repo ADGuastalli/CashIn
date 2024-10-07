@@ -72,7 +72,7 @@ export default function Navbar() {
               EDUCACION
             </Button_nadvar>
           </Link>
-          <Link href="/Construccion" onClick={handleMenuClick}>
+          <Link href="/MercadoFinanciero" onClick={handleMenuClick}>
             <Button_nadvar className="text-sm font-bold lg:text-xl">
               MERCADO FINANCIERO
             </Button_nadvar>
