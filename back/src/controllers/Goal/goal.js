@@ -52,8 +52,8 @@ const getAllGoals = async (req, res) => {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    if (userWithGoals.Datum !== null && userWithGoals.Datum.Goal !== null){
-      const goals = userWithExpenses.Datum.Goal;
+    if (userWithGoals.Datum !== null && userWithGoals.Datum.Goal !== undefined){
+      const goals = userWithGoals.Datum.Goal;
       const mapGoals = goals.map(goal => {
         return{
           goal_id: goal.goal_id,
@@ -65,6 +65,8 @@ const getAllGoals = async (req, res) => {
         }
       })
       res.status(200).json(mapGoals);
+    }else{
+      res.status(200).json([]);
     }
   } catch (error) {
     console.error('Error al obtener los registros:', error);
