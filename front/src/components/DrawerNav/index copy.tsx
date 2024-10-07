@@ -50,7 +50,7 @@ const DrawerNavAdmin: React.FC<DrawerNavAdminProps> = ({
         onClick={toggleMenu}
       >
         <div className="flex justify-center w-full">
-          <Image className="w-16 h-12" src={imageLogo} alt="logo" />
+          <Image className="w-30 h-28" src={imageLogo} alt="logo" />
         </div>
 
         <div className="flex flex-col justify-between flex-1 mt-6">
@@ -62,7 +62,7 @@ const DrawerNavAdmin: React.FC<DrawerNavAdminProps> = ({
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
               >
                 <HomeIcon />
-                <span className="mx-2 text-sm font-medium">Salir</span>
+                <span className="mx-2 text-xl font-medium">Salir</span>
               </a>
             </div>
             <div className="space-y-3 ">
@@ -75,7 +75,7 @@ const DrawerNavAdmin: React.FC<DrawerNavAdminProps> = ({
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
               >
                 <QueryStatsIcon />
-                <span className="mx-2 text-sm font-medium">Usuarios</span>
+                <span className="mx-2 text-xl font-medium">Usuarios</span>
               </a>
             </div>
 
@@ -89,7 +89,7 @@ const DrawerNavAdmin: React.FC<DrawerNavAdminProps> = ({
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
               >
                 <ArticleIcon />
-                <span className="mx-2 text-sm font-medium">Cursos</span>
+                <span className="mx-2 text-xl font-medium">Cursos</span>
               </a>
 
               <a
@@ -98,16 +98,16 @@ const DrawerNavAdmin: React.FC<DrawerNavAdminProps> = ({
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
               >
                 <ArticleIcon />
-                <span className="mx-2 text-sm font-medium">Libros</span>
+                <span className="mx-2 text-xl font-medium">Libros</span>
               </a>
 
               <a
                 href="#"
-                onClick={() => setActiveComponent("mercado")}
+                onClick={() => setActiveComponent("MercadoFinanciero")}
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
               >
                 <ArticleIcon />
-                <span className="mx-2 text-sm font-medium">
+                <span className="mx-2 text-xl font-medium">
                   Mercado Financiero
                 </span>
               </a>
@@ -118,7 +118,7 @@ const DrawerNavAdmin: React.FC<DrawerNavAdminProps> = ({
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
               >
                 <ArticleIcon />
-                <span className="mx-2 text-sm font-medium">Calendario</span>
+                <span className="mx-2 text-xl font-medium">Calendario</span>
               </a>
             </div>
             <div className="space-y-3 ">
@@ -131,7 +131,7 @@ const DrawerNavAdmin: React.FC<DrawerNavAdminProps> = ({
                 className="flex items-center px-3 py-2 text-gray-600 transition-colors duration-300 transform rounded-lg hover:bg-gray-100 hover:text-gray-700"
               >
                 <Info />
-                <span className="mx-2 text-sm font-medium">Admin</span>
+                <span className="mx-2 text-xl font-medium">Admin</span>
               </a>
             </div>
           </nav>

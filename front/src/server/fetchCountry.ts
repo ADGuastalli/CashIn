@@ -1,6 +1,6 @@
 import { API } from "@/helpers/helper";
 
-interface ICountry {
+export interface ICountry {
   country: string;
   country_id: string;
 }
