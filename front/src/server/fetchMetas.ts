@@ -5,7 +5,7 @@ import { Meta } from "@/interface/interfaceData";
 export const postMeta = async ( meta: Meta, userId: string) => {
 
     try {
-        const response = await fetch(`${API}/`, {
+        const response = await fetch(`${API}/goals`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json" 
@@ -30,7 +30,7 @@ export const postMeta = async ( meta: Meta, userId: string) => {
 
 export const getUserMetaAll = async (id: string) => {
     
-    const response = await fetch(`${API}//${id}`, {
+    const response = await fetch(`${API}/goals-by-user/${id}`, {
       method: "GET",
     });
     const data = await response.json();
@@ -48,7 +48,7 @@ export const getUserMetaAll = async (id: string) => {
   
   export const deleteMeta =  async (id: string) => {
     
-    const response = await fetch(`${API}//${id}`, {
+    const response = await fetch(`${API}/goals/${id}`, {
       method: "DELETE",
     });
     const data = await response.json();

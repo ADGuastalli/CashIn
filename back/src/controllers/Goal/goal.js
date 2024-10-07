@@ -36,9 +36,36 @@ const createGoal = async (req, res) => {
 
 // READ: Obtener todos los registros de la tabla Goal
 const getAllGoals = async (req, res) => {
+  const { id } = req.params;
   try {
-    const goals = await Goal.findAll();
-    res.status(200).json(goals);
+    const userWithGoals = await User.findOne({
+      where: { user_id: id },  
+      include: {
+        model: Data,           
+        include: {
+          model: Goal,       
+        }
+      }
+    });
+
+    if (!userWithGoals) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    if (userWithGoals.Datum !== null && userWithGoals.Datum.Goal !== null){
+      const goals = userWithExpenses.Datum.Goal;
+      const mapGoals = goals.map(goal => {
+        return{
+          goal_id: goal.goal_id,
+          goal: goal.goal,
+          mount: goal.mount,
+          time_months: goal.time_months,
+          percentage: goal.percentage,
+          date: goal.date,
+        }
+      })
+      res.status(200).json(mapGoals);
+    }
   } catch (error) {
     console.error('Error al obtener los registros:', error);
     res.status(500).json({ error: 'Error al obtener los registros' });
