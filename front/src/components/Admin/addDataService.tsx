@@ -57,7 +57,7 @@ export default function AddDataService() {
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = event.target;
-    let newDataService = { ...dataService, [name]: value };
+    const newDataService = { ...dataService, [name]: value };
 
     if (name === "bank_id") {
       const selectedBank = banks.find((bank) => bank.bank_id === Number(value));

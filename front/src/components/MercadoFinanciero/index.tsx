@@ -39,7 +39,7 @@ export default function MercadoFinancieroComponet() {
   }, []);
 
   const sortedDataServices = React.useMemo(() => {
-    let sortableItems = [...dataServices];
+    const sortableItems = [...dataServices];
     if (sortConfig !== null) {
       sortableItems.sort((a, b) => {
         const aValue = a[sortConfig.key];
