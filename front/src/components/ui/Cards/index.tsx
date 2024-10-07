@@ -9,7 +9,7 @@ import FlagIcon from '@mui/icons-material/Flag';
 type Options = 'ahorro' | 'ingresos' | 'gastos' | 'metas' | 'progreso';
 
 interface divProps  {
-    money?: string,
+    money?: number,
     option?: Options,
 }
 

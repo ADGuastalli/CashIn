@@ -9,7 +9,6 @@ function convertDate(dateString) {
 // CREATE: Crear un nuevo registro en la tabla Expense
 const createExpense = async (req, res) => {
   try {
-<<<<<<< HEAD
     const { expense_category, pay_method, expense, mount, date, user_id } = req.body;
   
     if (!expense_category || !pay_method || !expense || !mount || !date) {
@@ -48,16 +47,6 @@ const createExpense = async (req, res) => {
       date: formattedDate, 
       data_id });
       
-=======
-    const { expense_category_id, pay_method_id, expense, mount, date, data_id } = req.body;
-
-    if (!expense_category_id || !pay_method_id || !expense || !mount || !date || !data_id) {
-      return res.status(400).json({ error: 'Faltan datos requeridos' });
-    }
-
-    const newExpense = await Expense.create({ expense_category_id, pay_method_id, expense, mount, date, data_id });
-
->>>>>>> origin/Developer
     res.status(201).json(newExpense);
   } catch (error) {
     console.error('Error al crear el registro:', error);

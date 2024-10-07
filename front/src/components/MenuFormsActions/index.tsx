@@ -7,15 +7,17 @@ import DeudasFormDashboard from '../Diagnostico/deudasFormDashboard'
 
 interface MenuFormsActionsProps {
   visible: boolean[];
-  totalGastos: string;
+  totalGastos: number;
+  totalIngresos: number;
+  totalAhorros: number
 } 
-const MenuFormsActions: React.FC<MenuFormsActionsProps> = ({ visible, totalGastos }) => {
+const MenuFormsActions: React.FC<MenuFormsActionsProps> = ({ visible, totalGastos, totalAhorros, totalIngresos }) => {
   return (
     <div className='flex flex-col  w-screen h-auto  py-4 mt-6 md:pl-72  bg-white shadow-md'>
         <div className='flex justify-around w-full h-auto'>
           <Card_presupuesto option='ahorro' money={totalGastos}/>  
-          <Card_presupuesto option='ingresos' money='00.10'/>  
-          <Card_presupuesto option='gastos' money='00.10'/>  
+          <Card_presupuesto option='ingresos' money={totalIngresos}/>  
+          <Card_presupuesto option='gastos' money={totalAhorros}/>  
         </div>
         <div className=''>
         { visible[0] && (<div className=' h-auto' >

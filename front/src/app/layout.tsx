@@ -7,6 +7,7 @@ import { IngresosProvider } from "@/context/incomeContext";
 import { CategoriasProvider } from "@/context/categorias&variablesContext";
 import { DeudaProvider } from "@/context/deudaContext";
 import { PersonalPropertyProvider } from "@/context/personalPropertyContext";
+import { TotalesMesProvider } from "@/context/TotalesMes";
 import Footer from "@/components/Footer";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -34,7 +35,9 @@ export default function RootLayout({
               <IngresosProvider>
                 <DeudaProvider>
                   <PersonalPropertyProvider>
-                    {children}
+                    <TotalesMesProvider>
+                      {children}
+                    </TotalesMesProvider>
                   </PersonalPropertyProvider>
                 </DeudaProvider>
               </IngresosProvider>

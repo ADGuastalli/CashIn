@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     goal_category_id: {
       type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    data_id: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     goal: {
@@ -15,6 +19,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     mount: {
       type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+    percentage: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    time_months: {
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     date: {

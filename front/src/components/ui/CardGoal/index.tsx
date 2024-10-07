@@ -1,19 +1,14 @@
 import React from 'react'
 import Swal from 'sweetalert2';
+import { Meta } from '@/interface/interfaceData';
+import { deleteMeta } from '@/server/fetchMetas';
 
-type Meta = {
-    tipoValor: string;
-    monto: string;
-    tiempoEstimado: string;
-    porcentageAhorro: string;
-  }; 
 interface propsMeta {
     misMetas: Meta;
-    setMisMetas: React.Dispatch<React.SetStateAction<Meta[]>>;
 }
-function CardGoal({misMetas, setMisMetas} : propsMeta) {
+function CardGoal({misMetas} : propsMeta) {
 
-    const handleDelete = () => {
+    const handleDelete = (goal_id: string | undefined ) => {
         Swal.fire({
           title: "¿Estás seguro?",
           text: "Quieres eliminar ese ingreso",
@@ -25,15 +20,7 @@ function CardGoal({misMetas, setMisMetas} : propsMeta) {
           cancelButtonText: "Cancelar",
         }).then((result) => {
           if (result.isConfirmed) {
-            setMisMetas((prev) =>
-                prev.filter(
-                  (meta) =>
-                    meta.tipoValor !== misMetas.tipoValor ||
-                    meta.monto !== misMetas.monto ||
-                    meta.tiempoEstimado !== misMetas.tiempoEstimado ||
-                    meta.porcentageAhorro !== misMetas.porcentageAhorro
-                )
-              );
+            if(goal_id) deleteMeta(goal_id)
             Swal.fire("¡Eliminado!", "El ingreso ha sido eliminado.", "success");
           }
         });
@@ -44,14 +31,14 @@ function CardGoal({misMetas, setMisMetas} : propsMeta) {
         <div className='flex items-center text-xs text-slate-900 ml-2'>
             <button className='inline-flex items-center justify-center aspect-square rounded-full
              bg-bad_status px-2'
-             onClick={handleDelete}>
+             onClick={()=>handleDelete(misMetas.goal_id)}>
                 X
             </button>
         </div>
         <div className='flex-1 m-2 '>
             <div className="flex items-start justify-around m-2">
             <h4 className="font-medium text-sm mr-auto text-gray-700 flex items-center">
-                {misMetas.tipoValor}
+                {misMetas.goal}
             </h4>
             <span className="px-2 py-1 rounded-lg bg-red-50 text-red-500 text-xs">
                 6.2 / 10

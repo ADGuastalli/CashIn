@@ -45,10 +45,28 @@ interface ICategoriasContext {
     personalProperty: string[],
 }
 
+interface ITotalesData {
+    totalIncomes: number,
+    totalExpense: number,
+    totalSaving: number,
+}
+
+type Meta = {
+    goal_id?: string;
+    goal: string;
+    mount: string;
+    time_months: string;
+    percentage: string;
+    date?: string;
+  };
+
+
 export type  {
     Expense,
     Income,
     ICategoriasContext,
     PersonalProperty,
-    Deuda
+    Deuda,
+    ITotalesData,
+    Meta
 }

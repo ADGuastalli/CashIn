@@ -1,9 +1,6 @@
+const { Router } = require("express");
+const passport = require("passport");
 
-<<<<<<< HEAD
-=======
-const { Router } = require("express")
-
->>>>>>> origin/Developer
 const userController = require('../controllers/Users/userController')
 const cityController = require('../controllers/City/cityController');
 const countryController = require('../controllers/Country/countryController')
@@ -33,11 +30,6 @@ const financialLevelController = require('../controllers/FinancialLevel/financia
 const calculatorInconmeExpenses = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesTotal')
 const calculatorInconmeExpensesMonthly = require('../controllers/CalculatorIncome&expenses/CalculatorIncome&expensesMonth')
 const { authenticateToken } = require('../middlewares/auth');
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/Developer
 const googleAuthController = require("../controllers/Auth/google");
 const paypalController = require("../controllers/Paypal/paypalController");
 
@@ -309,10 +301,6 @@ router.get(
   calculatorInconmeExpenses.calculateTotalMortgageDebt
 ); */
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/Developer
 router.get('/incomesExpenses/totalincome/:id', calculatorInconmeExpenses.calculateTotalIncome)
 router.get('/incomesExpenses/calculatetotalmortgagedebt/:id', calculatorInconmeExpenses.calculatePaidMortgageDebt)
 router.get('/incomesExpenses/calculatePaidPersonalLoans/:id', calculatorInconmeExpenses.calculatePaidPersonalLoans)
@@ -338,7 +326,3 @@ router.get('/incomesExpenses/calculateMonthlyTithesAndSavings/:id', calculatorIn
 
 
 module.exports = router
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/Developer

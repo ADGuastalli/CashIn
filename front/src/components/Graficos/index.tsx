@@ -3,7 +3,10 @@ import BienestarFinaciero from './BienestarFinaciero'
 import IndiceLiquidez from './IndiceLiquidez'
 import DistribucionResponsabilidad from './Distribucionresponsabilidad'
 
-function Graficos() {
+interface GraficoDataProps {
+} 
+
+ const  Graficos: React.FC<GraficoDataProps> = () => {
   return (
     <div className='flex flex-col md:flex-row md:justify-around
        md:items-center w-screen h-auto  py-6 mt-6 md:pl-64  bg-white shadow-md'>

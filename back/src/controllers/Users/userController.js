@@ -75,7 +75,7 @@ const completeUserProfile = async (req, res) => {
     !birthdate ||
     !marital_status_id ||
     !dwelling_id ||
-    !child ||
+    !child || // ojo el cero lo toma como false
     !occupation_id
   ) {
     return res
