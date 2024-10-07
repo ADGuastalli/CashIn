@@ -109,7 +109,7 @@ router.delete(
 );
 
 router.post("/goals", goalController.createGoal);
-router.get("/goals", goalController.getAllGoals);
+router.get("/goals-by-user/:id", goalController.getAllGoals);
 router.get("/goals/:id", goalController.getGoalById);
 router.put("/goals/:id", goalController.updateGoal);
 router.delete("/goals/:id", goalController.deleteGoal);

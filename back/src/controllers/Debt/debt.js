@@ -1,4 +1,5 @@
 const { Debt, DebtCategory, Data, User } = require('../../models/index');  // Importar el modelo Debt
+const { Op } = require('sequelize')
 
 function convertDate(dateString) {
   const [day, month, year] = dateString.split('/').map(Number);

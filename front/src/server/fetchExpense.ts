@@ -2,7 +2,7 @@ import { API } from "../helpers/helper";
 import { Expense } from "@/interface/interfaceData";
 
 export const postExpense = async ( expense: Expense, userId: string) => {
-    console.log("expenses",expense)
+ 
     try {
         const response = await fetch(`${API}/expense`, {
           method: "POST",
@@ -67,4 +67,14 @@ export const getExpense_categoryAll = async () => {
   const newData = data.map((item: any) => item.expense_category);
 
   return newData
+}
+
+export const getTotalExpense = async (userId: string) => {
+  //incomesExpenses/calculateMonthlyMultipleCategoriesExpenses
+  const response = await fetch(`${API}//${userId}`,{
+    method: "GET",
+  });
+  const data = await response.json();
+
+  return data
 }

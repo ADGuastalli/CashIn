@@ -7,13 +7,13 @@ import MisMetas from '@/components/MisMetas'
 import MenuFunctions from '@/components/MenuFunctions'
 import { useContext } from 'react'
 import { UserContext } from '@/context/userContext'
-import { useGastos } from '@/context/gastosContext'
+import { useTotalMes } from '@/context/TotalesMes'
 import Graficos from '@/components/Graficos'
+import ProgresoDeTusFinanzas from '@/components/ProgresoDeTusFinanzas'
 
 function PresupuestoRegistro() {
   const {userProfile} = useContext(UserContext)
-  const {state} = useGastos();
-
+  const { totalExpense,totalIncomes,totalSaving } = useTotalMes();
   const [visiblegastos, setVisibleGastos] = useState(false)
   const [visibleIngresos, setVisibleIngresos] = useState(false)
   const [visibleMetas, setVisibleMetas] = useState(false)
@@ -21,10 +21,7 @@ function PresupuestoRegistro() {
   const [visibleDeudas, setVisibleDeudas] = useState(false)
   
   
-  const totalGastos = state.gastos.reduce(
-    (acc, item) => acc + parseFloat(item.monto),
-    0
-  );
+
   return (
     <div>
         <DrawerNav/>
@@ -32,9 +29,12 @@ function PresupuestoRegistro() {
         <MenuFunctions setForm={[setVisibleGastos,setVisibleIngresos,setVisibleMetas,setVisibleBienes,setVisibleDeudas]} 
                        visible={[visiblegastos,visibleIngresos,visibleMetas,visibleBienes,visibleDeudas]}/>
         <MenuFormsActions visible={[visiblegastos,visibleIngresos,visibleMetas,visibleBienes,visibleDeudas]}
-          totalGastos={`${totalGastos}`}/>
+          totalGastos={totalExpense}
+          totalIngresos={totalIncomes}
+          totalAhorros={totalSaving}/>
         <MisMetas visible={visibleMetas}/>
-        <Graficos/>
+        <ProgresoDeTusFinanzas/>
+        <Graficos /> {/* deberia recibir un objeto con totdos los totales mensuales de cada total */}
     </div>
   )
 }
