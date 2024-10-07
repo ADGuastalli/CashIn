@@ -81,7 +81,7 @@ export const ButtonLanding = () => {
         <Box sx={style}>
           <Typography
             id="modal-modal-title1"
-            variant="h6"
+            variant="h5"
             component="h2"
             className="font-bold text-[#0095a9] text-center"
           >
@@ -90,6 +90,7 @@ export const ButtonLanding = () => {
           <Typography
             id="modal-modal-description1"
             className="text-center"
+            variant="h6"
             sx={{ mt: 2 }}
           >
             Este botón te llevará a una herramienta que te ayudará a organizar y
@@ -127,7 +128,7 @@ export const ButtonLanding = () => {
         <Box sx={style}>
           <Typography
             id="modal-modal-title2"
-            variant="h6"
+            variant="h5"
             component="h2"
             className="font-bold text-[#0095a9] text-center"
           >
@@ -135,6 +136,7 @@ export const ButtonLanding = () => {
           </Typography>
           <Typography
             id="modal-modal-description2"
+            variant="h6"
             className="text-center"
             sx={{ mt: 2 }}
           >
@@ -168,7 +170,7 @@ export const ButtonLanding = () => {
         <Box sx={style}>
           <Typography
             id="modal-modal-title3"
-            variant="h6"
+            variant="h5"
             component="h2"
             className="font-bold text-[#0095a9] text-center"
           >
@@ -177,6 +179,7 @@ export const ButtonLanding = () => {
           <Typography
             id="modal-modal-description3"
             className="text-center"
+            variant="h6"
             sx={{ mt: 2 }}
           >
             Este apartado te permite establecer y seguir el progreso de tus
@@ -210,7 +213,7 @@ export const ButtonLanding = () => {
         <Box sx={style}>
           <Typography
             id="modal-modal-title4"
-            variant="h6"
+            variant="h5"
             component="h2"
             className="font-bold text-[#0095a9] text-center"
           >
@@ -219,6 +222,7 @@ export const ButtonLanding = () => {
           <Typography
             id="modal-modal-description4"
             className="text-center"
+            variant="h6"
             sx={{ mt: 2 }}
           >
             Este botón te ayudará a configurar un plan de ahorro personalizado,
@@ -256,7 +260,7 @@ export const ButtonLanding = () => {
         <Box sx={style}>
           <Typography
             id="modal-modal-title5"
-            variant="h6"
+            variant="h5"
             component="h2"
             className="font-bold text-[#0095a9] text-center"
           >
@@ -265,6 +269,7 @@ export const ButtonLanding = () => {
           <Typography
             id="modal-modal-description5"
             className="text-center"
+            variant="h6"
             sx={{ mt: 2 }}
           >
             Aquí podrás obtener un diagnóstico detallado de tu situación
@@ -297,7 +302,7 @@ export const ButtonLanding = () => {
         <Box sx={style}>
           <Typography
             id="modal-modal-title6"
-            variant="h6"
+            variant="h5"
             component="h2"
             className="font-bold text-[#0095a9] text-center"
           >
@@ -306,6 +311,7 @@ export const ButtonLanding = () => {
           <Typography
             id="modal-modal-description6"
             className="text-center"
+            variant="h6"
             sx={{ mt: 2 }}
           >
             : Accede a una herramienta completa para crear y gestionar tu
@@ -343,7 +349,7 @@ export const ButtonLanding = () => {
         <Box sx={style}>
           <Typography
             id="modal-modal-title7"
-            variant="h6"
+            variant="h5"
             component="h2"
             className="font-bold text-[#0095a9] text-center"
           >
@@ -352,6 +358,7 @@ export const ButtonLanding = () => {
           <Typography
             id="modal-modal-description7"
             className="text-center"
+            variant="h6"
             sx={{ mt: 2 }}
           >
             Tu asistente financiero personal con inteligencia artificial, para

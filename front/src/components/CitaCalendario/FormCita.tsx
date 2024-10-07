@@ -60,10 +60,17 @@ const CreateEventForm = () => {
   const handleSlotClick = (slot_id: string) => {
     const selected = availableSlots.find((slot) => slot.slot_id === slot_id);
     if (selected) {
+      const startTime = new Date(selected.start_time);
+      const endTime = new Date(selected.end_time);
+
+      // Restar 3 horas a ambos valores
+      startTime.setHours(startTime.getHours() - 3);
+      endTime.setHours(endTime.getHours() - 3);
+
       setEventData((prevData) => ({
         ...prevData,
-        startDateTime: new Date(selected.start_time).toISOString(),
-        endDateTime: new Date(selected.end_time).toISOString(),
+        startDateTime: startTime.toISOString(),
+        endDateTime: endTime.toISOString(),
       }));
       setSelectedSlot(slot_id);
     }
@@ -99,7 +106,7 @@ const CreateEventForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <Label>
-        Título del evento:
+        Título de la cita:
         <Input_profile
           type="text"
           name="summary"
@@ -108,35 +115,37 @@ const CreateEventForm = () => {
           required
         />
       </Label>
-
-      <Label>
-        Ubicación:
-        <Input_profile
-          type="text"
-          name="location"
-          value={eventData.location}
-          readOnly
-        />
-      </Label>
-
-      <Label>
-        Descripción:
-        <textarea
-          name="description"
-          value={eventData.description}
-          placeholder="Por favor ingresar los motivos de la consulta y un Email para su contacto. Muchas gracias"
-          onChange={handleInputChange}
-          style={{
-            display: "block",
-            marginTop: "5px",
-            width: "100%",
-            height: "100px",
-            border: "1px solid black",
-            borderRadius: "4px",
-            padding: "5px",
-          }}
-        />
-      </Label>
+      <div className="mt-5">
+        <Label>
+          Ubicación:
+          <Input_profile
+            type="text"
+            name="location"
+            value={eventData.location}
+            readOnly
+          />
+        </Label>
+      </div>
+      <div className="mt-5">
+        <Label>
+          Descripción:
+          <textarea
+            name="description"
+            value={eventData.description}
+            placeholder="Por favor ingresar los motivos de la consulta y un Email para su contacto. Muchas gracias"
+            onChange={handleInputChange}
+            style={{
+              display: "block",
+              marginTop: "5px",
+              width: "100%",
+              height: "100px",
+              border: "1px solid black",
+              borderRadius: "4px",
+              padding: "5px",
+            }}
+          />
+        </Label>
+      </div>
 
       <div className="mt-5">
         <Label>Citas disponibles:</Label>
