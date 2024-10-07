@@ -15,6 +15,44 @@ function convertDate(dateString) {
 // CREATE: Crear un nuevo registro en la tabla Expense
 const createExpense = async (req, res) => {
   try {
+    const { expense_category, pay_method, expense, mount, date, user_id } = req.body;
+  
+    if (!expense_category || !pay_method || !expense || !mount || !date) {
+      return res.status(400).json({ error: 'Faltan datos requeridos' });
+    }
+
+    const formattedDate = convertDate(date);
+
+    const userdata =  await User.findOne({
+      where: {user_id},
+      include: [{
+        model: Data,
+        attributes: ['data_id']
+      }]
+    })
+
+    const data_id = userdata.Datum.data_id
+
+    const expenseType = await ExpenseCategory.findOne({ where: { expense_category: expense_category.toLowerCase() } });
+    if (!expenseType) {
+      return res.status(400).json({ error: 'Tipo de gasto no encontrado' });
+    }
+
+    const payMethod = await PayMethod.findOne({ where: { pay_method: pay_method.toLowerCase() } });
+
+    if (!payMethod) {
+      return res.status(400).json({ error: 'Método de pago no encontrado' });
+    }
+    const expense_category_id = expenseType.expense_category_id
+    const pay_method_id = payMethod.pay_method_id
+
+    const newExpense = await Expense.create({ 
+      expense_category_id,
+      pay_method_id, 
+      expense, mount, 
+      date: formattedDate, 
+      data_id });
+      
     res.status(201).json(newExpense);
   } catch (error) {
     console.error("Error al crear el registro:", error);

@@ -7,6 +7,7 @@ import { IngresosProvider } from "@/context/incomeContext";
 import { CategoriasProvider } from "@/context/categorias&variablesContext";
 import { DeudaProvider } from "@/context/deudaContext";
 import { PersonalPropertyProvider } from "@/context/personalPropertyContext";
+import { TotalesMesProvider } from "@/context/TotalesMes";
 import Footer from "@/components/Footer";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
@@ -31,13 +32,15 @@ export default function RootLayout({
           >
             <CategoriasProvider>
               <GastosProvider>
-                <IngresosProvider>
-                  <DeudaProvider>
-                    <PersonalPropertyProvider>
+              <IngresosProvider>
+                <DeudaProvider>
+                  <PersonalPropertyProvider>
+                    <TotalesMesProvider>
                       {children}
-                    </PersonalPropertyProvider>
-                  </DeudaProvider>
-                </IngresosProvider>
+                    </TotalesMesProvider>
+                  </PersonalPropertyProvider>
+                </DeudaProvider>
+              </IngresosProvider>
               </GastosProvider>
             </CategoriasProvider>
           </GoogleOAuthProvider>

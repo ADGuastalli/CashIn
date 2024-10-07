@@ -66,3 +66,13 @@ export const getBien_categoryAll = async () => {
     const newData = data.map((item: any) => item.personal_property_type);
     return newData
   }
+
+  export const getTotalSaving = async (userId:string) => {
+    // incomesExpenses/calculateMonthlyTithesAndSavings
+    const response = await fetch(`${API}//${userId}`,{
+      method: "GET",
+    });
+    const data = await response.json();
+  
+    return data
+  }

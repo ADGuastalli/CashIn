@@ -34,7 +34,7 @@ function DrawerNav() {
                 </svg>
         </button>
 
-    <aside className={`flex flex-col w-64 h-screen px-5 pt-4  bg-second shadow-xl border-r rtl:border-r-0 rtl:border-l fixed z-50 top-0 left-0
+    <aside className={`flex flex-col w-64 md:h-screen h-[100%] px-5 pt-4  bg-second shadow-xl border-r rtl:border-r-0 rtl:border-l fixed z-50 top-0 left-0
         transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0`}
         onClick={toggleMenu}>
         <div className="flex justify-start w-full">

@@ -64,3 +64,13 @@ export const getIncomes_categoryAll = async () => {
   const newData = data.map((item: any) => item.income_category);
   return newData
 }
+
+export const getTotalIncome = async (userId:string) => {
+  //incomesExpenses/totalincomeMonthly
+  const response = await fetch(`${API}//${userId}`,{
+    method: "GET",
+  });
+  const data = await response.json();
+
+  return data
+}

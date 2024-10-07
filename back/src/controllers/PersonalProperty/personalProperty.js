@@ -1,5 +1,5 @@
 const { PersonalProperty, Data, PersonalPropertyType, User } = require('../../models/index');
-
+const { Op } = require('sequelize')
 function convertDate(dateString) {
   const [day, month, year] = dateString.split('/').map(Number);
   return new Date(year, month - 1, day); // Los meses en JavaScript son 0-indexados

@@ -6,6 +6,8 @@ import ImgEdu from "@/public/assets/svg/gastos/books-stack-of-three.svg";
 import ImgDona from "@/public/assets/svg/gastos/business-and-finance.svg";
 import ImgSalud from "@/public/assets/svg/high-five.svg";
 import ImgPres from "@/public/assets/svg/gastos/loan.svg";
+import ImgDolar from "@/public/assets/svg/dollar.svg"
+import ImgDiezmo from "@/public/assets/svg/gastos/loan.svg"
 
 export const categorias = [
     {
@@ -105,4 +107,58 @@ export const categorias = [
         "Otros",
       ],
     },
+  ];
+
+
+  export const AsignaImagenes = [
+    {
+      tipo: "Ahorro",
+      img: ImaAhorro,
+      
+    },
+    {
+      tipo: "Servicios y Hogar",
+      img: ImgHogar,
+      
+    },
+    {
+      tipo: "Alimentos y Cuidado Personal",
+      img: imgAlim,
+
+    },
+    {
+      tipo: "Transporte",
+      img: imgTrans,
+      
+    },
+    {
+      tipo: "Seguros e Impuestos",
+      img: ImgDona,
+      
+    },
+    {
+      tipo: "Educacion y Recreacion",
+      img: ImgEdu,
+      
+    },
+    {
+      tipo: "Diezmo",
+      img: ImgDiezmo,
+      
+    },
+    {
+      tipo: "Miscelaneos",
+      img: ImgSalud,
+
+    },
+    {
+      tipo: "Gastos Varios",
+      img: ImgPres,
+
+    },
+    {
+      tipo: "Prestamos",
+      img: ImgDolar
+
+    }
   ];

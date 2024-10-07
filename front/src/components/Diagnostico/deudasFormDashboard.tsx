@@ -91,15 +91,15 @@ function DeudasFormDashboard() {
   
     return (
         <div className="flex-1">
-          <div className='flex m-1'>
-            <label >Agregar si tiene algun tipo de interes</label>
-            <input type="checkbox" onChange={()=>setTieneInteres(!tieneInteres)} />
-          </div>
+          
         <form
           onSubmit={handleSubmitDeudas}
           className="flex flex-col justify-center items-center mt-5"
         >
-
+          <div className='flex m-1'>
+            <label >Agregar si tiene algun tipo de interes</label>
+            <input type="checkbox" onChange={()=>setTieneInteres(!tieneInteres)} className='ml-2'/>
+          </div>
           <div className="flex flex-col mt-5">
             <label className="text-lg font-bold">Tipo de Deuda</label>
             <select

@@ -63,7 +63,7 @@ export function Button_actions({ children, ...props }: Props) {
 export function Button_action({ children, ...props }: Props) {
   return (
     <button
-      className="flex justify-center w-full bg-actions text-white 
+      className="flex justify-center min-w-96 sm:w-full bg-actions text-white 
       py-2 px-4 mx-2 my-2 rounded-sm transition-transform duration-300 transform 
       hover:scale-105 hover:shadow-xl"
       {...props}
@@ -76,7 +76,7 @@ export function Button_action({ children, ...props }: Props) {
 export function Button_forms({ children, ...props }: Props) {
   return (
     <button
-      className="flex justify-center min-w-96 bg-second  hover:bg-primary text-white 
+      className="flex justify-center min-w-96 sm:w-full bg-second  hover:bg-primary text-white 
          py-2 px-4 mx-2 my-2 rounded-sm"
       {...props}
     >
