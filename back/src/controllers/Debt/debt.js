@@ -7,40 +7,13 @@ function convertDate(dateString) {
 // CREATE: Crear un nuevo registro en la tabla Debt
 const createDebt = async (req, res) => {
   try {
-    const { debt_category, debt, mount, date, user_id, rate, cuote, recurrence, mount_cuote} = req.body;
+    const { debt_category_id, debt, mount, date, data_id, recurrence, mount_cuote, cuote, rate } = req.body;
 
-    if (!debt_category || !debt || !mount || !date || ! user_id ) {
+    if (!debt_category_id || !debt || !mount || !date || ! data_id || !mount_cuote|| ! cuote|| ! rate) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const formattedDate = convertDate(date);
-
-    const userdata =  await User.findOne({
-      where: {user_id},
-      include: [{
-        model: Data,
-        attributes: ['data_id']
-      }]
-    })
-    const data_id = userdata.Datum.data_id
-
-    const debtType = await DebtCategory.findOne({ where: { debt: debt_category.toLowerCase() } });
-    if (!debtType) {
-      return res.status(400).json({ error: 'Tipo de ingreso no encontrado' });
-    }
-    const debt_category_id = debtType.debt_category_id
-
-    const newDebt = await Debt.create({ 
-      debt_category_id, 
-      debt, 
-      mount, 
-      date: formattedDate, 
-      data_id, 
-      rate: rate ? rate : 0, 
-      cuote: cuote ? cuote : 0, 
-      recurrence: recurrence ? recurrence : false, 
-      mount_cuote: mount_cuote ? mount_cuote : 0,
-    });
+    const newDebt = await Debt.create({ debt_category_id, debt, mount, date, data_id, recurrence, mount_cuote, cuote, rate});
     res.status(201).json(newDebt);
   } catch (error) {
     console.error('Error al crear el registro:', error);

@@ -9,59 +9,47 @@ function convertDate(dateString) {
 // CREATE: Crear un nuevo registro en la tabla Expense
 const createExpense = async (req, res) => {
   try {
-<<<<<<< HEAD
-    const { expense_category, pay_method, expense, mount, date, user_id } = req.body;
-  
-    if (!expense_category || !pay_method || !expense || !mount || !date) {
+    const { expense_category_id, pay_method_id, expense, mount, date, user_id } = req.body;
+
+    // Verificar que el user_id y otros datos requeridos están presentes
+    if (!expense_category_id || !pay_method_id || !expense || !mount || !date || !user_id) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const formattedDate = convertDate(date);
-
-    const userdata =  await User.findOne({
-      where: {user_id},
-      include: [{
-        model: Data,
-        attributes: ['data_id']
-      }]
-    })
-
-    const data_id = userdata.Datum.data_id
-
-    const expenseType = await ExpenseCategory.findOne({ where: { expense_category: expense_category.toLowerCase() } });
-    if (!expenseType) {
-      return res.status(400).json({ error: 'Tipo de gasto no encontrado' });
+    // Buscar el data_id en la tabla Data usando el user_id
+    const dataRecord = await Data.findOne({ where: { user_id } }); // Suponemos que tienes un modelo `Data`
+    
+    if (!dataRecord) {
+      return res.status(404).json({ error: 'No se encontró el data_id para este usuario' });
     }
 
-    const payMethod = await PayMethod.findOne({ where: { pay_method: pay_method.toLowerCase() } });
+    const { data_id } = dataRecord; // Obtener el data_id del registro encontrado en Data
 
-    if (!payMethod) {
-      return res.status(400).json({ error: 'Método de pago no encontrado' });
-    }
-    const expense_category_id = expenseType.expense_category_id
-    const pay_method_id = payMethod.pay_method_id
-
-    const newExpense = await Expense.create({ 
+    // Crear el nuevo gasto (expense)
+    const newExpense = await Expense.create({
       expense_category_id,
-      pay_method_id, 
-      expense, mount, 
-      date: formattedDate, 
-      data_id });
-      
-=======
-    const { expense_category_id, pay_method_id, expense, mount, date, data_id } = req.body;
+      pay_method_id,
+      expense,
+      mount,
+      date,
+      data_id // Usar el data_id recuperado de la tabla Data
+    });
 
-    if (!expense_category_id || !pay_method_id || !expense || !mount || !date || !data_id) {
-      return res.status(400).json({ error: 'Faltan datos requeridos' });
-    }
-
-    const newExpense = await Expense.create({ expense_category_id, pay_method_id, expense, mount, date, data_id });
-
->>>>>>> origin/Developer
+    // Responder con el gasto creado
     res.status(201).json(newExpense);
   } catch (error) {
     console.error('Error al crear el registro:', error);
     res.status(500).json({ error: 'Error al crear el registro' });
+  }
+};
+
+const getAllExpensesAllUsers = async (req, res) => {
+  try {
+    const expenses = await Expense.findAll();
+    res.status(200).json(expenses);
+  } catch (error) {
+    console.error('Error al obtener los registros:', error);
+    res.status(500).json({ error: 'Error al obtener los registros' });
   }
 };
 
@@ -181,6 +169,7 @@ const deleteExpense = async (req, res) => {
 module.exports = {
   createExpense,
   getAllExpenses,
+  getAllExpensesAllUsers,
   getExpenseById,
   updateExpense,
   deleteExpense

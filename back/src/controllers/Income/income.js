@@ -8,42 +8,35 @@ function convertDate(dateString) {
 // CREATE: Crear un nuevo registro en la tabla Income
 const createIncome = async (req, res) => {
   try {
-    const { income_category, income, mount, date, user_id} = req.body;
+    const { income_category_id, income, mount, date, user_id} = req.body;
 
-    if (income_category == null || income == null || mount == null|| date == null || user_id  == null) {
+    if (income_category_id == null || income == null || mount == null|| date == null ||user_id  == null) {
       return res.status(400).json({ error: 'Faltan datos requeridos' });
     }
 
-    const formattedDate = convertDate(date);
+    const dataRecord = await DatafindOne({ where: {user_id } });
 
-    const userdata =  await User.findOne({
-      where: {user_id},
-      include: [{
-        model: Data,
-        attributes: ['data_id']
-      }]
-    })
-
-    const data_id = userdata.Datum.data_id
-
-    const incomeType = await IncomeCategory.findOne({ where: { income_category: income_category.toLowerCase() } });
-    if (!incomeType) {
-      return res.status(400).json({ error: 'Tipo de ingreso no encontrado' });
+    if(!dataRecord){
+      return res.status(400).json({ error: 'No se encontró el data_id para este usuario' });
     }
-    const income_category_id = incomeType.income_category_id
 
-    const newIncome = await Income.create({ 
-      income_category_id,
-      income, 
-      mount, 
-      date: formattedDate, 
-      data_id
-     });
+    const { data_id } = dataRecord;
 
+    const newIncome = await Income.create({ income_category_id, income, mount, data_id, date });
     res.status(201).json(newIncome);
   } catch (error) {
     console.error('Error al crear el registro:', error);
     res.status(500).json({ error: 'Error al crear el registro' });
+  }
+};
+
+const getAllIncomesAllUsers = async (req, res) => {
+  try {
+    const incomes = await Income.findAll();
+    res.status(200).json(incomes);
+  } catch (error) {
+    console.error('Error al obtener los registros:', error);
+    res.status(500).json({ error: 'Error al obtener los registros' });
   }
 };
 
@@ -160,6 +153,7 @@ const deleteIncome = async (req, res) => {
 
 module.exports = {
   createIncome,
+  getAllIncomesAllUsers,
   getAllIncomes,
   getIncomeById,
   updateIncome,

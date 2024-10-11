@@ -35,7 +35,8 @@ const calculatesavingsController = require('../controllers/CalculateSavingsPlan/
 const { authenticateToken } = require('../middlewares/auth');
 const googleAuthController = require("../controllers/Auth/google");
 const paypalController = require("../controllers/Paypal/paypalController");
-
+const IncomeExpenseDistributionRecommendation = require('../controllers/Income&ExpenseDistributionRecommendation/Income&ExpenseDistributionRecommendation')
+const { upload } = bookController;
 const router = Router();
 
 router.post("/users", userController.postUser);
@@ -87,6 +88,7 @@ router.put("/dwelling/:id", dwellingController.updateDwelling);
 router.delete("/dwelling/:id", dwellingController.deleteDwelling);
 
 router.post("/expense", expenseController.createExpense);
+router.get("/expenses", expenseController.getAllExpensesAllUsers);
 router.get("/expense-by-user/:id", expenseController.getAllExpenses);
 router.get("/expense/:id", expenseController.getExpenseById);
 router.put("/expense/:id", expenseController.updateExpense);
@@ -115,6 +117,7 @@ router.delete("/goals/:id", goalController.deleteGoal);
 
 router.post('/incomes', incomeController.createIncome);
 router.get('/incomes-by-user/:id', incomeController.getAllIncomes);
+router.get('/incomesAllUser/:id', incomeController.getAllIncomesAllUsers);
 router.get('/incomes/:id', incomeController.getIncomeById);
 router.put('/incomes/:id', incomeController.updateIncome);
 router.delete('/incomes/:id', incomeController.deleteIncome);
@@ -375,6 +378,8 @@ router.put('/services/:id', serviceController.updateService);
 router.delete('/services/:id', serviceController.deleteService);
 
 router.post('/savings/simulate', calculatesavingsController.simulateSavingsPlan);
+
+router.get('/obtenerIngresoYRecomendacionAhorro/:id', IncomeExpenseDistributionRecommendation.incomeAndSavingRecommendation )
 
 module.exports = router
 
